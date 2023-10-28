@@ -1,0 +1,58 @@
+
+.product-select {
+    text-align: center;
+    margin-top: 18vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
+  /* 
+  .select-control {
+    width: 300px;
+    margin: 0 auto;
+  }
+  
+  .stattable {
+    margin-top: 50px;
+    text-align: center;
+    align-self: center;
+  }
+  
+  /* table {
+    width: 200%;
+    align-items: center;
+    margin: 20px auto; 
+    padding-left: 20px;
+    border-collapse: collapse;
+    background-color: #fff;
+    border: 1px solid #ddd;
+  }
+  
+  table th,
+  table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+  }
+  
+  table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    text-align: left;
+  } */
+  
+  button {
+    display: block;
+    margin: 20px auto; 
+    padding: 10px 20px;
+    background-color: #d9534f;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+ 
+  

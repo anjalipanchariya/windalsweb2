@@ -1,0 +1,247 @@
+.add-station-container {
+    display: flex;
+    flex-direction: row;
+    margin: 5px;
+    margin-top: 14vh;
+}
+
+.add-station-inputs {
+    text-align: center;
+    width: 40%;
+    margin: 0 auto;
+    margin-left: 20px;
+    margin: 40px;
+    margin-right: 30vh;
+}
+
+
+.search-station-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40%;
+    margin: 40px;
+    margin-right: 10vh;
+    text-align: center;
+}
+
+.select{
+  width: 50%;
+}
+.add-station-button {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    
+}
+
+.header-add-station {
+   
+    margin: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.add-station-container {
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  
+  .add-station-header {
+    margin-top: 100px;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+ 
+  .add-station-inputs {
+   
+  }
+  
+ 
+  .view-user-section {
+   
+    margin-top: 20px;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow-x: auto;
+  }
+  
+  .table th, .table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  
+  .table tbody tr:nth-child(odd) {
+    background-color: #f2f2f2;
+  }
+  
+  .table tbody tr:nth-child(even) {
+    background-color: #ffffff;
+  }
+  
+  
+  
+  
+ 
+  .edit-button,
+  .delete-button {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  
+  .edit-button:hover,
+  .delete-button:hover {
+    background-color: darkred;
+  }
+  
+  .styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+   
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 8px;
+   
+    text-align: left;
+}
+
+.table-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.head-contents {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.body-contents {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.table-edit-button button {
+    height: 10px;
+}
+
+.edits {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.station-row {
+    margin-left: 100px;
+}
+
+.product-row {
+    margin-left: 50px;
+}
+
+
+
+
+
+@media (max-width: 820px) {
+  .add-station-inputs {
+    max-width: 100%;
+
+    padding: 0 20px;
+ 
+}
+  .add-station-container {
+    display: flex;
+    flex-direction: column; /* Change to column on small screens */
+    align-items: center;
+    margin: 5px;
+    margin-top: 14vh;
+}
+
+.add-station-inputs {
+    text-align: center;
+    width: 100%; /* Take full width on small screens */
+    margin: 0 auto;
+    margin: 40px;
+}
+
+.search-station-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%; /* Take full width on small screens */
+    margin: 40px;
+    text-align: center;
+}
+
+.select {
+    width: 100%;
+}
+
+/* Responsive table styles */
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    overflow-x: auto;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 8px;
+    text-align: left;
+}
+
+/* On small screens, make the station rows stack */
+.station-row,
+.product-row {
+    margin-left: 0; /* Remove margin to allow stacking */
+}
+
+/* Responsive buttons */
+.table-edit-button button {
+    height: auto;
+    width: 100%; /* Take full width on small screens */
+}
+
+.table {
+  display: block;
+  overflow-x: auto;
+  font-size: 14px;
+  margin-right: 20px;
+}
+
+.table th, .table td {
+  padding: 6px; /* Reduce padding for a more compact layout */
+}
+
+.table thead {
+  display: none; 
+}
+
+
+}
+

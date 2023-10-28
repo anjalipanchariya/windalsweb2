@@ -1,0 +1,48 @@
+.first_table {
+    width:20%;
+    text-align: center;
+    margin-left: 600px;
+}
+
+.fslist{
+    display: flex;
+    
+}
+
+.fslist h3{
+    margin: 30px;
+}
+
+
+
+@media (max-width: 768px) {
+    .first_table {
+        width:40%;
+        text-align: center;
+        margin-left: 220px;
+    }
+
+    
+ 
+    
+}
+
+@media (max-width: 480px) {
+    .first_table {
+        width:50%;
+        text-align: center;
+        margin-left: 100px;
+    }
+    
+    .fslist{
+        display: flex;
+        margin-left: 12vw;
+        
+    }
+    
+    .fslist h3{
+        margin: 25px;
+    }
+       
+    
+}

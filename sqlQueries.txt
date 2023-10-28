@@ -1,0 +1,97 @@
+CREATE TABLE `employee_master` (
+  `employee_id` int NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(100) NOT NULL,
+  `last_name` varchar(100) NOT NULL,
+  `user_name` varchar(100) NOT NULL,
+  `nick_name` varchar(100) DEFAULT NULL,
+  `designation` varchar(100) NOT NULL,
+  `joining_date` datetime NOT NULL,
+  `leaving_date` datetime DEFAULT NULL,
+  `mobile_no` varchar(10) DEFAULT NULL,
+  `password` varchar(100) NOT NULL,
+  `access_given` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`employee_id`),
+  UNIQUE KEY `user_name_UNIQUE` (`user_name`),
+  UNIQUE KEY `mobile_no_UNIQUE` (`mobile_no`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+CREATE TABLE `product_master` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `product_name` varchar(100) DEFAULT NULL,
+  `parameter` varchar(100) DEFAULT NULL,
+  `min_parameter` float DEFAULT NULL,
+  `max_parameter` float DEFAULT NULL,
+  `unit` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `productyyyy` (
+  `job_id` int NOT NULL AUTO_INCREMENT,
+  `product_name` varchar(100) NOT NULL,
+  `station_id` int NOT NULL,
+  `job_name` varchar(100) NOT NULL,
+  PRIMARY KEY (`job_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+CREATE TABLE `shift_config` (
+  `shift_id` int NOT NULL AUTO_INCREMENT,
+  `shift_name` varchar(45) NOT NULL,
+  `start_time` time NOT NULL,
+  `end_time` time NOT NULL,
+  `active` tinyint NOT NULL,
+  PRIMARY KEY (`shift_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `station_allocation` (
+  `employee_id` int NOT NULL,
+  `station_name` varchar(100) NOT NULL,
+  `date` date NOT NULL,
+  `shift_id` int NOT NULL,
+  PRIMARY KEY (`employee_id`,`station_name`,`date`,`shift_id`),
+  CONSTRAINT `fk_employee_id` FOREIGN KEY (`employee_id`) REFERENCES `employee_master` (`employee_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `station_master` (
+  `station_id` int NOT NULL AUTO_INCREMENT,
+  `station_name` varchar(100) NOT NULL,
+  `product_name` varchar(100) NOT NULL,
+  `report` int NOT NULL,
+  `station_parameters` varchar(1000) DEFAULT NULL,
+  `next_station_name` varchar(100) DEFAULT NULL,
+  `cycle_time` int NOT NULL,
+  `daily_count` int NOT NULL,
+  `product_per_hour` int NOT NULL,
+  PRIMARY KEY (`station_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+CREATE TABLE `station_yyyy` (
+  `station_id` int NOT NULL,
+  `product_name` varchar(100) NOT NULL,
+  `job_id` int NOT NULL,
+  `employee_id` int DEFAULT NULL,
+  `status` int DEFAULT NULL,
+  `parameters` varchar(1000) DEFAULT NULL,
+  `intime` datetime NOT NULL,
+  `out_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`station_id`,`product_name`,`job_id`,`intime`)
+) ;
+
+INSERT INTO employee_master VALUES ('1', 'admin', 'admin', 'admin', 'admin', 'admin', '2023-09-12 00:00:00', NULL, '9689850419','$2b$10$SD6.jEKVxpQrtC1mfOZNjOh6waVEUhceSvo.t9Gu2wa9Hckh3vdui','1111111111111111111');
+
+/** accessOptionsOrder = [ "Add User", "View User", "Delete User", "Modify User", "Add Product", "Veiw Product", "Delete Product", "Modify Product",
+   "Add Station", "View Station", "Delete Station", "Modify Station", "Allocate Next Station for Product", "Update Next Station Allocated for Product", 
+  "Modify Next Station Allocated for Product", "View Next Station Allocated for Product", "Allocate Station to Worker", "View Station allocated to worker"] 
+  
+  1 for access given 0 for not given
+*/
+
+CREATE TABLE `login_log` (
+  `employee_id` int NOT NULL,
+  `date_time` datetime NOT NULL,
+  `station_name` varchar(100) DEFAULT NULL,
+  KEY `employee_id` (`employee_id`),
+  CONSTRAINT `login_log_ibfk_1` FOREIGN KEY (`employee_id`) REFERENCES `employee_master` (`employee_id`) ON DELETE CASCADE
+);

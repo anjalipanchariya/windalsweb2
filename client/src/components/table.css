@@ -1,0 +1,214 @@
+
+
+
+.table-container {
+    max-width: 100%;
+    /* overflow-x: auto; */
+    border-collapse: collapse;
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: 15px;
+    overflow: auto;
+  }
+
+  
+  
+  
+ 
+  .table-container th {
+    background-color: black;
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+    text-align: left;
+    
+  }
+  
+  /* Alternating column background */
+  .table-container th:nth-child(even) {
+    background-color: #333;
+  }
+  
+  /* Table row styles */
+  .table-container tr {
+    background-color: #f2f2f2;
+  }
+  
+  /* Alternating row background */
+  .table-container tr:nth-child(even) {
+    background-color: #ddd;
+  }
+  
+  /* Table cell styles */
+  .table-container td {
+    padding: 8px;
+    border: 1px solid #ccc;
+    text-align: left;
+    font-family: Arial, sans-serif; /* Use your preferred font here */
+  }
+  
+  /* Filter section styles */
+  .filter-section {
+    display: flex;
+    margin: 10px ;
+    
+  }
+  
+  
+  /* Sorting arrow styles */
+  .sort-arrow {
+    margin-left: 5px;
+  }
+  
+  /* Responsive table styles */
+  @media screen and (max-width: 600px) {
+    .table-container {
+      width: 100%;
+      max-width: 100%;
+     overflow-x: auto;
+    }
+  }
+
+  .box select {
+    background-color: #ebe5e5;
+    color: rgb(0, 0, 0);
+    padding: 12px;
+    width: 98%;
+    border: none;
+    /* border-radius: 10px; */
+    font-size: 20px;
+    /* box-shadow: 0 2px 16px rgba(0, 0, 0, 0.2); */
+    -webkit-appearance: button;
+    appearance: button;
+    outline: none;
+    /* margin-right: 2vw; */
+    margin-top: 4px;
+    
+  }
+  
+  .box::before {
+    content: "\f13a";
+    font-family: FontAwesome;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20%;
+    height: 100%;
+    text-align: center;
+    font-size: 28px;
+    line-height: 45px;
+    color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.1);
+    pointer-events: none;
+  }
+  
+  .box:hover::before {
+    color: rgba(255, 255, 255, 0.6);
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  .box select option {
+    padding: 30px;
+  }
+
+
+/* searchbox */
+
+.button {
+	display: inline-block;
+	margin: 4px 2px;
+	background-color: #444;
+	font-size: 14px;
+	padding-left: 32px;
+	padding-right: 32px;
+	height: 50px;
+	line-height: 50px;
+	text-align: center;
+	color: white;
+	text-decoration: none;
+	cursor: pointer;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.button:hover {
+	transition-duration: 0.4s;
+	-moz-transition-duration: 0.4s;
+	-webkit-transition-duration: 0.4s;
+	-o-transition-duration: 0.4s;
+	background-color: #ebe5e5;
+	color: black;
+}
+
+.search-container {
+	position: relative;
+	display: inline-block;
+	margin: 4px 2px;
+	height: 50px;
+	width: 50px;
+	vertical-align: bottom;
+  /* margin-top: 2vh; */
+}
+
+.mglass {
+	display: inline-block;
+	pointer-events: none;
+	-webkit-transform: rotate(-45deg);
+	-moz-transform: rotate(-45deg);
+	-o-transform: rotate(-45deg);
+	-ms-transform: rotate(-45deg);
+}
+
+.searchbutton {
+	position: absolute;
+	font-size: 22px;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+.search:focus + .searchbutton {
+	transition-duration: 0.4s;
+	-moz-transition-duration: 0.4s;
+	-webkit-transition-duration: 0.4s;
+	-o-transition-duration: 0.4s;
+	background-color: #ebe5e5;
+	color: black;
+}
+
+.search {
+	position: absolute;
+	left: 49px; /* Button width-1px (Not 50px/100% because that will sometimes show a 1px line between the search box and button) */
+	background-color: #ebe5e5;
+	outline: none;
+	border: none;
+	padding: 0;
+	width: 0;
+	height: 100%;
+	z-index: 10;
+	transition-duration: 0.4s;
+	-moz-transition-duration: 0.4s;
+	-webkit-transition-duration: 0.4s;
+	-o-transition-duration: 0.4s;
+}
+
+.search:focus {
+	width: 150px; /* Bar width+1px */
+	padding: 0 16px 0 0;
+}
+
+.expandright {
+	left: auto;
+	right: 40px; /* Button width-1px */
+}
+
+.expandright:focus {
+	padding: 0 0 0 16px;
+}
+

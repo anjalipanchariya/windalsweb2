@@ -1,0 +1,12 @@
+.container-fluid {
+    margin-top: 40px;
+}
+
+.table {
+    margin-top: 20px;
+}
+
+.col-12{
+    display: flex;
+    justify-content: space-between;
+}
