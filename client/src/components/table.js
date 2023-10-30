@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import './table.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSolid, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import exportimg from '../images/export.png'; 
+
+
 function Table({ columns, data }) {
   const [sortedColumn, setSortedColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState('asc');
@@ -81,7 +84,12 @@ function Table({ columns, data }) {
   console.log(columns);
   return (
     <div className="table-container">
+      
       <div className="filter-section">
+      <div className="search-container">
+        <input class="search expandright" id="searchright" type="search" name="q" placeholder="Filter Value" />
+        <label class="button searchbutton" for="searchright"><span class="mglass">&#9906;</span></label>
+      </div>
         <div className='box'>
           <select
             onChange={(e) => setFilterColumn(e.target.value)}
@@ -95,20 +103,10 @@ function Table({ columns, data }) {
             ))}
           </select>
         </div>
+        <div className='export'>
+            <img src={exportimg} alt="" onClick={exportToCSV}/>
 
-{/* 
-        <input
-          type="text"
-          placeholder="Filter Value"
-          value={filterValue}
-          onChange={(e) => setFilterValue(e.target.value)}
-        /> */}
-        <div className="search-container">
-          <input class="search" id="searchleft" type="search" name="q" placeholder="Filter Value" value={filterValue}
-          onChange={(e) => setFilterValue(e.target.value)} />
-          <label class="button searchbutton" for="searchleft"><span class="mglass">&#9906;</span></label>
         </div>
-
       </div>
 
       <table>
@@ -146,7 +144,7 @@ function Table({ columns, data }) {
         </tbody>
       </table>
       <br />
-      <button onClick={exportToCSV}>Export to CSV</button>
+      {/* <button onClick={exportToCSV}>Export to CSV</button> */}
     </div>
   );
 }

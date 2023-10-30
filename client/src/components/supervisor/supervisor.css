@@ -1,0 +1,68 @@
+.superv{
+    margin-top: 12vh;
+   
+    
+}
+
+.superv h1
+{
+    text-align: center;
+    /* border-bottom: 1px solid black; */
+    padding-bottom: 20px;
+
+}
+
+.svdash{
+    display: flex;
+}
+
+.leftmenu{
+    height: 90%;
+    width: 22vw;
+    background-color: grey;
+    /* position: fixed; */
+    z-index: 0;
+    overflow:auto;
+}
+
+.leftmenuinner{
+    height: 100%;
+    width: 100%;
+    background-color: #E7E9EB;
+    overflow-y: scroll;
+    /* overflow-x: hidden; */
+    padding-top: 20px;
+}
+
+.leftmenu h2{
+    
+    padding-left: 16px;
+    margin: -4px 0 4px 0;
+    
+}
+
+.leftmenu a{
+    font-family: "Segoe UI",Arial,sans-serif;
+    text-decoration: none;
+    display: block;
+    padding: 5px 1px 5px 28px;
+    color: black;
+}
+
+.leftmenu a:hover{
+    background-color: rgb(180, 180, 180);
+}
+
+@media screen and (max-width: 1158px){
+    .superv{
+        margin-top: 17vh;
+    }
+}
+
+
+@media screen and (max-width: 900px){
+    .superv{
+        margin-top: 11vh;
+    }
+}
+
