@@ -1,7 +1,7 @@
 import db from "../Database/connection.js";
 
 async function insertInStationyyyyFirst(req,res){
-    const {product_name, station_id, job_name,  employee_id} = req.body;
+    const {product_name, station_id, job_name,  employee_id,machine_id} = req.body;
     
     try {
         const searchQuery = "SELECT job_id FROM productyyyy WHERE job_name=? AND product_name=?"
@@ -9,8 +9,8 @@ async function insertInStationyyyyFirst(req,res){
         const job_id=selectResult[0]["job_id"];
         
 
-        const insertQuery = "INSERT INTO station_yyyy (product_name, station_id, job_id, employee_id,status,intime,out_time) VALUES (?, ?, ?,?,1,NOW(),NOW())";
-        const [insertResult] = await db.promise().query(insertQuery, [product_name, station_id, job_id,employee_id]);
+        const insertQuery = "INSERT INTO station_yyyy (product_name, station_id, job_id, employee_id,status,intime,out_time,machine_id) VALUES (?, ?, ?,?,1,NOW(),NOW(),?)";
+        const [insertResult] = await db.promise().query(insertQuery, [product_name, station_id, job_id,employee_id,machine_id]);
             
         res.status(201).send({ msg: "Record inserted successfully"});
         
@@ -58,7 +58,7 @@ async function insertInStationyyyyFirstNextStation(req,res){
 }
 
 async function updateInStationyyyy(req,res){
-    const {product_name, station_id, job_name,employee_id,status,parameters} = req.body;
+    const {product_name, station_id, job_name,employee_id,status,parameters, machine_id} = req.body;
     // console.log(req.body);
     try {
         const searchQueryJob = "SELECT job_id FROM productyyyy WHERE job_name=? and product_name=?"
@@ -78,8 +78,8 @@ async function updateInStationyyyy(req,res){
         // console.log(intime)
 
 
-        const updateQuery = "UPDATE station_yyyy SET employee_id = ?, status = ?, parameters = ? ,out_time=NOW() WHERE (intime = ?) and (station_id = ?) and (product_name = ?) and (job_id = ?);";
-        const [updateResult] = await db.promise().query(updateQuery, [employee_id,status,parameters,intime,station_id,product_name, job_id]);
+        const updateQuery = "UPDATE station_yyyy SET employee_id = ?, status = ?, parameters = ? ,out_time=NOW(), machine_id=? WHERE (intime = ?) and (station_id = ?) and (product_name = ?) and (job_id = ?);";
+        const [updateResult] = await db.promise().query(updateQuery, [employee_id,status,parameters,intime,station_id,product_name, job_id,machine_id]);
             
         res.status(201).send({ msg: "Record updated successfully"});
         
@@ -98,6 +98,43 @@ async function jobsAtStation(req,res){
         // console.log(selectResultJob);
             
         res.status(201).send(selectResultJob);
+        
+    } catch (err) {
+        console.error("Database error:", err);
+        res.status(500).send({ msg: `Internal server error: ${err}` });
+    }
+
+}
+
+async function jobsAtReworkStation(req,res){
+    // const {station_id} = req.body;
+    // console.log(station_id);
+    try {
+        const searchQueryJob = "select newt2.job_id,newt2.product_name,newt2.station_id,newt2.employee_id,newt2.machine_id,newt2.parameters,newt2.job_name,employee_master.first_name,employee_master.last_name from (select newt.job_id,newt.product_name,newt.station_id,newt.employee_id,newt.machine_id,newt.parameters,productyyyy.job_name from (select * from station_yyyy where status='-1') as newt inner join productyyyy on newt.job_id=productyyyy.job_id) as newt2 inner join employee_master on newt2.employee_id=employee_master.employee_id ;"
+        // console.log(selectResultJob);
+            
+        res.status(201).send(selectResultJob);
+        
+    } catch (err) {
+        console.error("Database error:", err);
+        res.status(500).send({ msg: `Internal server error: ${err}` });
+    }
+
+}
+
+async function insertInStationyyyySameStation(req,res){
+    const {product_name, station_id, job_name} = req.body;
+    
+    try {
+        const searchQueryJob = "SELECT job_id FROM productyyyy WHERE job_name=? AND product_name=? "
+        const [selectResultJob] = await db.promise().query(searchQueryJob,[job_name,product_name])
+        const job_id=selectResultJob[0]["job_id"];
+        console.log(job_id)
+
+        const insertQuery = "INSERT INTO station_yyyy (product_name, station_id, job_id,intime) VALUES (?, ?, ?,NOW())";
+        const [insertResult] = await db.promise().query(insertQuery, [product_name, station_id, job_id]);
+            
+        res.status(201).send({ msg: "Record inserted successfully"});
         
     } catch (err) {
         console.error("Database error:", err);
@@ -247,4 +284,4 @@ async function jobDetailsReport(req,res){
 
 } 
 
-export {insertInStationyyyyFirst, insertInStationyyyyFirstNextStation,updateInStationyyyy, jobsAtStation,countOfWorkAtStation,workAtStationInDay,getJobesSubmitedAtStation,productReport,jobDetailsReport};
+export {insertInStationyyyyFirst, insertInStationyyyyFirstNextStation,updateInStationyyyy, jobsAtStation,countOfWorkAtStation,workAtStationInDay,getJobesSubmitedAtStation,productReport,jobDetailsReport,jobsAtReworkStation,insertInStationyyyySameStation};
