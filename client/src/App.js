@@ -23,6 +23,8 @@ import ViewShifts from './components/shift/viewShift';
 import JobReport from './components/reports/jobReport';
 import ProductReport from './components/reports/productReport';
 import LoginLog from './components/reports/loginLog';
+import Supervisor from './components/supervisor/supervisor';
+import SupervisorAllocation from './components/supervisor/supervisorAllocation';
 
 function App() {
   console.log(window.location.href);
@@ -59,6 +61,10 @@ function App() {
         <Route path='/:userName/ProductReport' element={<ProductReport />} />
         <Route path='/:userName/LoginLog' element={<LoginLog />} />
         <Route path='/' element={<LoginPage />} />
+
+        <Route path='/:userName/SupervisorDash' element={<Supervisor/>}/>
+        <Route path='/:userName/SupervisorAllocation' element={<SupervisorAllocation/>}/>
+
       </Routes>
     </>
   );

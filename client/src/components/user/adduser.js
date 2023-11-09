@@ -85,7 +85,7 @@ function WorkerReg(){
         <div className="adduser">
         <form className="workerreg">
           <h1 className="heading">User Registration</h1>
-          <div style={{ display: 'flex', flexDirection:'column' }}>
+          <div style={{ display: 'flex', flexDirection:'column', alignItems:'center'}}>
             <div className="worklist">
             <input type='text' placeholder="Username" value={formik.values.userName} name="userName" onChange={formik.handleChange}/>
             { formik.errors.userName && formik.touched.userName ? (
@@ -123,6 +123,7 @@ function WorkerReg(){
         ) : null}
             
             </div>
+            <input type="text" placeholder="User ID"/>
           </div>
           <label>Joining date:</label>
           <br />
@@ -133,7 +134,7 @@ function WorkerReg(){
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom:'2vh' }}>
             <button type="submit" onClick={formik.handleSubmit}>Register</button>
           </div>
-
+          
         </form>
         <br />
         

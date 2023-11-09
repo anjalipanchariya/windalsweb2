@@ -115,6 +115,8 @@
   }
 
 
+
+
 /* searchbox */
 
 .button {
@@ -149,10 +151,11 @@
 .search-container {
 	position: relative;
 	display: inline-block;
-	margin: 4px 2px;
+	margin: 4px 16px;
 	height: 50px;
 	width: 50px;
 	vertical-align: bottom;
+  
   /* margin-top: 2vh; */
 }
 
@@ -212,3 +215,11 @@
 	padding: 0 0 0 16px;
 }
 
+
+
+.export img{
+  height: 50px;
+	width: 50px;
+  margin: 4px 16px;
+  cursor: pointer;
+}
