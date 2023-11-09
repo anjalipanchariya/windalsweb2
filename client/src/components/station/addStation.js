@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import { Button, Form, Modal,Table,Alert } from 'react-bootstrap';
+import { Button, Form, Modal, Table, Alert } from 'react-bootstrap';
 import './addStation.css'
-import { useState,useLocation } from "react";
+import { useState, useLocation } from "react";
 import { useFormik } from "formik";
 import { addStation, deleteStation, getOneProductAllParameters, getOneStation, getOneStationOneProduct, getProductNames, updateStation, getAllStationNames } from "../../helper/helper";
 import toast, { Toaster } from 'react-hot-toast';
@@ -15,34 +15,48 @@ import { useParams } from "react-router-dom";
 
 
 function AddStation() {
-    const [productNames,setProductNames] = useState([]);
-    const [productParameters,setProductParameters] = useState([]);
-    const [stationData,setStationData] = useState([])
-    const [showEditModal,setShowEditModal] = useState(false);
+    const [productNames, setProductNames] = useState([]);
+    const [productParameters, setProductParameters] = useState([]);
+    const [stationData, setStationData] = useState([])
+    const [showEditModal, setShowEditModal] = useState(false);
 
-    const {userName} = useParams()
+    const { userName } = useParams()
 
-    const stationValidationSchema= Yup.object().shape({
-        stationName:Yup.string().required("Required"),
-        productName:Yup.string().required("Required"),
-        reportType:Yup.string().required("Required"),
+    const stationValidationSchema = Yup.object().shape({
+        stationName: Yup.string().required("Required"),
+        productName: Yup.string().required("Required"),
+        reportType: Yup.string().required("Required"),
         // stationParameter:Yup.array().min(1, "At least one option must be selected").required("Required"),
-        cycleTime:Yup.number().min(0,"Value cannot be negative").required("Required"),
-        dailyCount:Yup.number().min(0,"Value cannot be negative").required("Required"),
-        productPerHour:Yup.number().min(0,"Value cannot be negative").required("Required")
+        // cycleTime: Yup.number().min(0, "Value cannot be negative").required("Required"),
+        // dailyCount: Yup.number().min(0, "Value cannot be negative").required("Required"),
+        // productPerHour: Yup.number().min(0, "Value cannot be negative").required("Required"),
+        // machineName: Yup.string().required("Required"),
+        parameters: Yup.array().of(
+            Yup.object().shape({
+                machineName: Yup.string()
+                    .required('Required'),
+                cycleTime: Yup.number()
+                    .required('Required'),
+                dailyCount: Yup.number()
+                    .required('Required'),
+                productPerHour: Yup.number().required('Required'),
+            })
+        ),
     })
-    
+
     const addFormFormik = useFormik({
         initialValues: {
             stationName: '',
             productName: '',
             reportType: '',
             stationParameter: [],
-            cycleTime: '',
-            dailyCount: '',
-            productPerHour: ''
+            // cycleTime: '',
+            // dailyCount: '',
+            // productPerHour: '',
+            parameters: []
+
         },
-        validationSchema:stationValidationSchema,
+        validationSchema: stationValidationSchema,
         onSubmit: async (values) => {
             // if(values.reportType == 1){
             //     if(values.stationParameter.lenght<=0){
@@ -67,22 +81,35 @@ function AddStation() {
         }
     })
 
-    const searchValidationSchema= Yup.object().shape({
-        stationName:Yup.string().required("Required"),
-        productName:Yup.string().required("Required")
+    const addRow = () => {
+        addFormFormik.setFieldValue('parameters', [
+            ...addFormFormik.values.parameters,
+            { machineName: '', cycleTime: '', dailyCount: '', productPerHour: '' },
+        ]);
+    };
+
+    const handleParameterChange = (index, field, value) => {
+        const updatedParameters = [...addFormFormik.values.parameters];
+        updatedParameters[index][field] = value;
+        addFormFormik.setFieldValue('parameters', updatedParameters);
+      };
+
+    const searchValidationSchema = Yup.object().shape({
+        stationName: Yup.string().required("Required"),
+        productName: Yup.string().required("Required")
     })
     const searchFormFormik = useFormik({
         initialValues: {
             stationName: "",
             productName: "",
         },
-        validationSchema:searchValidationSchema,
+        validationSchema: searchValidationSchema,
         onSubmit: (values) => {
             handleSearch()
         }
     })
 
-    
+
     const editFormFormik = useFormik({
         initialValues: {
             stationId: '',
@@ -94,7 +121,7 @@ function AddStation() {
             dailyCount: '',
             productPerHour: ''
         },
-        validationSchema:stationValidationSchema,
+        validationSchema: stationValidationSchema,
         onSubmit: async (values) => {
             const updateStationPromise = updateStation(values)
             toast.promise(
@@ -265,13 +292,13 @@ function AddStation() {
     console.log(window.location);
     return (
         <div >
-            <WindalsNav/>
+            <WindalsNav />
             <Toaster position="top-center" reverseOrder={false}></Toaster>
             {/* <div className="header-add-station">
                 <h2 className="add-station-header">Add Station</h2>
             </div> */}
 
-            
+
             <div className="add-station-container">
                 <div className="add-station-inputs">
                     <Form>
@@ -279,21 +306,21 @@ function AddStation() {
                         <div className="station-name-id">
                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                 <Form.Control type="text" placeholder="Enter Station Name" value={addFormFormik.values.stationName} name="stationName" onChange={addFormFormik.handleChange} />
-                                { addFormFormik.errors.stationName && addFormFormik.touched.stationName ? (
-                                <Alert variant="danger" className="error-message">{addFormFormik.errors.stationName}</Alert>) : null}
+                                {addFormFormik.errors.stationName && addFormFormik.touched.stationName ? (
+                                    <Alert variant="danger" className="error-message">{addFormFormik.errors.stationName}</Alert>) : null}
                             </Form.Group>
 
                             <Form.Group>
-                            <Form.Select className="mb-3 select-param" aria-label="Default select example" value={addFormFormik.values.productName} name="productName" onChange={addFormFormik.handleChange}>
-                                <option values="">--Select Product--</option>
-                                {
-                                    Array.isArray(productNames) && productNames.map((product, index) => (
-                                        <option key={index} value={product}>{product}</option>
-                                    ))
-                                }
-                            </Form.Select>
-                            { addFormFormik.errors.productName && addFormFormik.touched.productName ? (
-                                <Alert variant="danger" className="error-message">{addFormFormik.errors.productName}</Alert>) : null}
+                                <Form.Select className="mb-3 select-param" aria-label="Default select example" value={addFormFormik.values.productName} name="productName" onChange={addFormFormik.handleChange}>
+                                    <option values="">--Select Product--</option>
+                                    {
+                                        Array.isArray(productNames) && productNames.map((product, index) => (
+                                            <option key={index} value={product}>{product}</option>
+                                        ))
+                                    }
+                                </Form.Select>
+                                {addFormFormik.errors.productName && addFormFormik.touched.productName ? (
+                                    <Alert variant="danger" className="error-message">{addFormFormik.errors.productName}</Alert>) : null}
                             </Form.Group>
                             {/* <Form.Group className="mb-3" controlId="formBasicEmail">
                                     <Form.Control type="text" placeholder="Work" onChange={(event) => { setWork(event.target.value) }} />
@@ -301,7 +328,7 @@ function AddStation() {
                                     </Form.Text>
                                 </Form.Group> */}
 
-                            <Form.Group className="mb-3" controlId="formBasicEmail">
+                            {/* <Form.Group className="mb-3" controlId="formBasicEmail">
                                 <Form.Control type="number" placeholder="Enter Cycle Time(in minutes)" value={addFormFormik.values.cycleTime} name="cycleTime" onChange={addFormFormik.handleChange} />
                                 { addFormFormik.errors.cycleTime && addFormFormik.touched.cycleTime ? (
                                 <Alert variant="danger" className="error-message">{addFormFormik.errors.cycleTime}</Alert>) : null}
@@ -317,14 +344,14 @@ function AddStation() {
                                 <Form.Control type="number" placeholder="Enter Product to be producted per hour" value={addFormFormik.values.productPerHour} name="productPerHour" onChange={addFormFormik.handleChange} />
                                 { addFormFormik.errors.productPerHour && addFormFormik.touched.productPerHour ? (
                                 <Alert variant="danger" className="error-message">{addFormFormik.errors.productPerHour}</Alert>) : null}
-                            </Form.Group>
+                            </Form.Group> */}
 
                             <Form.Select className="mb-3 select-param" aria-label="Default select example" value={addFormFormik.values.reportType} name="reportType" onChange={addFormFormik.handleChange}>
                                 <option value=''>--Select Report Type--</option>
                                 <option value="0">Okay/Not okay</option>
                                 <option value="1">Parameters</option>
                             </Form.Select>
-                            { addFormFormik.errors.reportType && addFormFormik.touched.reportType ? (
+                            {addFormFormik.errors.reportType && addFormFormik.touched.reportType ? (
                                 <Alert variant="danger" className="error-message">{addFormFormik.errors.reportType}</Alert>) : null}
                             {
                                 addFormFormik.values.reportType === "1" &&
@@ -332,22 +359,120 @@ function AddStation() {
                                     <h3>Select Parameters:</h3>
                                     {productParameters.map((parameter, index) => (
                                         <div key={index}>
-                                        <label>
-                                            <input
-                                            type="checkbox"
-                                            checked={addFormFormik.values.stationParameter.includes(parameter)}
-                                            onChange={() => handleParameterTickBoxChangeForAdd(parameter)}
-                                            />
-                                            {parameter}
-                                        </label>
-                                        { addFormFormik.errors.stationParameter && addFormFormik.touched.stationParameter? (
-                                <Alert variant="danger" className="error-message">{addFormFormik.errors.stationParameter}</Alert>) : null}
+                                            <label>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={addFormFormik.values.stationParameter.includes(parameter)}
+                                                    onChange={() => handleParameterTickBoxChangeForAdd(parameter)}
+                                                />
+                                                {parameter}
+                                            </label>
+                                            {addFormFormik.errors.stationParameter && addFormFormik.touched.stationParameter ? (
+                                                <Alert variant="danger" className="error-message">{addFormFormik.errors.stationParameter}</Alert>) : null}
                                         </div>
                                     ))}
                                 </Form>
                             }
 
+                            <Form.Group className="mb-3" controlId="formBasicCheckbox" style={{ width: '12vw' }}>
+                                <Form.Check type="checkbox" label="Multiple Machines" />
+                            </Form.Group>
+
+                            <Button variant="danger" type="button" className="add-button-stn" onClick={addRow}>Add Machines</Button>
+                            <div className="machinetab">
+
+                                <br />
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Machine Name</th>
+                                            <th>Cycle time</th>
+                                            <th>Daily Count</th>
+                                            <th>Product per hour</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {/* <tr>
+                                            <td><input type="text" /></td>
+                                            <td><input type="number" /></td>
+                                            <td><input type="number" /></td>
+                                            <td><input type="number" /></td>
+                                        </tr> */}
+
+                                        {addFormFormik.values.parameters.map((parameter, index) => (
+                                            <tr key={index} className={index % 2 === 0 ? 'light-red-row' : 'red-row'}>
+                                                <td>{index + 1}</td>
+                                                <td>
+                                                    <input
+                                                        type="text"
+                                                        value={parameter.machineName}
+                                                        onChange={(e) =>
+                                                            handleParameterChange(index, 'parameterName', e.target.value)
+                                                        }
+                                                        name={`parameters[${index}].parameterName`}
+                                                    />
+                                                    {addFormFormik.touched.parameters && addFormFormik.touched.parameters[index] && addFormFormik.errors.parameters?.[index]?.parameterName && (
+                                                        <Alert variant="danger" className="error-message">
+                                                            {addFormFormik.errors.parameters[index].machineName}
+                                                        </Alert>
+                                                    )}
+                                                </td>
+                                                <td>
+                                                    <input
+                                                        type="number"
+                                                        value={parameter.cycleTime}
+                                                        onChange={(e) =>
+                                                            handleParameterChange(index, 'maxVal', e.target.value)
+                                                        }
+                                                        name={`parameters[${index}].maxVal`}
+                                                    />
+                                                    {addFormFormik.touched.parameters && addFormFormik.touched.parameters[index] && addFormFormik.errors.parameters?.[index]?.maxVal && (
+                                                        <Alert variant="danger" className="error-message">
+                                                            {addFormFormik.errors.parameters[index].cycleTime}
+                                                        </Alert>
+                                                    )}
+                                                </td>
+                                                <td>
+                                                    <input
+                                                        type="number"
+                                                        value={parameter.dailyCount}
+                                                        onChange={(e) =>
+                                                            handleParameterChange(index, 'minVal', e.target.value)
+                                                        }
+                                                        name={`parameters[${index}].minVal`}
+                                                    />
+                                                    {addFormFormik.touched.parameters && addFormFormik.touched.parameters[index] && addFormFormik.errors.parameters?.[index]?.minVal && (
+                                                        <Alert variant="danger" className="error-message">
+                                                            {addFormFormik.errors.parameters[index].dailyCount}
+                                                        </Alert>
+                                                    )}
+                                                </td>
+                                                <td>
+                                                    <input
+                                                        type="text"
+                                                        value={parameter.productPerHour}
+                                                        onChange={(e) =>
+                                                            handleParameterChange(index, 'unit', e.target.value)
+                                                        }
+                                                        name={`parameters[${index}].unit`}
+                                                    />
+                                                    {addFormFormik.touched.parameters && addFormFormik.touched.parameters[index] && addFormFormik.errors.parameters?.[index]?.unit && (
+                                                        <Alert variant="danger" className="error-message">
+                                                            {addFormFormik.errors.parameters[index].productPerHour}
+                                                        </Alert>
+                                                    )}
+                                                </td>
+                                                
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
+                        <br />
+
                         <div className="add-station-button">
                             <Button variant="danger" type="button" className="add-button-stn" onClick={addFormFormik.handleSubmit}>Add Station</Button>
                         </div>
@@ -358,7 +483,7 @@ function AddStation() {
                     <br />
                     <h5>Enter Station Name</h5>
                     <Select
-                         className="select"
+                        className="select"
                         options={stationnames}
                         value={{
                             value: searchFormFormik.values.stationName,
@@ -499,21 +624,21 @@ function AddStation() {
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                             <label>Cycle Time</label>
                             <Form.Control type="number" placeholder="Enter Cycle Time" value={editFormFormik.values.cycleTime} name="cycleTime" onChange={editFormFormik.handleChange} />
-                            { addFormFormik.errors.cycleTime ? (
+                            {addFormFormik.errors.cycleTime ? (
                                 <div>{addFormFormik.errors.cycleTime}</div>) : null}
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                             <label>Daily Count</label>
                             <Form.Control type="number" placeholder="Enter Daily Count " value={editFormFormik.values.dailyCount} name="dailyCount" onChange={editFormFormik.handleChange} />
-                            { addFormFormik.errors.dailyCount ? (
+                            {addFormFormik.errors.dailyCount ? (
                                 <div>{addFormFormik.errors.dailyCount}</div>) : null}
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                             <label>Product per hour</label>
                             <Form.Control type="number" placeholder="Enter Product to be producted per hour" value={editFormFormik.values.productPerHour} name="productPerHour" onChange={editFormFormik.handleChange} />
-                            { addFormFormik.errors.productPerHour ? (
+                            {addFormFormik.errors.productPerHour ? (
                                 <div>{addFormFormik.errors.productPerHour}</div>) : null}
                         </Form.Group>
 
@@ -538,12 +663,12 @@ function AddStation() {
                                             />
                                             {parameter}
                                         </label>
-                                        { addFormFormik.errors.stationParameter ? (
-                                <div>{addFormFormik.errors.stationParameter}</div>) : null}
-                                        </div>
-                                    ))}
-                                </div>
-                            }
+                                        {addFormFormik.errors.stationParameter ? (
+                                            <div>{addFormFormik.errors.stationParameter}</div>) : null}
+                                    </div>
+                                ))}
+                            </div>
+                        }
                     </Form>
                 </Modal.Body>
 

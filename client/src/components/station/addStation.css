@@ -245,3 +245,10 @@
 
 }
 
+.machinetab table{
+  width: 120%;
+}
+
+.machinetab input{
+  width: 100%;
+}
