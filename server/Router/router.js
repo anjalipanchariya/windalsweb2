@@ -3,11 +3,12 @@ import { insertInProductMaster, getInfoFromProductMaster, deleteFromProductMaste
 import {insertIntoStationMaster,deleteFromStationMaster,getInfoFromStationMaster,getOneStationFromStationMaster,getOneStationOneProductFromStationMaster,updateStationMaster,getStationNamesFromStationMaster, getStationNamesForOneProduct,addNextStationInStationMaster,mobileGetOneStationOneProductFromStationMaster} from "../Controllers/stationMasterController.js";
 import {insertInProductyyyy} from "../Controllers/productyyyyController.js";
 import {insertIntoEmployeeMaster,getAllFromEmployee,getOneFromEmployee,updateEmployeeMaster, deleteFromEmployeeMaster, resetPassword} from "../Controllers/employeeMasterController.js"
-import {insertInStationyyyyFirst, insertInStationyyyyFirstNextStation,updateInStationyyyy,jobsAtStation,countOfWorkAtStation,workAtStationInDay,getJobesSubmitedAtStation,productReport,jobDetailsReport} from "../Controllers/stationyyyyController.js"
+import {insertInStationyyyyFirst, insertInStationyyyyFirstNextStation,updateInStationyyyy,jobsAtStation,countOfWorkAtStation,workAtStationInDay,getJobesSubmitedAtStation,productReport,jobDetailsReport,insertInStationyyyySameStation,jobsAtReworkStation} from "../Controllers/stationyyyyController.js"
 import { login,getNamesFromEmployeeMaster } from "../Controllers/employeeMasterController.js";
 import {getOneWorkerStation, insertIntoStationAllocation,getStationAllocated} from "../Controllers/stationAllocationController.js"
 import {getAllFromShiftConfig,insertIntoShiftConfig,deleteFromShiftConfig,updateShiftConfig,getActiveShiftNames,getCurrentShift} from "../Controllers/shiftConfigController.js";
 import { insertInLoginLog,getFromLoginLog } from "../Controllers/loginlogController.js";
+import { getMachineDataForStation } from "../Controllers/machineMasterController.js";
 import { auth } from "../Middleware/auth.js";
 
 const router = Router()
@@ -25,9 +26,12 @@ router.route("/StationyyyyShowJob").post(jobsAtStation);
 router.route("/StationyyyyCountAtStation").post(countOfWorkAtStation)
 router.route("/StationyyyyProductReport").post(productReport)
 router.route("/StationyyyyJobReport").post(jobDetailsReport)
+router.route("/StationyyyyInsertSameStation").post(insertInStationyyyySameStation)
 // router.route("/StationyyyyWorkInDay").post(workAtStationInDay)
 router.route("/ShiftConfigInsert").post(auth,insertIntoShiftConfig)
 router.route("/loginLogInsert").post(insertInLoginLog)
+router.route("/MachineMasterGetMachine").post(getMachineDataForStation)
+
 
 
 /**GET MEATHODS */
@@ -48,6 +52,7 @@ router.route('/getOneWorkerStation').get(getOneWorkerStation)
 router.route("/StationyyyyWorkAtStationInDay").get(workAtStationInDay)
 router.route('/StationyyyyGetJobsSubmitted').get(getJobesSubmitedAtStation)
 router.route('/StationyyyyGetCountOfWorkAtStation').get(countOfWorkAtStation)
+router.route('/StationyyyyReworkJob').get(jobsAtReworkStation)
 router.route("/ShiftConfigGet").get(getAllFromShiftConfig)
 router.route("/ShiftConfigGetActiveShiftNames").get(getActiveShiftNames)
 router.route("/ShiftConfigGetCurrentShift").get(getCurrentShift)
