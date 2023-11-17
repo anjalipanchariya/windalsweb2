@@ -14,11 +14,11 @@ async function insertInProductMaster(req,res){
         }       
         else
         {
-            const insertQuery = "INSERT INTO product_master (product_name, parameter, min_parameter, max_parameter, unit) VALUES (?, ?, ?, ?, ?)";
+            const insertQuery = "INSERT INTO product_master (product_name, parameter, min_parameter, max_parameter, unit,value/oknotok, compulsory) VALUES (?, ?, ?, ?, ?, ?, ?)";
             for(const parameter of parameters)
             {
-                const {parameterName,minVal,maxVal,unit} = parameter
-                const [insertResult] = await db.promise().query(insertQuery, [productName, parameterName, minVal, maxVal, unit]);
+                const {parameterName,minVal,maxVal,unit,val,comp} = parameter
+                const [insertResult] = await db.promise().query(insertQuery, [productName, parameterName, minVal, maxVal, unit,val,comp]);
             }
             res.status(201).send({ msg: "Record inserted successfully"});
         }
@@ -72,12 +72,12 @@ async function insertInProductMaster(req,res){
     // const { productId, updatedFields } = req.body;
     const {productName,parameters} = req.body
     try {
-        const updateQuery = "UPDATE product_master SET max_parameter = ?, min_parameter = ?, unit = ? WHERE id = ? "
+        const updateQuery = "UPDATE product_master SET max_parameter = ?, min_parameter = ?, unit = ? ,value/oknotok =? , compulsory=? WHERE id = ? "
         const updateData = []
         for(const parameter of parameters)
         {
-            const {id,maxVal,minVal,unit} = parameter
-            const updateResult = await db.promise().query(updateQuery,[maxVal,minVal,unit,id])
+            const {id,maxVal,minVal,unit,val,comp} = parameter
+            const updateResult = await db.promise().query(updateQuery,[maxVal,minVal,unit,id,val,comp])
             updateData.push(updateResult)
         }
         if(updateData.length===0){
