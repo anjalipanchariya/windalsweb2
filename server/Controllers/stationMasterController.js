@@ -5,7 +5,7 @@ async function insertIntoStationMaster(req, res) {
         productName,
         reportType, //0-for ok/notok, 1-for parameters
         stationParameter,
-        machines, multipleMachine } = req.body
+        machines, multipleMachines } = req.body
     if (stationParameter.length === 0) {
         stationParameter = null;
     }
@@ -15,28 +15,30 @@ async function insertIntoStationMaster(req, res) {
     try {
         const selectQuery = "SELECT station_id FROM station_master WHERE station_name = ? && product_name = ?"
         const [selectResult] = await db.promise().query(selectQuery, [stationName, productName])
+        console.log(selectResult);
         if (selectResult.length > 0) {
             const station_id = selectResult["station_id"];
             const insertQuery = "insert into machine_master (station_id,machine_name,cycle_time,daily_count,product_per_hour) values (?,?,?,?,?)";
 
             for (const machine of machines) {
-                const { machine_name, cycle_time, daily_count, product_per_hour } = machine;
-                const [insertResult] = await db.promise().query(insertQuery, [station_id, machine_name, cycle_time, daily_count, product_per_hour]);
+                const { machineName, cycleTime, dailyCount, productPerHour } = machine;
+                const [insertResult] = await db.promise().query(insertQuery, [station_id, machineName, cycleTime, dailyCount, productPerHour]);
             }
             res.status(201).send({ msg: "Record inserted successfully" });
 
         }
         else {
             const insertQuery = "INSERT INTO station_master (station_name, product_name, report, station_parameters,multiple_machine) VALUES (?,?,?,?,?)"
-            const [insertResult] = await db.promise().query(insertQuery, [stationName, productName, reportType, stationParameter, multipleMachine])
+            const [insertResult] = await db.promise().query(insertQuery, [stationName, productName, reportType, stationParameter, multipleMachines])
             const selectQuery = "SELECT station_id FROM station_master WHERE station_name = ? && product_name = ?"
             const [selectResult] = await db.promise().query(selectQuery, [stationName, productName])
-            const station_id = selectResult["station_id"];
+            const station_id = selectResult[0].station_id;
+            console.log(selectResult[0].station_id);
             const insertQuery2 = "insert into machine_master (station_id,machine_name,cycle_time,daily_count,product_per_hour) values (?,?,?,?,?)";
 
             for (const machine of machines) {
-                const { machine_name, cycle_time, daily_count, product_per_hour } = machine;
-                const [insertResult2] = await db.promise().query(insertQuery2, [station_id, machine_name, cycle_time, daily_count, product_per_hour]);
+                const { machineName, cycleTime, dailyCount, productPerHour } = machine;
+                const [insertResult2] = await db.promise().query(insertQuery2, [station_id, machineName, cycleTime, dailyCount, productPerHour]);
             }
             res.status(201).send({ msg: "Record inserted successfully" });
             
@@ -48,29 +50,17 @@ async function insertIntoStationMaster(req, res) {
 }
 
 async function deleteFromStationMaster(req, res) {
-    const { stationId,machineId } = req.query
+    const { stationId,machineId } = req.query.values
     try {
-        const selectQuery = "SELECT station_id FROM station_master WHERE station_id = ?"
-        const [selectResult] = await db.promise().query(selectQuery, [stationId])
-        if (selectResult.length === 0) {
-            res.status(409).send({ msg: "The station configuration of this product does not exist." })
+        const deleteStationQuery = "DELETE FROM station_master WHERE station_id = ?"
+        const [deleteStationResult] = await db.promise().query(deleteStationQuery,[stationId])
+        const deleteMachineQuery = "DELETE FROM machine_master WHERE machine_id = ?"
+        for(const machine_id of machineId)
+        {
+            const [deleteMachineResult] = await db.promise().query(deleteMachineQuery,[machine_id])
         }
-        else {
-            const selectQuery2 = "SELECT * FROM machine_master WHERE station_id = ?"
-            const [selectResult] = await db.promise().query(selectQuery2, [stationId])
-            if(selectResult.length ==1){
-                const deleteQuery = "DELETE FROM station_master WHERE station_id = ?"
-                const [deleteResult] = await db.promise().query(deleteQuery, [stationId])
-                const deleteQuery2 = "DELETE FROM machine_master WHERE station_id = ? and machine_id=?"
-                const [deleteResult2] = await db.promise().query(deleteQuery2, [stationId,machineId])
-            }
-            else{
-                const deleteQuery2 = "DELETE FROM machine_master WHERE station_id = ? and machine_id=?"
-                const [deleteResult2] = await db.promise().query(deleteQuery2, [stationId,machineId])
-            }
-            
-            res.status(201).send({ msg: `Station: ${selectResult[0].station_name} configuration of product: ${selectResult[0].product_name} deleted from database successfully` })
-        }
+        res.status(201).send({ msg: `Station deleted from database successfully` })
+
     } catch (err) {
         console.error("Database error:", err);
         res.status(500).send({ msg: `Internal server error: ${err}` });
@@ -83,12 +73,10 @@ async function updateStationMaster(req, res) {
         productName,
         reportType,
         stationParameter,
-        machineId,
-        machineName,
-        multipleMachine,
-        cycleTime,
-        dailyCount,
-        productPerHour } = req.body
+        machines,
+        multipleMachines
+        } = req.body
+        console.log(stationId);
     if (stationParameter.length === 0) {
         stationParameter = null;
     }
@@ -96,14 +84,26 @@ async function updateStationMaster(req, res) {
         stationParameter = stationParameter.map((parameter) => parameter).join(", ")
     }
     try {
-        const selectQuery = "SELECT station_id FROM station_master WHERE station_name = ? && product_name = ?"
-        const [selectResult] = await db.promise().query(selectQuery, [stationName, productName])
-        if (selectResult.length === 0) {
+        if (stationId === undefined) {
             res.status(409).send({ msg: "The station configuration of this product does not exist." })
         }
         else {
-            const updateQuery = "UPDATE station_master SET station_name = ?, product_name = ?, report = ?, station_parameters = ?, cycle_time = ?, daily_count = ?, product_per_hour = ? WHERE station_id = ?"
-            const [updateResult] = await db.promise().query(updateQuery, [stationName, productName, reportType, stationParameter, cycleTime, dailyCount, productPerHour, stationId])
+            const updateStationMasterQuery = "UPDATE station_master SET station_name = ?, product_name = ?, report = ?, station_parameters = ?, multiple_machine = ? WHERE station_id = ?"
+            const [updateStationMasterResult] = await db.promise().query(updateStationMasterQuery, [stationName, productName, reportType, stationParameter, multipleMachines, stationId])
+            const updateMachineMasterQuery = "UPDATE machine_master SET machine_name = ?, cycle_time = ?, product_per_hour = ?, daily_count = ? WHERE machine_id = ? "
+            const insertIntoMachineMasterQuery = "INSERT INTO machine_master (station_id,machine_name,cycle_time,daily_count,product_per_hour) VALUES (?,?,?,?,?)";
+            for(const machine of machines)
+            {
+               const {machineId,machineName,dailyCount,cycleTime,productPerHour} = machine
+               if(machineId!==undefined)
+               {
+                    const [updateMachineMasterResult] = await db.promise().query(updateMachineMasterQuery, [machineName,dailyCount,cycleTime,productPerHour,machineId])
+               }
+               else
+               {
+                    const [insertIntoMachineMasterResult] = await db.promise().query(insertIntoMachineMasterQuery, [stationId, machineName, cycleTime, dailyCount, productPerHour]);
+               } 
+            }
             res.status(201).send({ msg: `Data updated successfully` })
         }
     } catch (err) {
@@ -154,7 +154,12 @@ async function getOneStationOneProductFromStationMaster(req, res) {
             res.status(409).send({ msg: "Station configuration of this product does not exist in database." })
         }
         else {
-            res.status(201).send(searchResult)
+            const station_id = searchResult[0]["station_id"]
+            const searchQuery2 = "SELECT machine_id,machine_name,cycle_time,daily_count,product_per_hour FROM machine_master WHERE station_id = ?"
+            const searchResult2 = await db.promise().query(searchQuery2,[station_id])
+            const machines = searchResult2[0]
+            const finalResult = {...searchResult[0],machines}
+            res.status(201).send(finalResult)
         }
     } catch (err) {
         console.error("Database error:", err);

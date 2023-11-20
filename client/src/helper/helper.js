@@ -15,7 +15,7 @@ export async function addProduct(values){
 }
 
 export async function updateProducts(productName,existingParameters){
-    const values = {ProductName:productName,parameters:existingParameters}
+    const values = {productName:productName,parameters:existingParameters}
     const token = localStorage.getItem("token")
     try {
         const {data,status} = await axios.put(`${proxy}api/ProductMasterUpdate`,values,{headers:{"Authorization":`Bearer ${token}`}})
@@ -73,7 +73,6 @@ export async function getProductNames(){
 }
 
 export async function addStation(values){
-    console.log(values);
     try {
         const token = localStorage.getItem("token")
         const {data,status} = await axios.post(`${proxy}api/StationMasterInsert`,values,{headers:{"Authorization":`Bearer ${token}`}})
@@ -112,10 +111,10 @@ export async function getOneStationOneProduct(values){
     }
 }
 
-export async function deleteStation(stationId){
+export async function deleteStation(values){
     try {
         const token = localStorage.getItem("token")
-        const {data,status} = await  axios.delete(`${proxy}api/StationMasterDelete`,{params:{stationId},headers:{"Authorization":`Bearer ${token}`}})
+        const {data,status} = await  axios.delete(`${proxy}api/StationMasterDelete`,{params:{values},headers:{"Authorization":`Bearer ${token}`}})
         return Promise.resolve(data)
     } catch (error) {
         return Promise.reject(error.response.data)
@@ -515,6 +514,17 @@ export async function getLoginLogInfo(values){
     try {
         const token = localStorage.getItem("token")
         const {data,status} = await axios.get(`${proxy}api/loginLogGet`,{params:{values},headers:{"Authorization":`Bearer ${token}`}})
+        return Promise.resolve(data)
+    } catch (error) {
+        console.log({err:error})
+        return Promise.reject(error.response.data)
+    }
+}
+
+export async function deleteMachine(machineId){
+    try {
+        const token = localStorage.getItem("token")
+        const {data,status} = await axios.delete(`${proxy}api/MachineMasterDelete`,{params:{machineId},headers:{"Authorization":`Bearer ${token}`}})
         return Promise.resolve(data)
     } catch (error) {
         console.log({err:error})

@@ -53,14 +53,13 @@ const AddProduct = () => {
           error: err => <b>{err.msg}</b>
         }
       );
-      
     },
   });
 
   const addRow = () => {
     formik.setFieldValue('parameters', [
       ...formik.values.parameters,
-      { parameterName: '', minVal: '', maxVal: '', unit: '' },
+      { parameterName: '', minVal: '', maxVal: '', unit: '',unitPresent:false,parameterStatus:'1' },
     ]);
   };
 
@@ -78,16 +77,17 @@ const AddProduct = () => {
 
 //anjali code
   const [productnames, setproductnames] = useState([]);
-  useEffect(() => {
-    const getProductNamesPromise = getProductNames()
-    const arr = [];
-    getProductNamesPromise.then(async (result) => {
-      const productnames = await result.map((product) => {
-        return arr.push({ value: product.product_name, label: product.product_name })
-      })
-      setproductnames(arr)
-    }).catch((err) => { })
-  }, [])
+  // useEffect(() => {
+  //   const getProductNamesPromise = getProductNames()
+  //   const arr = [];
+  //   getProductNamesPromise.then(async (result) => {
+  //     const productnames = await result.map((product) => {
+  //       return arr.push({ value: product.product_name, label: product.product_name })
+  //     })
+  //     setproductnames(arr)
+  //   }).catch((err) => { })
+  // }, [])
+  
   return (
     <div className="productadd">
       <WindalsNav />
@@ -128,6 +128,8 @@ const AddProduct = () => {
             <th>Max</th>
             <th>Min</th>
             <th>Unit</th>
+            <th>Unit Present</th> 
+            <th>Parameter Status</th> 
             <th>Delete row</th>
           </tr>
         </thead>
@@ -196,6 +198,30 @@ const AddProduct = () => {
                 )}
               </td>
               <td>
+                <input
+                  type="checkbox"
+                  checked={parameter.unitPresent} 
+                  name={`parameters[${index}].unitPresent`}
+                  onChange={(e) =>
+                    {
+                      handleParameterChange(index, 'unitPresent', e.target.checked)
+                    }
+                  }
+                />
+               </td>
+               <td>
+                  <select
+                    value={parameter.parameterStatus} 
+                    onChange={(e) =>{
+                      handleParameterChange(index, 'parameterStatus', e.target.value)
+                    }}
+                    name={`parameters[${index}].parameterStatus`}
+                  >
+                    <option value="1">Value</option>
+                    <option value="0">Okay/Not-Okay</option>
+                  </select>
+               </td>
+              <td>
                 <button
                   className="delete-button"
                   onClick={() => handleDeleteRow(index)}
@@ -207,6 +233,7 @@ const AddProduct = () => {
           ))}
         </tbody>
       </table>
+      
       
        : null
       }
