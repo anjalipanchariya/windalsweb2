@@ -14,7 +14,7 @@ async function insertInProductyyyy(req,res){
         }       
         else
         {
-            const insertQuery = "INSERT INTO productyyyy (product_name, station_id, job_name) VALUES (?, ?, ?,?)";
+            const insertQuery = "INSERT INTO productyyyy (product_name, station_id, job_name,machine_id) VALUES (?, ?, ?,?)";
             const [insertResult] = await db.promise().query(insertQuery, [product_name, station_id, job_name,machine_id]);
             
             res.status(201).send({ msg: "Record inserted successfully"});

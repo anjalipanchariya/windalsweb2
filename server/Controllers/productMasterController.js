@@ -14,7 +14,7 @@ async function insertInProductMaster(req,res){
         }       
         else
         {
-            const insertQuery = "INSERT INTO product_master (product_name, parameter, min_parameter, max_parameter, unit,value/oknotok, compulsory) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            const insertQuery = "INSERT INTO product_master (product_name, parameter, min_parameter, max_parameter, unit,value_oknotok, compulsory) VALUES (?, ?, ?, ?, ?, ?, ?)";
             for(const parameter of parameters)
             {
                 const {parameterName,minVal,maxVal,unit,val,comp} = parameter
@@ -72,7 +72,7 @@ async function insertInProductMaster(req,res){
     // const { productId, updatedFields } = req.body;
     const {productName,parameters} = req.body
     try {
-        const updateQuery = "UPDATE product_master SET max_parameter = ?, min_parameter = ?, unit = ? ,value/oknotok =? , compulsory=? WHERE id = ? "
+        const updateQuery = "UPDATE product_master SET max_parameter = ?, min_parameter = ?, unit = ? ,value_oknotok =? , compulsory=? WHERE id = ? "
         const updateData = []
         for(const parameter of parameters)
         {
