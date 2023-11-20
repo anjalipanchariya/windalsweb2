@@ -111,6 +111,7 @@ async function jobsAtReworkStation(req,res){
     // console.log(station_id);
     try {
         const searchQueryJob = "select newt2.job_id,newt2.product_name,newt2.station_id,newt2.employee_id,newt2.machine_id,newt2.parameters,newt2.job_name,employee_master.first_name,employee_master.last_name from (select newt.job_id,newt.product_name,newt.station_id,newt.employee_id,newt.machine_id,newt.parameters,productyyyy.job_name from (select * from station_yyyy where status='-1') as newt inner join productyyyy on newt.job_id=productyyyy.job_id) as newt2 inner join employee_master on newt2.employee_id=employee_master.employee_id ;"
+        const [selectResultJob] = await db.promise().query(searchQueryJob)
         // console.log(selectResultJob);
             
         res.status(201).send(selectResultJob);

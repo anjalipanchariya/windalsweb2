@@ -8,7 +8,7 @@ import { login,getNamesFromEmployeeMaster } from "../Controllers/employeeMasterC
 import {getOneWorkerStation, insertIntoStationAllocation,getStationAllocated} from "../Controllers/stationAllocationController.js"
 import {getAllFromShiftConfig,insertIntoShiftConfig,deleteFromShiftConfig,updateShiftConfig,getActiveShiftNames,getCurrentShift} from "../Controllers/shiftConfigController.js";
 import { insertInLoginLog,getFromLoginLog } from "../Controllers/loginlogController.js";
-import { getMachineDataForStation } from "../Controllers/machineMasterController.js";
+import { deleteMachineFromMachineMaster, getMachineDataForStation } from "../Controllers/machineMasterController.js";
 import { auth } from "../Middleware/auth.js";
 
 const router = Router()
@@ -78,6 +78,7 @@ router.route('/ProductMasterDelete').delete(auth,deleteFromProductMaster)
 router.route('/StationMasterDelete').delete(auth,deleteFromStationMaster)
 router.route('/EmployeeMasterDelete').delete(auth,deleteFromEmployeeMaster)
 router.route("/ShiftConfigDelete").delete(auth,deleteFromShiftConfig)
+router.route("/MachineMasterDelete").delete(auth,deleteMachineFromMachineMaster)
 
 /**PUT MEATHOD */
 router.route('/ProductMasterUpdate').put(auth,updateProductMaster);

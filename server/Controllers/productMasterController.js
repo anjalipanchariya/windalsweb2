@@ -1,4 +1,5 @@
 import db from "../Database/connection.js";
+//1-parameter 0-ok/notok 1-complusory 0-not complusory
 
 async function insertInProductMaster(req,res){
     const { productName, parameters } = req.body;
@@ -14,11 +15,11 @@ async function insertInProductMaster(req,res){
         }       
         else
         {
-            const insertQuery = "INSERT INTO product_master (product_name, parameter, min_parameter, max_parameter, unit,value/oknotok, compulsory) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            const insertQuery = "INSERT INTO product_master (product_name, parameter, min_parameter, max_parameter, unit,value_oknotok, compulsory) VALUES (?, ?, ?, ?, ?, ?, ?)";
             for(const parameter of parameters)
             {
-                const {parameterName,minVal,maxVal,unit,val,comp} = parameter
-                const [insertResult] = await db.promise().query(insertQuery, [productName, parameterName, minVal, maxVal, unit,val,comp]);
+                const {parameterName,minVal,maxVal,unit,unitPresent,parameterStatus} = parameter
+                const [insertResult] = await db.promise().query(insertQuery, [productName, parameterName, minVal, maxVal, unit,parameterStatus,unitPresent]);
             }
             res.status(201).send({ msg: "Record inserted successfully"});
         }
@@ -72,12 +73,12 @@ async function insertInProductMaster(req,res){
     // const { productId, updatedFields } = req.body;
     const {productName,parameters} = req.body
     try {
-        const updateQuery = "UPDATE product_master SET max_parameter = ?, min_parameter = ?, unit = ? ,value/oknotok =? , compulsory=? WHERE id = ? "
+        const updateQuery = "UPDATE product_master SET max_parameter = ?, min_parameter = ?, unit = ? ,value_oknotok =? , compulsory=? WHERE product_name = ? "
         const updateData = []
         for(const parameter of parameters)
         {
-            const {id,maxVal,minVal,unit,val,comp} = parameter
-            const updateResult = await db.promise().query(updateQuery,[maxVal,minVal,unit,id,val,comp])
+            const {id,maxVal,minVal,unit,unitPresent,parameterStatus} = parameter
+            const updateResult = await db.promise().query(updateQuery,[maxVal,minVal,unit,parameterStatus,unitPresent,productName])
             updateData.push(updateResult)
         }
         if(updateData.length===0){
