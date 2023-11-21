@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getStations } from '../../helper/helper';
+import { getStations} from '../../helper/helper';
 import toast, { Toaster } from 'react-hot-toast';
 import Table from '../table';
 import WindalsNav from '../navbar';
@@ -18,6 +18,7 @@ function ViewStation() {
     { field: 'daily_count', label: 'Daily Count' },
     { field: 'product_per_hour', label: 'Product Per Hour' },
     { field: 'next_station_name', label: 'Next Station Name' },
+    { field: 'multiple_machine', label: 'Multiple Machine' },
   ];
   console.log(stations);
 
@@ -34,6 +35,14 @@ function ViewStation() {
           }
           if(station.next_station_name===null){
             station.next_station_name = "Not configured yet"
+          }
+
+          if(station.multiple_machine === 1){
+            station.multiple_machine = "Yes"
+          }
+
+          else if(station.multiple_machine === 0){
+            station.multiple_machine = "No"
           }
           return station;
         });
