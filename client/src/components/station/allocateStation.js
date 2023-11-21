@@ -4,7 +4,7 @@ import Select from 'react-select'
 import { useFormik } from "formik";
 import toast, { Toaster } from 'react-hot-toast';
 import Multiselect from "multiselect-react-dropdown";
-import { getAllStationNames, getAllWorkerNames, addStationAllocation, getActiveShiftNames, getWorkerAllocation } from "../../helper/helper";
+import { getAllStationNames, getAllWorkerNames, addStationAllocation, getActiveShiftNames, getWorkerAllocation, getAllStationsAndMachinesInfo } from "../../helper/helper";
 import WindalsNav from "../navbar";
 import * as Yup from "yup";
 import Footer from '../footer';
@@ -35,8 +35,8 @@ function StationAllocation() {
 
     const fetchStationsAndWorkers = async () => {
         try {
-            const stationNames = await getAllStationNames();
-            setStations(stationNames);
+            const stationAndMachineInfo = await getAllStationsAndMachinesInfo();
+            setStations(stationAndMachineInfo);
 
             const workerNames = await getAllWorkerNames();
             setWorkers(workerNames);
@@ -51,8 +51,11 @@ function StationAllocation() {
             setWorkersCompleteName(tempObj);
 
             // Initialize allocationStation based on stations
-            const initialAllocationStation = stationNames.map((station) => ({
-                station: station.station_name,
+            const initialAllocationStation = stationAndMachineInfo.map((station) => ({
+                station_id: station.station_id,
+                station_name: station.station_name,
+                machine_id: station.machine_id,
+                machine_name: station.machine_name,
                 workers: [],
             }));
             setAllocationStation(initialAllocationStation);
@@ -113,7 +116,10 @@ function StationAllocation() {
 
                 // Map selected names to employee_ids when submitting the form
                 const stationAllocationsWithEmployeeIds = values.stationAllocations.map((allocation) => ({
-                    station: allocation.station,
+                    station_name: allocation.station_name,
+                    station_id: allocation.station_id,
+                    machine_name: allocation.machine_name,
+                    machine_id: allocation.machine_id,
                     workers: allocation.workers.map((selectedName) => workersCompleteName[selectedName].employee_id),
                 }));
 
@@ -149,7 +155,7 @@ function StationAllocation() {
     }, [formik.values.stationAllocations]);
 
     function handleSelect(selectedList, selectedItem, stationIndex) {
-        console.log({ selectedItem: selectedItem, selectedList: selectedList });
+        // console.log({ selectedItem: selectedItem, selectedList: selectedList });
         // Update the selected names for a specific station
         const updatedAllocation = [...formik.values.stationAllocations];
         updatedAllocation[stationIndex].workers = selectedList;
@@ -158,7 +164,7 @@ function StationAllocation() {
     }
 
     function handleRemove(selectedList, removedItem, stationIndex) {
-        console.log({ removedItem: removedItem, selectedList: selectedList });
+        // console.log({ removedItem: removedItem, selectedList: selectedList });
         // Update the selected names for a specific station
         const updatedAllocation = [...formik.values.stationAllocations];
         updatedAllocation[stationIndex].workers = selectedList;
@@ -188,8 +194,8 @@ function StationAllocation() {
         }).catch((err) => { })
     }
 
-    console.log({ allocatedData: allocatedData });
-    console.log({date:formik.values.date});
+    // console.log({ allocatedData: allocatedData });
+    // console.log({date:formik.values.date});
 
     // console.log({ availableWorkerNames: availableWorkerNames });
     return (
@@ -247,13 +253,19 @@ function StationAllocation() {
                         <tbody>
                             <tr>
                                 <th>#</th>
-                                <th>Station</th>
+                                <th>Station Id</th>
+                                <th>Station Name</th>
+                                <th>Machine Id</th>
+                                <th>Machine Name</th>
                                 <th>Worker</th>
                             </tr>
                             {formik.values.stationAllocations.map((allocation, index) => (
                                 <tr key={index}>
                                     <td>{index + 1}</td>
-                                    <td>{allocation.station}</td>
+                                    <td>{allocation.station_id}</td>
+                                    <td>{allocation.station_name}</td>
+                                    <td>{allocation.machine_id}</td>
+                                    <td>{allocation.machine_name}</td>
                                     <td>
                                         <Multiselect
                                             isObject={false}

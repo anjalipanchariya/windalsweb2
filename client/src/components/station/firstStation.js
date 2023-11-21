@@ -4,9 +4,9 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './firstStation.css';
 import '../product/addProduct.css'
 import Footer from '../footer';
-import { getOneStation,createJobId,insertInStationyyyyFirst,insertInStationyyyyFirstNextStation,getWorkAtStationInDay,logout } from '../../helper/helper';
+import { getOneStation,createJobId,insertInStationyyyyFirst,insertInStationyyyyFirstNextStation,getWorkAtStationInDay,logout,getOneWorkerStation,getOneEmployee,getCurrentShift } from '../../helper/helper';
 import toast, { Toaster } from 'react-hot-toast';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useFormik } from "formik";
 import WindalsNav from '../navbar';
 import Table from '../table'
@@ -18,6 +18,14 @@ const FirstStation = () => {
     const [stationOneProductInfo,setStationOneProductInfo] = useState("");
     const [availableProducts,setAvailableProducts] = useState([]);
     const [workAtStationInDay,setWorkAtStationInDay] = useState([])
+    const [employeeData, setEmployeeData] = useState("");
+    const [activeShift, setActiveShift] = useState("");
+    const [stations, setStations] = useState([]);
+    const [machines, setMachines] = useState([]);
+    const [selectedMachine,setSelectedMachine] = useState("")
+    const [selectedStation,setSelectedStation] = useState("")
+
+    const navigate = useNavigate()
 
     const formik = useFormik({
         initialValues:{
@@ -28,8 +36,10 @@ const FirstStation = () => {
             const newValues = {
                 ...values,
                 station_id: stationOneProductInfo[0].station_id,
-                employee_id:employeeId  
+                employee_id:employeeId,
+                machine_id:selectedMachine.machine_id
             }
+            console.log({newValues:newValues});
             const createJobIdPromise = createJobId(newValues)
             createJobIdPromise.then((createJobResult)=>{
                 console.log({createJobResult:createJobResult});
@@ -55,6 +65,52 @@ const FirstStation = () => {
             }) 
         }
     })
+
+    useEffect(()=>{
+        if(stationName!=="")
+        {
+            setSelectedStation(stationName)
+        }
+    },[stationName])
+
+    useEffect(() => {
+        const getOneEmployeeDataPromise = getOneEmployee(userName);
+        toast.promise(getOneEmployeeDataPromise, {
+          loading: "Getting employee data",
+          success: (result) => {
+            setEmployeeData(result);
+            return "data fetched";
+          },
+          error: (err) => {
+            return err.msg;
+          },
+        });
+        const getCurrentShiftPromise = getCurrentShift();
+        getCurrentShiftPromise.then((result) => {
+          setActiveShift(result.shift_id);
+        }).catch((err) => {
+          toast.error(err.msg);
+        });
+      }, []);
+    
+      useEffect(() => {
+        if (userName !== 'admin' && employeeData !== "" && activeShift !== "") {
+          const getOneWorkerStationPromise = getOneWorkerStation(employeeData[0].employee_id, activeShift);
+          toast.promise(getOneWorkerStationPromise, {
+            loading: "Getting stations allocated to employee",
+            success: (result) => {
+              const extractedStations = Array.from(new Set(result.map(item => item.station_name)));
+              const extractedMachines = result.map(item => ({ machine_id: item.machine_id, machine_name: item.machine_name }));
+              setStations(extractedStations);
+              setMachines(extractedMachines);
+              return "data fetched";
+            },
+            error: (err) => {
+              return err.msg;
+            },
+          });
+        }
+      }, [employeeData, activeShift]);
 
     useEffect(()=>{
         getSubmitedJobs()
@@ -99,6 +155,24 @@ const FirstStation = () => {
             })
         }
     }
+
+    const handleStationSelection = (selectedStation) => {
+        // Use the selectedStation value to construct the path or page you want to navigate to
+        if(selectedStation==="station1")
+        {
+            navigate(`/FirstStation/${employeeData[0].employee_id}/${employeeData[0].user_name}/${selectedStation}`);
+        }
+        else
+        {
+            navigate(`/Station/${employeeData[0].employee_id}/${employeeData[0].user_name}/${selectedStation}`);
+        }
+      };
+    
+    const handleMachineSelection = (selectedMachine) => {
+       setSelectedMachine(selectedMachine);
+    };
+
+
     console.log({"stationOneProductInfo":stationOneProductInfo,"stationAllinfo":stationAllInfo});
     console.log({"workAtStationInDay":workAtStationInDay});
     return (
@@ -107,6 +181,22 @@ const FirstStation = () => {
             <WindalsNav/>
             <Toaster position="top-center" reverseOrder={false}></Toaster>
             {/* <button onClick={()=>{logout()}}>Log Out</button> */}
+            <label>Select a Station: </label>
+              <select onChange={(e) => handleStationSelection(e.target.value)} value={selectedStation}>
+                <option value="">Select a station</option>
+                {stations.map((station, index) => (
+                  <option key={index} value={station}>{station}</option>
+                ))}
+            </select>
+            <label>Select a Machine: </label>
+              <select onChange={(e) => handleMachineSelection(JSON.parse(e.target.value))}>
+                <option value="">Select a machine</option>
+                {machines.map((machine, index) => (
+                  <option key={index} value={JSON.stringify(machine)}>
+                    {machine.machine_name}
+                  </option>
+                ))}
+              </select>
             <h1>First Station</h1>
             <hr />
             <div className='fslist'>
@@ -182,11 +272,8 @@ const FirstStation = () => {
             <br />
             <br />
             <br />
-
             <Footer/>
            </div>
-            
-        
     );
 };
 

@@ -23,7 +23,7 @@ async function insertInStationyyyyFirst(req,res){
 
 async function insertInStationyyyyFirstNextStation(req,res){
     const {product_name, station_id, job_name} = req.body;
-    
+    console.log("firstnextstation");
     try {
         const searchQueryJob = "SELECT job_id FROM productyyyy WHERE job_name=? AND product_name=? "
         const [selectResultJob] = await db.promise().query(searchQueryJob,[job_name,product_name])

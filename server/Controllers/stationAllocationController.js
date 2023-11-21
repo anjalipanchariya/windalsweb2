@@ -10,12 +10,12 @@ async function insertIntoStationAllocation(req,res){
             res.status(501).send({msg:`Workers already allocated to stations for this shift_id and this date:${date}`})
         }
         else{
-            const insertQuery = "INSERT INTO station_allocation (date,shift_id,station_name,employee_id) VALUES (?, ?, ?, ?)"
+            const insertQuery = "INSERT INTO station_allocation (date,shift_id,station_name,machine_id,employee_id) VALUES (?, ?, ?, ?, ?)"
             for(const stationAllocation of stationAllocations)
             {
-                const {station,workers} = stationAllocation
+                const {station_name,machine_id,workers} = stationAllocation
                 for(const workerID of workers){
-                    const [insertResult] = await db.promise().query(insertQuery,[date,shift,station,workerID])
+                    const [insertResult] = await db.promise().query(insertQuery,[date,shift,station_name,machine_id,workerID])
                 }
             }
             res.status(201).send({msg:"Stations allocated to workers successfully."})
@@ -30,7 +30,7 @@ async function getOneWorkerStation(req,res){
     const {employeeId,date,shift} = req.query
     // console.log(req.query);
     try {
-        const selectQuery = "SELECT station_name FROM station_allocation WHERE employee_id=? AND date=? AND shift_id=?"
+        const selectQuery = "SELECT sa.station_name, mm.machine_id, mm.machine_name FROM station_allocation sa JOIN machine_master mm ON sa.machine_id = mm.machine_id WHERE sa.employee_id=? AND sa.date=? AND sa.shift_id=?";
 
         const [selectResult] = await db.promise().query(selectQuery,[employeeId,date,shift])
         console.log({query:req.query,result:selectResult});
@@ -41,7 +41,7 @@ async function getOneWorkerStation(req,res){
         }
         else
         {
-            res.status(201).send({stationName:selectResult[0].station_name})
+            res.status(201).send(selectResult)
         }
     } catch (error) {
         console.error(`Database error: ${error}`);

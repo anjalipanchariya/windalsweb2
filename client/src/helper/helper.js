@@ -140,6 +140,16 @@ export async function getAllStationNames(){
     }
 }
 
+export async function getAllStationsAndMachinesInfo(){
+    try {
+        const {data,status} = await axios.get(`${proxy}api/GetStationAndMachinesInfo`)
+        return Promise.resolve(data)
+    } catch (error) {
+        return Promise.reject(error.response.data)
+    }
+}
+
+
 export async function getOneProductStationNames(productName){
     try {
         const {data,status} = await axios.get(`${proxy}api/StationMasterGetNamesForOneProduct`,{params:{productName:productName.value}})
@@ -211,7 +221,6 @@ export async function deleteEmployee(employeeId){
 }
 
 export async function addStationAllocation(values){
-    console.log(values);
     try {
         const token = localStorage.getItem("token")
         const {data,status} = await axios.post(`${proxy}api/StationAllocationInsert`,values,{headers:{"Authorization":`Bearer ${token}`}})
@@ -368,26 +377,26 @@ export async function loginUser(values){
     try{
         const {data:loginData,status:loginStatus} = await axios.post(`${proxy}api/login`,values)
         const {token} = loginData
-        if(loginStatus===201 && loginData.userName==="admin")
+        if(loginStatus===201)
         {
             localStorage.setItem("token",token)
             return Promise.resolve(loginData)
         }
-        else if(loginStatus===201 && loginData.userName!=="admin")
-        {
-            const currentDate = new Date();
-            const year = currentDate.getFullYear();
-            const month = String(currentDate.getMonth() + 1).padStart(2, "0"); // Adding 1 because months are zero-based
-            const day = String(currentDate.getDate()).padStart(2, "0");
-            const formattedDate = `${year}-${month}-${day}`;
-            const {data:workerStationData,status} = await axios.get(`${proxy}api/getOneWorkerStation`,{params:{employeeId:loginData.employeeId,date:formattedDate,shift:values.shift}})
-            const finalData = {
-                ...loginData,
-                ...workerStationData
-            }
-            localStorage.setItem("token",token)
-            return Promise.resolve(finalData)
-        }
+        // else if(loginStatus===201 && loginData.userName!=="admin")
+        // {
+        //     const currentDate = new Date();
+        //     const year = currentDate.getFullYear();
+        //     const month = String(currentDate.getMonth() + 1).padStart(2, "0"); // Adding 1 because months are zero-based
+        //     const day = String(currentDate.getDate()).padStart(2, "0");
+        //     const formattedDate = `${year}-${month}-${day}`;
+        //     const {data:workerStationData,status} = await axios.get(`${proxy}api/getOneWorkerStation`,{params:{employeeId:loginData.employeeId,date:formattedDate,shift:values.shift}})
+        //     const finalData = {
+        //         ...loginData,
+        //         ...workerStationData
+        //     }
+        //     localStorage.setItem("token",token)
+        //     return Promise.resolve(finalData)
+        // }
     }catch(error){
         return Promise.reject(error.response.data)
     }
@@ -521,6 +530,21 @@ export async function getLoginLogInfo(values){
     }
 }
 
+export async function getOneWorkerStation(employeeId,shift){
+    // const token = localStorage.getItem("token")
+    // console.log(token);
+    try {
+            const currentDate = new Date();
+            const year = currentDate.getFullYear();
+            const month = String(currentDate.getMonth() + 1).padStart(2, "0"); // Adding 1 because months are zero-based
+            const day = String(currentDate.getDate()).padStart(2, "0");
+            const formattedDate = `${year}-${month}-${day}`;
+            const {data,status} = await axios.get(`${proxy}api/getOneWorkerStation`,{params:{employeeId:employeeId,date:formattedDate,shift:shift}})
+            return Promise.resolve(data)
+    } catch (error) {
+        return Promise.reject(error.response.data)
+    }
+}
 export async function deleteMachine(machineId){
     try {
         const token = localStorage.getItem("token")

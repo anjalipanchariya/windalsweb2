@@ -34,29 +34,32 @@ const LoginPage = () => {
         {
           loading: "Checking creds",
           success: result =>{
-            const loginLogInsertPromise = insertInLoginLog({userName:result.userName,stationName:result.stationName})
-            loginLogInsertPromise.then((logResult)=>{
-              console.log("test")
-              if(result.userName === "admin")
-            {
-              navigate(`/${result.userName}/AdminPanel`);
-            }
-            else{
-              if(result.stationName==="station 1")
-              {
-                navigate(`/FirstStation/${result.employeeId}/${result.userName}/${result.stationName}`);
-              }
-              else
-              {
-                navigate(`/Station/${result.employeeId}/${result.userName}/${result.stationName}`);
-              }
-            }
-            return result.msg
-            })
-            .catch((err)=>{
-              console.log(err);
-              return err.msg
-            })
+            console.log(result.userName);
+            navigate(`/${result.userName}/LandingPage`);
+            // const loginLogInsertPromise = insertInLoginLog({userName:result.userName,stationName:result.stationName})
+            // loginLogInsertPromise.then((logResult)=>{
+            //   console.log("test")
+            //   navigate(`/${result.userName}/LandingPage`);
+            // //   if(result.userName === "admin")
+            // // {
+            // //   navigate(`/${result.userName}/AdminPanel`);
+            // // }
+            // // else{
+            // //   if(result.stationName==="station 1")
+            // //   {
+            // //     navigate(`/FirstStation/${result.employeeId}/${result.userName}/${result.stationName}`);
+            // //   }
+            // //   else
+            // //   {
+            // //     navigate(`/Station/${result.employeeId}/${result.userName}/${result.stationName}`);
+            // //   }
+            // // }
+            // return result.msg
+            // })
+            // .catch((err)=>{
+            //   console.log(err);
+            //   return err.msg
+            // })
             
           },
           error: err => {

@@ -221,4 +221,16 @@ async function addNextStationInStationMaster(req, res) {
     }
 }
 
-export { insertIntoStationMaster, deleteFromStationMaster, getInfoFromStationMaster, getOneStationFromStationMaster, getOneStationOneProductFromStationMaster, updateStationMaster, getStationNamesFromStationMaster, getStationNamesForOneProduct, addNextStationInStationMaster, mobileGetOneStationOneProductFromStationMaster }
+
+async function getStationAndMachinesInfo(req,res){
+    try {
+        const searchQuery = "SELECT sm.station_id,sm.station_name,mm.machine_id,mm.machine_name FROM station_master sm JOIN machine_master mm ON sm.station_id = mm.station_id;"
+        const [searchResult] = await db.promise().query(searchQuery)
+        res.status(201).send(searchResult)
+    } catch (error) {
+        console.error("Database error:", error);
+        res.status(500).send({ msg: `Internal server error: ${error}` })
+    }
+}
+
+export { insertIntoStationMaster, deleteFromStationMaster, getInfoFromStationMaster, getOneStationFromStationMaster, getOneStationOneProductFromStationMaster, updateStationMaster, getStationNamesFromStationMaster, getStationNamesForOneProduct, addNextStationInStationMaster, mobileGetOneStationOneProductFromStationMaster,getStationAndMachinesInfo }
