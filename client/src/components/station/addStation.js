@@ -350,6 +350,7 @@ function AddStation() {
                                                 <th>Cycle time</th>
                                                 <th>Daily Count</th>
                                                 <th>Product per hour</th>
+                                                <th>Delete</th>
                                             </tr>
                                         </thead>
 
@@ -495,6 +496,7 @@ function AddStation() {
                         </Form.Group>
                     </Form> */}
                     <Button variant="danger" className="search-station-button" onClick={searchFormFormik.handleSubmit}>Search</Button>
+                    <br />
                     <Button variant="danger" className="search-station-button" onClick={handleClear}>Clear</Button>
                     {stationId!=="" && <Button variant="danger" className="search-station-button" onClick={handleDeleteStation}>Delete Station</Button>}
                 </div>

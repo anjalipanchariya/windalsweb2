@@ -521,6 +521,17 @@ export async function getLoginLogInfo(values){
     }
 }
 
+export async function getInfoFromStationMasterWithMachine(){
+    try {
+        
+        const {data,status} = await axios.get(`${proxy}api/StationMasterInfoWithMachine`)
+        return Promise.resolve(data)
+    } catch (error) {
+        console.log({err:error})
+        return Promise.reject(error.response.data)
+    }
+}
+
 export async function deleteMachine(machineId){
     try {
         const token = localStorage.getItem("token")
