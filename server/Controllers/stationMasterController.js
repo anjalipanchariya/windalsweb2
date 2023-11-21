@@ -207,17 +207,19 @@ async function getStationNamesForOneProduct(req, res) {
 }
 
 async function addNextStationInStationMaster(req, res) {
-    const { productName, nextStationAllocation } = req.body
+    const { productName, nextStationAllocation, firstStation, lastStation } = req.body;
+    // console.log({ productName, nextStationAllocation, firstStation, lastStation });
     try {
-        const updateQuery = "UPDATE station_master SET next_station_name = ? WHERE product_name=? AND station_name=?"
-        for (const station of nextStationAllocation) {
-            const { currentStation, nextStation } = station
-            const [updateResult] = await db.promise().query(updateQuery, [nextStation, productName, currentStation])
-        }
-        res.status(201).send({ msg: "Configuration saved successfully" })
+      const updateQuery = "UPDATE station_master SET next_station_name = ?, position = ? WHERE product_name=? AND station_name=?";
+      for (const station of nextStationAllocation) {
+        const { currentStation, nextStation } = station;
+        const position = currentStation === firstStation ? 1 : (currentStation === lastStation ? -1 : 0);
+        const [updateResult] = await db.promise().query(updateQuery, [nextStation, position, productName, currentStation]);
+      }
+      res.status(201).send({ msg: "Configuration saved successfully" });
     } catch (error) {
-        console.error("Database error:", error);
-        res.status(500).send({ msg: `Internal server error: ${error}` })
+      console.error("Database error:", error);
+      res.status(500).send({ msg: `Internal server error: ${error}` });
     }
 }
 

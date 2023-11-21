@@ -262,6 +262,8 @@ export async function createJobId(values){
 export async function configureNextStation(values){
     const newValues = {
         productName : values.productName.value,
+        firstStation : values.firstStation.value,
+        lastStation : values.lastStation.value,
         nextStationAllocation: values.nextStationAllocation.map((station)=>{
             return ({
                 currentStation: station.currentStation,
