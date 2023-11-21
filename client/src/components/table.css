@@ -53,6 +53,7 @@
   /* Filter section styles */
   .filter-section {
     display: flex;
+    float: right;
     margin: 10px ;
     
   }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getStations} from '../../helper/helper';
+import { getStations, getInfoFromStationMasterWithMachine} from '../../helper/helper';
 import toast, { Toaster } from 'react-hot-toast';
 import Table from '../table';
 import WindalsNav from '../navbar';
@@ -9,16 +9,17 @@ import Footer from '../footer';
 function ViewStation() {
   const [stations, setStations] = useState([]);
   const columns = [
-    { field: 'station_id', label: 'Station ID' },
+    // { field: 'station_id', label: 'Station ID' },
     { field: 'station_name', label: 'Station Name' },
     { field: 'product_name', label: 'Product Name' },
     { field: 'report', label: 'Report' },
     { field: 'station_parameters', label: 'Station Parameters' },
+    { field: 'machine_name', label: 'Machine Name' },
     { field: 'cycle_time', label: 'Cycle Time' },
     { field: 'daily_count', label: 'Daily Count' },
-    { field: 'product_per_hour', label: 'Product Per Hour' },
+    { field: 'product_per_hour', label: 'Product per hour' },
     { field: 'next_station_name', label: 'Next Station Name' },
-    { field: 'multiple_machine', label: 'Multiple Machine' },
+    // { field: 'multiple_machine', label: 'Multiple Machine' },
   ];
   console.log(stations);
 
@@ -26,7 +27,8 @@ function ViewStation() {
     // Fetch stations data
     const fetchData = async () => {
       try {
-        const result = await getStations();
+        // const result = await getStations();
+        const result = await getInfoFromStationMasterWithMachine();
         const modifiedStations = result.map((station) => {
           if (station.report === 1) {
             station.report = "parameters";
