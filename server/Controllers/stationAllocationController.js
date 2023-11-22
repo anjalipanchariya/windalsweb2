@@ -30,7 +30,7 @@ async function getOneWorkerStation(req,res){
     const {employeeId,date,shift} = req.query
     // console.log(req.query);
     try {
-        const selectQuery = "SELECT sa.station_name, mm.machine_id, mm.machine_name FROM station_allocation sa JOIN machine_master mm ON sa.machine_id = mm.machine_id WHERE sa.employee_id=? AND sa.date=? AND sa.shift_id=?";
+        const selectQuery = "SELECT sa.station_name, mm.machine_id, mm.machine_name, sm.position FROM station_allocation sa JOIN machine_master mm ON sa.machine_id = mm.machine_id JOIN station_master sm ON sa.station_name = sm.station_name WHERE sa.employee_id=? AND sa.date=? AND sa.shift_id=?;"
 
         const [selectResult] = await db.promise().query(selectQuery,[employeeId,date,shift])
         console.log({query:req.query,result:selectResult});
