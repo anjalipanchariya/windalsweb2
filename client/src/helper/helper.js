@@ -567,3 +567,13 @@ export async function deleteMachine(machineId){
         return Promise.reject(error.response.data)
     }
 }
+
+export async function getStationRework(values){
+    try {
+        const {data,status} = await axios.get(`${proxy}api/StationyyyyReworkJob`)
+        return Promise.resolve(data)
+    } catch (error) {
+        console.log({err:error})
+        return Promise.reject(error.response.data)
+    }
+}

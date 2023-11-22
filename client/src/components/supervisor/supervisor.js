@@ -2,7 +2,30 @@ import React from "react";
 import WindalsNav from "../navbar";
 import './supervisor.css'
 import Footer from "../footer";
+import Table from 'react-bootstrap/Table';
+import { getStationRework } from "../../helper/helper";
+import { Button } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 function Supervisor() {
+    const [rework, setRework] = useState([]);
+    
+    useEffect(() => {
+        const getStationReworkPromise = getStationRework();
+    
+        toast.promise(getStationReworkPromise, { 
+          loading: "Fetching data",
+          success: (result) => {
+            setRework(result);
+            toast.success(<b>Data fetched successfully</b>);
+          },
+          error: (err) => {
+            toast.error(err.msg);
+          },
+        });
+      }, []);
+
+      console.log(rework);
     return (
         <>
             <div>
@@ -10,34 +33,40 @@ function Supervisor() {
                 <div className="superv">
                     <h1>Supervisor Dashboard</h1>
                     <div className="svdash">
-                        <div className="leftmenu">
-                            <div className="leftmenuinner">
-                                <h2>Stations</h2>
-
-                                <a href="">Station 1</a>
-                                <a href="">Station 2</a>
-                                <a href="">Station 3</a>
-                                <a href="">Station 4</a>
-                                <a href="">Station 5</a>
-                                <a href="">Station 6</a>
-                                <a href="">Station 7</a>
-                                <a href="">Station 8</a>
-                                <a href="">Station 9</a>
-                                <a href="">Station 10</a>
-                                <a href="">Station 11</a>
-                                <a href="">Station 12</a>
-                                <a href="">Station 13</a>
-                                <a href="">Station 14</a>
-                                <a href="">Station 15</a>
-                                <a href="">Station 16</a>
-
-                                <br />
-                            </div>
-
-                        </div>
-                        <div className="rightmenu" style={{ marginLeft: '22vw' }}>
-                            right menu
-                        </div>
+                    <Table responsive>
+                        <thead>
+                            <tr>
+                            <th>#</th>
+                            <th>Job</th>
+                            <th>Station</th>
+                            <th>Reason</th>
+                            <th>Ok</th>
+                            <th>Not Ok</th>
+                            <th>Rework</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {rework.map((item, index) => (
+                                    <tr key={index}>
+                                        <td>{index + 1}</td>
+                                        <td>{item.job_id}</td>
+                                        <td>{item.station_id}</td>
+                                        <td>{item.parameters}</td>
+                                        
+                                        <td>
+                                            <Button variant="success">Ok</Button>
+                                        </td>
+                                        <td>
+                                            <Button variant="danger">Not Ok</Button>
+                                        </td>
+                                        <td>
+                                            <Button variant="warning">Rework</Button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            
+                        </tbody>
+                        </Table>
 
                     </div>
 
