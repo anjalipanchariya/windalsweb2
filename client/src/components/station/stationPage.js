@@ -59,15 +59,17 @@ const StationPage = () => {
     // validationSchema: validateYupSchema,
     onSubmit: (values) => {
       console.log(values)
-      const updateJobeAtStationPromise = updateJobesAtStation(values,stationOneProductInfo[0].station_id,employeeId)
+      const updateJobeAtStationPromise = updateJobesAtStation(values,stationOneProductInfo[0].station_id,employeeId,selectedMachine.machine_id)
       updateJobeAtStationPromise.then((result)=>{
         toast.success(result.msg)
         if(values["status"]=='1'){
           const newValues = {
             job_name:values.selectedJob.job_name,
             product_name:product_name,
-            station_id:stationOneProductInfo[0].station_id
+            station_id:stationOneProductInfo[0].station_id,
+            machine_id:selectedMachine.machine_id
           }
+          console.log({newValues:newValues});
           const insertInStationyyyyFirstNextStationPromise = insertInStationyyyyFirstNextStation(newValues)
           insertInStationyyyyFirstNextStationPromise.then((result)=>{
             toast.success(result.msg)

@@ -24,6 +24,7 @@ async function insertInStationyyyyFirst(req,res){
 async function insertInStationyyyyFirstNextStation(req,res){
     const {product_name, station_id, job_name,machine_id} = req.body;
     console.log("firstnextstation");
+    console.log({product_name, station_id, job_name,machine_id});
     try {
         const searchQueryJob = "SELECT job_id FROM productyyyy WHERE job_name=? AND product_name=? "
         const [selectResultJob] = await db.promise().query(searchQueryJob,[job_name,product_name])
@@ -45,8 +46,8 @@ async function insertInStationyyyyFirstNextStation(req,res){
         const next_station_id=selectResultNextStation[0]["station_id"];
         console.log(next_station_id)
 
-        const insertQuery = "INSERT INTO station_yyyy (product_name, station_id, job_id,intime) VALUES (?, ?, ?,NOW())";
-        const [insertResult] = await db.promise().query(insertQuery, [product_name, next_station_id, job_id]);
+        const insertQuery = "INSERT INTO station_yyyy (product_name, station_id, job_id,intime,machine_id) VALUES (?, ?, ?,NOW(),?)";
+        const [insertResult] = await db.promise().query(insertQuery, [product_name, next_station_id, job_id,machine_id]);
             
         res.status(201).send({ msg: "Record inserted successfully"});
         
@@ -59,7 +60,7 @@ async function insertInStationyyyyFirstNextStation(req,res){
 
 async function updateInStationyyyy(req,res){
     const {product_name, station_id, job_name,employee_id,status,parameters, machine_id} = req.body;
-    // console.log(req.body);
+    console.log(req.body);
     try {
         const searchQueryJob = "SELECT job_id FROM productyyyy WHERE job_name=? and product_name=?"
         const [selectResultJob] = await db.promise().query(searchQueryJob,[job_name,product_name])
@@ -112,7 +113,7 @@ async function jobsAtReworkStation(req,res){
     try {
         const searchQueryJob = "select newt2.job_id,newt2.product_name,newt2.station_id,newt2.employee_id,newt2.machine_id,newt2.parameters,newt2.job_name,employee_master.first_name,employee_master.last_name from (select newt.job_id,newt.product_name,newt.station_id,newt.employee_id,newt.machine_id,newt.parameters,productyyyy.job_name from (select * from station_yyyy where status='-1') as newt inner join productyyyy on newt.job_id=productyyyy.job_id) as newt2 inner join employee_master on newt2.employee_id=employee_master.employee_id ;"
         const [selectResultJob] = await db.promise().query(searchQueryJob)
-        // console.log(selectResultJob);
+        console.log(selectResultJob);
             
         res.status(201).send(selectResultJob);
         
@@ -125,7 +126,7 @@ async function jobsAtReworkStation(req,res){
 
 async function insertInStationyyyySameStation(req,res){
     const {product_name, station_id, job_name} = req.body;
-    
+    console.log({product_name, station_id, job_name});
     try {
         const searchQueryJob = "SELECT job_id FROM productyyyy WHERE job_name=? AND product_name=? "
         const [selectResultJob] = await db.promise().query(searchQueryJob,[job_name,product_name])

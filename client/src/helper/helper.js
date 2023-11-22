@@ -307,7 +307,7 @@ export async function getJobesAtStation(stationId,productName){
     }
 }
 
-export async function updateJobesAtStation(values,stationId,employeeId){
+export async function updateJobesAtStation(values,stationId,employeeId,machine_id){
     let formattedString = '';
     
     if (values.reason!=="") {
@@ -344,7 +344,8 @@ export async function updateJobesAtStation(values,stationId,employeeId){
         status:values.status,
         parameters:formattedString,
         station_id:stationId,
-        employee_id:employeeId
+        employee_id:employeeId,
+        machine_id:machine_id
     }
     console.log({newValues:newValues});
     try {
