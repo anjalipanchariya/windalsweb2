@@ -79,7 +79,7 @@ async function updateInStationyyyy(req,res){
 
 
         const updateQuery = "UPDATE station_yyyy SET employee_id = ?, status = ?, parameters = ? ,out_time=NOW(), machine_id=? WHERE (intime = ?) and (station_id = ?) and (product_name = ?) and (job_id = ?);";
-        const [updateResult] = await db.promise().query(updateQuery, [employee_id,status,parameters,intime,station_id,product_name, job_id,machine_id]);
+        const [updateResult] = await db.promise().query(updateQuery, [employee_id,status,parameters,machine_id,intime,station_id,product_name, job_id]);
             
         res.status(201).send({ msg: "Record updated successfully"});
         

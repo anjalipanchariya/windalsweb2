@@ -541,6 +541,17 @@ export async function getInfoFromStationMasterWithMachine(){
     }
 }
 
+export async function getParameterStatus(parameterName,product_name){
+    try {
+        
+        const {data,status} = await axios.post(`${proxy}api/GetParameterStatus`,{parameterName:parameterName,product_name:product_name})
+        return Promise.resolve(data)
+    } catch (error) {
+        console.log({err:error})
+        return Promise.reject(error.response.data)
+    }
+}
+
 
 export async function getOneWorkerStation(employeeId,shift){
     // const token = localStorage.getItem("token")

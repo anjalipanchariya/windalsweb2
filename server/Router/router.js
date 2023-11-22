@@ -1,5 +1,5 @@
 import Router from "express"
-import { insertInProductMaster, getInfoFromProductMaster, deleteFromProductMaster, updateProductMaster, getOneProductAllParametersInfoFromProductMaster, getOneProductOneParameterInfoFromProductMaster, getProductNames } from "../Controllers/productMasterController.js";
+import { insertInProductMaster, getInfoFromProductMaster, deleteFromProductMaster, updateProductMaster, getOneProductAllParametersInfoFromProductMaster, getOneProductOneParameterInfoFromProductMaster, getProductNames,getParameterStatus } from "../Controllers/productMasterController.js";
 import {insertIntoStationMaster,deleteFromStationMaster,getInfoFromStationMaster,getOneStationFromStationMaster,getOneStationOneProductFromStationMaster,updateStationMaster,getStationNamesFromStationMaster, getStationNamesForOneProduct,addNextStationInStationMaster,mobileGetOneStationOneProductFromStationMaster,getStationAndMachinesInfo} from "../Controllers/stationMasterController.js";
 import {insertInProductyyyy} from "../Controllers/productyyyyController.js";
 import {insertIntoEmployeeMaster,getAllFromEmployee,getOneFromEmployee,updateEmployeeMaster, deleteFromEmployeeMaster, resetPassword} from "../Controllers/employeeMasterController.js"
@@ -26,6 +26,7 @@ router.route("/StationyyyyShowJob").post(jobsAtStation);
 router.route("/StationyyyyCountAtStation").post(countOfWorkAtStation)
 router.route("/StationyyyyProductReport").post(productReport)
 router.route("/StationyyyyJobReport").post(jobDetailsReport)
+router.route("/GetParameterStatus").post(getParameterStatus)
 router.route("/StationyyyyInsertSameStation").post(insertInStationyyyySameStation)
 // router.route("/StationyyyyWorkInDay").post(workAtStationInDay)
 router.route("/ShiftConfigInsert").post(auth,insertIntoShiftConfig)

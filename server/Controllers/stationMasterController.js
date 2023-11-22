@@ -10,14 +10,14 @@ async function insertIntoStationMaster(req, res) {
         stationParameter = null;
     }
     else {
-        stationParameter = stationParameter.map((parameter) => parameter).join(", ")
+        stationParameter = stationParameter.map((parameter) => parameter).join(",")
     }
     try {
         const selectQuery = "SELECT station_id FROM station_master WHERE station_name = ? && product_name = ?"
         const [selectResult] = await db.promise().query(selectQuery, [stationName, productName])
         console.log(selectResult);
         if (selectResult.length > 0) {
-            const station_id = selectResult["station_id"];
+            const station_id = selectResult[0]["station_id"];
             const insertQuery = "insert into machine_master (station_id,machine_name,cycle_time,daily_count,product_per_hour) values (?,?,?,?,?)";
 
             for (const machine of machines) {
