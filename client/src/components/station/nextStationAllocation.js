@@ -28,25 +28,35 @@ function NextStationAllocation() {
         },
         // validationSchema: nextStationAllocationSchema,
         onSubmit: (values) => {
-            console.log(values);
-            // values.nextStationAllocation.map((value) => {
-            //     if (value.nextStation == -1) {
-            //         alert("Few fields are not filled")
-            //         shouldSubmit = false;
-            //     }
-            // })
-
-            values.nextStationAllocation.map((value)=>{
-                if(value.nextStation == -1){
-                    nextStationAllocation.label = "Null";
-                    nextStationAllocation.value = null;
+            const nextStationAllocation = values.nextStationAllocation.map((value)=>{
+                if(value.currentStation == values.lastStation.label){
+                    value = {
+                        ...value,
+                        nextStation:{ 
+                            label:"Null",
+                            value:null
+                        }
+                    }
+                }
+                return value
+            })
+            const newValues = {
+                ...values,
+                nextStationAllocation:nextStationAllocation
+            }
+            newValues.nextStationAllocation.map((value) => {
+                if (value.nextStation == -1) {
+                    alert("Few fields are not filled")
+                    shouldSubmit = false;
                 }
             })
+            console.log(newValues);
             if (shouldSubmit) {
-                const configureNextStationPromise = configureNextStation(values)
+                const configureNextStationPromise = configureNextStation(newValues)
                 toast.promise(configureNextStationPromise, {
                     loading: "Saving configuration",
                     success: (result) => {
+                        formik.resetForm()
                         return result.msg
                     },
                     error: (err) => err.msg
@@ -137,7 +147,6 @@ function NextStationAllocation() {
                                             label: station.currentStation,
                                             value: station.currentStation
                                         })),
-                                    { label: "Null", value: null } // Add null option
                                 ]}
                                 isSearchable={true}
                             />
@@ -160,7 +169,6 @@ function NextStationAllocation() {
                                             label: station.currentStation,
                                             value: station.currentStation
                                         })),
-                                    { label: "Null", value: null } // Add null option
                                 ]}
                                 isSearchable={true}
                             />
@@ -192,7 +200,6 @@ function NextStationAllocation() {
                                                             label: station.currentStation,
                                                             value: station.currentStation
                                                         })),
-                                                    { label: "Null", value: null } // Add null option
                                                 ]}
                                                 placeholder="Select Next Station"
                                                 value={allocation.nextStation}

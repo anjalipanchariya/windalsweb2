@@ -99,7 +99,7 @@ const FirstStation = () => {
           toast.promise(getOneWorkerStationPromise, {
             loading: "Getting stations allocated to employee",
             success: (result) => {
-              const extractedStations = Array.from(new Set(result.map(item => item.station_name)));
+              const extractedStations = result.map(item => ({station_name:item.station_name, position:item.position}));
               const extractedMachines = result.map(item => ({ machine_id: item.machine_id, machine_name: item.machine_name }));
               setStations(extractedStations);
               setMachines(extractedMachines);
@@ -156,16 +156,24 @@ const FirstStation = () => {
         }
     }
 
-    const handleStationSelection = (selectedStation) => {
+    const handleStationSelection = (target) => {
         // Use the selectedStation value to construct the path or page you want to navigate to
-        if(selectedStation==="station1")
+      const selectedIndex = parseInt(target.options[target.selectedIndex].getAttribute("data-index"), 10);
+      
+        if(selectedIndex!==-1)
         {
-            navigate(`/FirstStation/${employeeData[0].employee_id}/${employeeData[0].user_name}/${selectedStation}`);
+          const selectedStation = stations[selectedIndex];
+          console.log(selectedStation);
+          if(selectedStation.position===1)
+          {
+              navigate(`/FirstStation/${employeeData[0].employee_id}/${employeeData[0].user_name}/${selectedStation.station_name}`);
+          }
+          else
+          {
+              navigate(`/Station/${employeeData[0].employee_id}/${employeeData[0].user_name}/${selectedStation.station_name}`);
+          }
         }
-        else
-        {
-            navigate(`/Station/${employeeData[0].employee_id}/${employeeData[0].user_name}/${selectedStation}`);
-        }
+        
       };
     
     const handleMachineSelection = (selectedMachine) => {
@@ -182,12 +190,14 @@ const FirstStation = () => {
             <Toaster position="top-center" reverseOrder={false}></Toaster>
             {/* <button onClick={()=>{logout()}}>Log Out</button> */}
             <label>Select a Station: </label>
-              <select onChange={(e) => handleStationSelection(e.target.value)} value={selectedStation}>
-                <option value="">Select a station</option>
+            <select value={stationName} onChange={(e) => handleStationSelection(e.target)}>
+                <option value="" data-index={-1}>Select a station</option>
                 {stations.map((station, index) => (
-                  <option key={index} value={station}>{station}</option>
+                  <option key={index} value={station.station_name} data-index={index}>
+                    {station.station_name}
+                  </option>
                 ))}
-            </select>
+              </select>
             <label>Select a Machine: </label>
               <select onChange={(e) => handleMachineSelection(JSON.parse(e.target.value))}>
                 <option value="">Select a machine</option>
