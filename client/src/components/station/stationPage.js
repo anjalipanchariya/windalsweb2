@@ -14,7 +14,9 @@ import {
   getWorkAtStationInDay,
   getOneEmployee,
   getCurrentShift,
-  getOneWorkerStation
+  getOneWorkerStation,
+  getOneProductAllParameters,
+  getParameterStatus
 } from '../../helper/helper';
 import { useNavigate, useParams } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
@@ -35,8 +37,10 @@ const StationPage = () => {
   const [availableProducts, setAvailableProducts] = useState([]);
   const [product_name, setProductName] = useState("");
   const [jobsAtStation, setJobsAtStation] = useState([]);
+  const [parametermap, setparametermap] = useState({});
+  const [OneProductStationParameters, setOneProductStationParameters] = useState([]);
   const [parameterNames, setParameterNames] = useState([]); // Store parameter names as an array
-  const [workAtStationInDay,setWorkAtStationInDay] = useState([])
+  const [workAtStationInDay, setWorkAtStationInDay] = useState([])
   const [employeeData, setEmployeeData] = useState("");
   const [activeShift, setActiveShift] = useState("");
   const [stations, setStations] = useState([]);
@@ -46,23 +50,26 @@ const StationPage = () => {
   const navigate = useNavigate()
 
   const formik = useFormik({
-    initialValues:{
-      selectedJob:null,
-      status:"",  //1-ok,0-rework,-1-rejected
-      reason:"",
-      parameterValues:{}
+    initialValues: {
+      selectedJob: null,
+      status: "",  //1-ok,0-rework,-1-rejected
+      reason: "",
+      parameterValues: {}
     },
     // validationSchema: validateYupSchema,
-    onSubmit:(values)=>{
-      const updateJobeAtStationPromise = updateJobesAtStation(values,stationOneProductInfo[0].station_id,employeeId)
+    onSubmit: (values) => {
+      console.log(values)
+      const updateJobeAtStationPromise = updateJobesAtStation(values,stationOneProductInfo[0].station_id,employeeId,selectedMachine.machine_id)
       updateJobeAtStationPromise.then((result)=>{
         toast.success(result.msg)
         if(values["status"]=='1'){
           const newValues = {
             job_name:values.selectedJob.job_name,
             product_name:product_name,
-            station_id:stationOneProductInfo[0].station_id
+            station_id:stationOneProductInfo[0].station_id,
+            machine_id:selectedMachine.machine_id
           }
+          console.log({newValues:newValues});
           const insertInStationyyyyFirstNextStationPromise = insertInStationyyyyFirstNextStation(newValues)
           insertInStationyyyyFirstNextStationPromise.then((result)=>{
             toast.success(result.msg)
@@ -162,17 +169,50 @@ useEffect(() => {
       setStationOneProductInfo(stationOneProductInfo);
 
       // Split the parameter names string into an array
-      if(stationOneProductInfo[0].station_parameters!=null)
-      {
+      if (stationOneProductInfo[0].station_parameters != null) {
         const parameterNamesArray = stationOneProductInfo[0].station_parameters.split(',');
         setParameterNames(parameterNamesArray);
-      }  
+      }
     }
-    else{
+    else {
       setWorkAtStationInDay([])
       setJobsAtStation([])
     }
   }, [product_name]);
+
+  useEffect(() => {
+    if (product_name !== "" && parameterNames.length !==0) {
+      const getParameterStatusPromise = getParameterStatus(parameterNames,product_name);
+      getParameterStatusPromise.then((result) => {
+        setOneProductStationParameters(result.result);
+        // console.log(result.result);
+      }).catch((err) => {
+        toast.error(err.msg);
+      });
+      
+
+
+    }
+
+  }, [parameterNames,product_name]);
+  // console.log(OneProductStationParameters)
+  // useEffect(() => {
+  //   setOneProductStationParameters([
+  //     {
+  //       "parameter": "length",
+  //       "value_oknotok": 0
+  //     },
+  //     {
+  //       "parameter": "width",
+  //       "value_oknotok": 1
+  //     }
+  //   ])
+
+
+  // }, [])
+
+
+
 
   useEffect(() => {
     if (stationOneProductInfo.length > 0) {
@@ -180,12 +220,12 @@ useEffect(() => {
     }
   }, [stationOneProductInfo]);
 
-  useEffect(()=>{
+  useEffect(() => {
     getSubmitedJobs()
-  },[stationOneProductInfo])
-  
+  }, [stationOneProductInfo])
+
   const setJobesAtStationFunction = () => {
-    const getJobesAtStationPromise = getJobesAtStation(stationOneProductInfo[0].station_id,stationOneProductInfo[0].product_name);
+    const getJobesAtStationPromise = getJobesAtStation(stationOneProductInfo[0].station_id, stationOneProductInfo[0].product_name);
     getJobesAtStationPromise.then((result) => {
       setJobsAtStation(result);
     }).catch((err) => {
@@ -193,22 +233,21 @@ useEffect(() => {
     });
   }
 
-  const getSubmitedJobs = () =>{
-    if(stationOneProductInfo!="")
-    {
-        const stationId = stationOneProductInfo[0].station_id
-        const getWorkAtStationInDayPromise = getWorkAtStationInDay(stationId)
-        getWorkAtStationInDayPromise.then((result)=>{
-            setWorkAtStationInDay(result)
-        }).catch((err)=>{
-            console.log(err);
-            toast.error(err.msg)
-        })
+  const getSubmitedJobs = () => {
+    if (stationOneProductInfo != "") {
+      const stationId = stationOneProductInfo[0].station_id
+      const getWorkAtStationInDayPromise = getWorkAtStationInDay(stationId)
+      getWorkAtStationInDayPromise.then((result) => {
+        setWorkAtStationInDay(result)
+      }).catch((err) => {
+        console.log(err);
+        toast.error(err.msg)
+      })
     }
   }
 
   const handleJobIdClick = async (job, event) => {
-    formik.setFieldValue("selectedJob",job);
+    formik.setFieldValue("selectedJob", job);
     const rect = event.target.getBoundingClientRect();
     const middleTop = (window.innerHeight - rect.height) / 2;
     setDropdownPosition({
@@ -218,20 +257,20 @@ useEffect(() => {
 
     // Access the station_parameters from stationOneProductInfo
     const stationParameters = stationOneProductInfo[0]?.station_parameters;
-
     // Create an object with keys from station_parameters and empty strings as values
     const parametersObject = stationParameters
       ? await stationParameters.split(',').reduce((acc, paramName) => {
-          acc[paramName.trim()] = '';
-          return acc;
-        }, {})
+        acc[paramName.trim()] = '';
+        return acc;
+      }, {})
       : null;
 
-    formik.setFieldValue("parameterValues",parametersObject)
+      
+      formik.setFieldValue("parameterValues", parametersObject)
 
     const options = stationOneProductInfo.length > 0 && stationOneProductInfo[0].report === 1
-      ? ['✅ Ok', '❌ Not Okay', '↪ Rework', 'Parameters']
-      : ['✅ Ok', '❌ Not Okay', '↪ Rework'];
+      ? ['✅ Ok', '❌ Not Okay', 'Parameters']
+      : ['✅ Ok', '❌ Not Okay'];
     setDropdownOptions(options);
   };
 
@@ -245,13 +284,24 @@ useEffect(() => {
 
   const handleDropdownOptionClick = (option) => {
     if (option === '✅ Ok') {
-      formik.setFieldValue("status",1)
+      formik.setFieldValue("status", 1)
+      const parametersObject =formik.values.parameterValues;
+      for(const it of OneProductStationParameters){
+        if(it['value_oknotok']===0 && parametersObject[it['parameter']]===''){
+          parametersObject[it['parameter']]='O';
+        }
+      }
+      formik.setFieldValue("parameterValues", parametersObject)
       formik.handleSubmit()
     } else if (option === '❌ Not Okay') {
-      formik.setFieldValue("status",-1)
-      openModal();
-    } else if (option === '↪ Rework') {
-      formik.setFieldValue("status",0)
+      formik.setFieldValue("status", -1)
+      const parametersObject =formik.values.parameterValues;
+      for(const it of OneProductStationParameters){
+        if(it['value_oknotok']===0 && parametersObject[it['parameter']]===''){
+          parametersObject[it['parameter']]='N';
+        }
+      }
+      formik.setFieldValue("parameterValues", parametersObject)
       openModal();
     }
   };
@@ -259,13 +309,13 @@ useEffect(() => {
   const setParameterValue = (parameter, value) => {
     // Clone the existing parameterValues object
     const updatedParameterValues = { ...formik.values.parameterValues };
-    
+
     // Trim the parameter name to remove leading/trailing spaces
     const trimmedParameter = parameter.trim();
-    
+
     // Set the value for the parameter
     updatedParameterValues[trimmedParameter] = value;
-    
+
     // Update the parameterValues field in Formik
     formik.setFieldValue("parameterValues", updatedParameterValues);
   };
@@ -294,10 +344,12 @@ useEffect(() => {
       setSelectedMachine(selectedMachine);
     };
 
-  console.log({jobsAtStation:jobsAtStation,stationOneProductInfo:stationOneProductInfo,stationAllInfo:stationAllInfo,formikvalues:formik.values,parameterNames:parameterNames,workAtStationInDay:workAtStationInDay});
+  console.log({ jobsAtStation: jobsAtStation, stationOneProductInfo: stationOneProductInfo, stationAllInfo: stationAllInfo, formikvalues: formik.values, parameterNames: parameterNames, workAtStationInDay: workAtStationInDay });
+  console.log(parameterNames)
+  console.log(formik.values.parameterValues)
   return (
     <div className="firststat">
-      <WindalsNav/>
+      <WindalsNav />
       <Toaster position="top-center" reverseOrder={false}></Toaster>
       <label>Select a Station: </label>
               <select value={stationName} onChange={(e) => handleStationSelection(e.target)}>
@@ -321,13 +373,13 @@ useEffect(() => {
       <h1>Station {stationName}</h1>
       <hr />
       <div className='fslist'>
-      <h4>Station Name : {stationName}</h4>
-      <h4>Employee Id : {employeeId}</h4>
-      <h4>User Name : {userName}</h4>
+        <h4>Station Name : {stationName}</h4>
+        <h4>Employee Id : {employeeId}</h4>
+        <h4>User Name : {userName}</h4>
       </div>
       <hr />
       <div className="form-group">
-        <label style={{fontSize:'1.7rem'}} htmlFor="productSelect">Select a Product:</label>
+        <label style={{ fontSize: '1.7rem' }} htmlFor="productSelect">Select a Product:</label>
         <select
           id="productSelect"
           value={product_name}
@@ -376,11 +428,11 @@ useEffect(() => {
         </div>
       }
       <hr />
-      
+
       <br />
-      <p style={{fontSize:'1.7rem', fontWeight:"bold"}}>Job At Station</p>
+      <p style={{ fontSize: '1.7rem', fontWeight: "bold" }}>Job At Station</p>
       <ul>
-        { jobsAtStation.length>0 ? jobsAtStation.map((job) => (
+        {jobsAtStation.length > 0 ? jobsAtStation.map((job) => (
           <li
             key={job.job_id}
             onClick={(e) => handleJobIdClick(job, e)}
@@ -417,14 +469,19 @@ useEffect(() => {
               }
               else {
                 return (
-                  parameterNames.map((parameter) => (
-                    <div key={parameter}>
-                      <label>{parameter}</label>
-                      <input
-                        type="number"
-                        placeholder="Enter the value"
-                        onChange={(e) => setParameterValue(parameter, e.target.value)}
-                      />
+                  OneProductStationParameters.map((parameter) => (
+                    <div key={parameter.parameter}>
+                      <label>{parameter.parameter}</label>
+                      {parameter.value_oknotok === 1 ?
+                        <input type="number"
+                          placeholder="Enter the value"
+                          onChange={(e) => setParameterValue(parameter.parameter, e.target.value)} /> :
+                        <input type='checkbox'  value='O' onChange={(e) => {
+                          if(e.target.checked) {
+                            setParameterValue(parameter.parameter, 'Y')}
+                          else setParameterValue(parameter.parameter, 'N')}}/>}
+
+
                     </div>
                   ))
                 )
@@ -447,42 +504,42 @@ useEffect(() => {
           <button onClick={closeModal}>Close Modal</button>
         </div>
       </Modal>
-      { 
-        workAtStationInDay.length>0 ? 
+      {
+        workAtStationInDay.length > 0 ?
           <div className='jobsub'>
             <h2>Jobs Submitted</h2>
             <table className="product-table">
-                  <thead>
-                      <tr>
-                          <th>Job Id</th>
-                          <th>Job Name</th>
-                          <th>Product Name</th>
-                          <th>Status</th>
-                          <th>Reason</th>    
-                          <th>Parameter values</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      {Array.isArray(workAtStationInDay) && workAtStationInDay.map((job, index) => (
-                          <tr key={index}>
-                              <td>{job.job_id}</td>
-                              <td>{job.job_name}</td>
-                              <td>{job.product_name}</td>
-                              <td>{ (job.status==1) ? "OK" : ( (job.status==0) ? "REWORK" : "Not-Ok")}</td>
-                              <td>{(job.reason!="" || job.reason!=null) ? job.reason : "N.A"}</td>
-                              <td>{(job.parameters!="" || job.parameters!=null) ? job.parameters : "N.A"}</td>
-                          </tr>
-                      ))}
-                  </tbody>
+              <thead>
+                <tr>
+                  <th>Job Id</th>
+                  <th>Job Name</th>
+                  <th>Product Name</th>
+                  <th>Status</th>
+                  <th>Reason</th>
+                  <th>Parameter values</th>
+                </tr>
+              </thead>
+              <tbody>
+                {Array.isArray(workAtStationInDay) && workAtStationInDay.map((job, index) => (
+                  <tr key={index}>
+                    <td>{job.job_id}</td>
+                    <td>{job.job_name}</td>
+                    <td>{job.product_name}</td>
+                    <td>{(job.status == 1) ? "OK" : "Not-Ok"}</td>
+                    <td>{(job.reason != "" || job.reason != null) ? job.reason : "N.A"}</td>
+                    <td>{(job.parameters != "" || job.parameters != null) ? job.parameters : "N.A"}</td>
+                  </tr>
+                ))}
+              </tbody>
             </table>
           </div>
-        : null
+          : null
       }
       <br />
       <br />
       <br />
 
-     <Footer/>
+      <Footer />
     </div>
   );
 };

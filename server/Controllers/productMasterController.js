@@ -1,5 +1,4 @@
 import db from "../Database/connection.js";
-//1-parameter 0-ok/notok 1-complusory 0-not complusory
 
 async function insertInProductMaster(req,res){
     const { productName, parameters } = req.body;
@@ -73,12 +72,12 @@ async function insertInProductMaster(req,res){
     // const { productId, updatedFields } = req.body;
     const {productName,parameters} = req.body
     try {
-        const updateQuery = "UPDATE product_master SET max_parameter = ?, min_parameter = ?, unit = ? ,value_oknotok =? , compulsory=? WHERE product_name = ? "
+        const updateQuery = "UPDATE product_master SET max_parameter = ?, min_parameter = ?, unit = ? WHERE id = ? "
         const updateData = []
         for(const parameter of parameters)
         {
-            const {id,maxVal,minVal,unit,unitPresent,parameterStatus} = parameter
-            const updateResult = await db.promise().query(updateQuery,[maxVal,minVal,unit,parameterStatus,unitPresent,productName])
+            const {id,maxVal,minVal,unit} = parameter
+            const updateResult = await db.promise().query(updateQuery,[maxVal,minVal,unit,id])
             updateData.push(updateResult)
         }
         if(updateData.length===0){
@@ -133,4 +132,26 @@ async function getProductNames(req,res){
     }
 }
 
-export { insertInProductMaster, getInfoFromProductMaster, deleteFromProductMaster, updateProductMaster, getOneProductAllParametersInfoFromProductMaster, getOneProductOneParameterInfoFromProductMaster, getProductNames };
+async function getParameterStatus(req,res){
+    const {parameterName,product_name}=req.body
+    console.log(parameterName,product_name)
+    console.log("hi")
+    try{
+        const response={'result':[]}
+        for(const para of parameterName){
+            var query = "SELECT value_oknotok FROM product_master where parameter=? and product_name=?;"
+            const [result] = await db.promise().query(query,[para,product_name]);
+           
+            const obj1={'parameter':para,'value_oknotok':result[0]['value_oknotok']}
+            response['result'].push(obj1)
+        }
+        
+        res.status(200).send(response)
+        
+    }catch(err){
+        console.error(`Database error: ${err}`);
+        res.status(500).send({msg:`Internal server error: ${err}`})
+    }
+}
+
+export { insertInProductMaster, getInfoFromProductMaster, deleteFromProductMaster, updateProductMaster, getOneProductAllParametersInfoFromProductMaster, getOneProductOneParameterInfoFromProductMaster, getProductNames,getParameterStatus };
