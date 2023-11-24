@@ -73,6 +73,38 @@ async function updateInStationyyyy(req,res){
         // const next_station_id=selectResultNextStation[0]["station_id"];
         // console.log(next_station_id)
 
+        const searchQintime="select intime from station_yyyy where station_id=? and product_name=? and job_id=? and status is null;"
+        const [selectRintime] = await db.promise().query(searchQintime,[station_id,product_name,job_id])
+        const intime=selectRintime[0]["intime"];
+        // console.log(intime)
+
+
+        const updateQuery = "UPDATE station_yyyy SET employee_id = ?, status = ?, parameters = ? ,out_time=NOW(), machine_id=? WHERE (intime = ?) and (station_id = ?) and (product_name = ?) and (job_id = ?);";
+        const [updateResult] = await db.promise().query(updateQuery, [employee_id,status,parameters,machine_id,intime,station_id,product_name, job_id]);
+            
+        res.status(201).send({ msg: "Record updated successfully"});
+        
+    } catch (err) {
+        console.error("Database error:", err);
+        res.status(500).send({ msg: `Internal server error: ${err}` });
+    }
+}
+
+async function updateInStationyyyyrework(req,res){
+    const {product_name, station_id, job_name,employee_id,status,parameters, machine_id} = req.body;
+    console.log(req.body);
+    try {
+        const searchQueryJob = "SELECT job_id FROM productyyyy WHERE job_name=? and product_name=?"
+        const [selectResultJob] = await db.promise().query(searchQueryJob,[job_name,product_name])
+        const job_id=selectResultJob[0]["job_id"];
+        // console.log(job_id)
+
+
+        // const searchQueryNextStation = "SELECT station_id FROM station_master WHERE station_name=(select next_station_name from station_master where station_id=?) "
+        // const [selectResultNextStation] = await db.promise().query(searchQueryNextStation,[station_id])
+        // const next_station_id=selectResultNextStation[0]["station_id"];
+        // console.log(next_station_id)
+
         const searchQintime="select intime from station_yyyy where station_id=? and product_name=? and job_id=?;"
         const [selectRintime] = await db.promise().query(searchQintime,[station_id,product_name,job_id])
         const intime=selectRintime[0]["intime"];
@@ -286,4 +318,4 @@ async function jobDetailsReport(req,res){
 
 } 
 
-export {insertInStationyyyyFirst, insertInStationyyyyFirstNextStation,updateInStationyyyy, jobsAtStation,countOfWorkAtStation,workAtStationInDay,getJobesSubmitedAtStation,productReport,jobDetailsReport,jobsAtReworkStation,insertInStationyyyySameStation};
+export {insertInStationyyyyFirst, insertInStationyyyyFirstNextStation,updateInStationyyyy, jobsAtStation,countOfWorkAtStation,workAtStationInDay,getJobesSubmitedAtStation,productReport,jobDetailsReport,jobsAtReworkStation,insertInStationyyyySameStation,updateInStationyyyyrework};

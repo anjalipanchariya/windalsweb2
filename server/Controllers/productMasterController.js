@@ -14,11 +14,11 @@ async function insertInProductMaster(req,res){
         }       
         else
         {
-            const insertQuery = "INSERT INTO product_master (product_name, parameter, min_parameter, max_parameter, unit,value_oknotok, compulsory) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            const insertQuery = "INSERT INTO product_master (product_name, parameter, min_parameter, max_parameter, unit,evaluation,sample_size,value_oknotok, compulsory) VALUES (?, ?, ?, ?, ?, ?, ?,?,?)";
             for(const parameter of parameters)
             {
-                const {parameterName,minVal,maxVal,unit,unitPresent,parameterStatus} = parameter
-                const [insertResult] = await db.promise().query(insertQuery, [productName, parameterName, minVal, maxVal, unit,parameterStatus,unitPresent]);
+                const {parameterName,minVal,maxVal,unit,evaluation,sample_size,unitPresent,parameterStatus} = parameter
+                const [insertResult] = await db.promise().query(insertQuery, [productName, parameterName, minVal, maxVal, unit,evaluation,sample_size,parameterStatus,unitPresent]);
             }
             res.status(201).send({ msg: "Record inserted successfully"});
         }
@@ -68,22 +68,20 @@ async function insertInProductMaster(req,res){
     }
 }
 
- async function updateProductMaster(req,res){
+async function updateProductMaster(req,res){
     // const { productId, updatedFields } = req.body;
     const {productName,parameters} = req.body
+    console.log(req.body);
     try {
-        const updateQuery = "UPDATE product_master SET max_parameter = ?, min_parameter = ?, unit = ? WHERE id = ? "
-        const updateData = []
+        const updateQuery = "UPDATE product_master SET parameter=?, min_parameter=?, max_parameter=?, unit=?,evaluation=?,sample_size=?,value_oknotok=?, compulsory=? WHERE id = ? "
+        
         for(const parameter of parameters)
         {
-            const {id,maxVal,minVal,unit} = parameter
-            const updateResult = await db.promise().query(updateQuery,[maxVal,minVal,unit,id])
-            updateData.push(updateResult)
+            const {parameterName,minVal,maxVal,unit,evaluation,sample_size,unitPresent,parameterStatus,id} = parameter
+            const updateResult = await db.promise().query(updateQuery,[parameterName,minVal,maxVal,unit,evaluation,sample_size,unitPresent,parameterStatus,id])
+            
         }
-        if(updateData.length===0){
-            res.status(409).send({msg:"Server Error: Product not found"})
-            return
-        }
+        
         res.status(200).send({ msg: "Data updated successfully" });
     } catch (err) {
         console.error(`Database error: ${err}`);
@@ -135,6 +133,7 @@ async function getProductNames(req,res){
 async function getParameterStatus(req,res){
     const {parameterName,product_name}=req.body
     console.log(parameterName,product_name)
+    console.log(req.body)
     console.log("hi")
     try{
         const response={'result':[]}

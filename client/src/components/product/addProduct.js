@@ -59,7 +59,7 @@ const AddProduct = () => {
   const addRow = () => {
     formik.setFieldValue('parameters', [
       ...formik.values.parameters,
-      { parameterName: '', minVal: '', maxVal: '', unit: '',unitPresent:false,parameterStatus:'1' },
+      { parameterName: '', minVal: '', maxVal: '', unit: '',evaluation:'',sample_size:'',unitPresent:false,parameterStatus:'1' },
     ]);
   };
 
@@ -128,7 +128,9 @@ const AddProduct = () => {
             <th>Max</th>
             <th>Min</th>
             <th>Unit</th>
-            <th>Unit Present</th> 
+            <th>Evaluation Technique</th>
+            <th>Sample Size</th>
+            <th>Compulsory</th> 
             <th>Parameter Status</th> 
             <th>Delete row</th>
           </tr>
@@ -194,6 +196,36 @@ const AddProduct = () => {
                 {formik.touched.parameters && formik.touched.parameters[index] && formik.errors.parameters?.[index]?.unit && (
                   <Alert variant="danger" className="error-message">
                     {formik.errors.parameters[index].unit}
+                  </Alert>
+                )}
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={parameter.evaluation}
+                  onChange={(e) =>
+                    handleParameterChange(index, 'evaluation', e.target.value)
+                  }
+                  name={`parameters[${index}].evaluation`}
+                />
+                {formik.touched.parameters && formik.touched.parameters[index] && formik.errors.parameters?.[index]?.evaluation && (
+                  <Alert variant="danger" className="error-message">
+                    {formik.errors.parameters[index].evaluation}
+                  </Alert>
+                )}
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={parameter.sample_size}
+                  onChange={(e) =>
+                    handleParameterChange(index, 'sample_size', e.target.value)
+                  }
+                  name={`parameters[${index}].sample_size`}
+                />
+                {formik.touched.parameters && formik.touched.parameters[index] && formik.errors.parameters?.[index]?.sample_size && (
+                  <Alert variant="danger" className="error-message">
+                    {formik.errors.parameters[index].sample_size}
                   </Alert>
                 )}
               </td>

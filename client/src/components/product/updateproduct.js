@@ -100,7 +100,7 @@ function UpdateProduct() {
     const addRow = () => {
         formik.setFieldValue('newParameters', [
             ...formik.values.newParameters,
-            { parameterName: '', minVal: '', maxVal: '', unit: '', unitPresent:false, parameterStatus:'1' },
+            { parameterName: '', minVal: '', maxVal: '', unit: '',evaluation:'',sample_size:'',unitPresent:false,parameterStatus:'1' },
         ]);
     };
 
@@ -128,12 +128,15 @@ function UpdateProduct() {
                     maxVal: parameter.max_parameter,
                     minVal: parameter.min_parameter,
                     unit: parameter.unit,
+                    evaluation:parameter.evaluation,
+                    sample_size:parameter.sample_size,
                     unitPresent: parameter.compulsory==1 ? true : false,
                     parameterStatus: parameter.value_oknotok==1 ? '1' : '0'
                 }
             })
 
             formik.setFieldValue('existingParameters',newParameters)
+            console.log(formik.values.existingParameters)
         }).catch((err)=>{
 
             toast.error(err.msg)
@@ -237,7 +240,9 @@ function UpdateProduct() {
                         <th>Max</th>
                         <th>Min</th>
                         <th>Unit</th>
-                        <th>Unit Present</th> 
+                        <th>Evaluation Technique</th>
+                        <th>Sample Size</th>
+                        <th>Compulsory</th> 
                         <th>Parameter Status</th>
                         <th>Delete row(paramterer)</th>
                     </tr>
@@ -292,6 +297,32 @@ function UpdateProduct() {
                             </td>
                             <td>
                                 <input
+                                    type="text"
+                                    value={parameter.evaluation}
+                                    onChange={(e) => handleExistingParameterChange(index, 'evaluation', e.target.value)}
+                                    name={`existingParameters[${index}].evaluation`}
+                                />
+                                {formik.touched.existingParameters && formik.touched.existingParameters[index] && formik.errors.existingParameters?.[index]?.evaluation && (
+                                <Alert variant="danger" className="error-message">
+                                    {formik.errors.existingParameters[index].evaluation}
+                                </Alert>
+                                )}
+                            </td>
+                            <td>
+                                <input
+                                    type="text"
+                                    value={parameter.sample_size}
+                                    onChange={(e) => handleExistingParameterChange(index, 'sample_size', e.target.value)}
+                                    name={`existingParameters[${index}].sample_size`}
+                                />
+                                {formik.touched.existingParameters && formik.touched.existingParameters[index] && formik.errors.existingParameters?.[index]?.sample_size && (
+                                <Alert variant="danger" className="error-message">
+                                    {formik.errors.existingParameters[index].sample_size}
+                                </Alert>
+                                )}
+                            </td>
+                            <td>
+                                <input
                                     type="checkbox"
                                     name={`existingParameters[${index}].unitPresent`}
                                     checked={parameter.unitPresent} 
@@ -339,7 +370,9 @@ function UpdateProduct() {
                         <th>Max</th>
                         <th>Min</th>
                         <th>Unit</th>
-                        <th>Unit Present</th> 
+                        <th>Evaluation Technique</th>
+                        <th>Sample Size</th>
+                        <th>Compulsory</th>  
                         <th>Parameter Status</th>
                         <th>Delete row</th>
                     </tr>
@@ -401,6 +434,32 @@ function UpdateProduct() {
                                 {formik.touched.newParameters && formik.touched.newParameters[index] && formik.errors.newParameters?.[index]?.unit && (
                                 <Alert variant="danger" className="error-message">
                                     {formik.errors.newParameters[index].unit}
+                                </Alert>
+                                )}
+                            </td>
+                            <td>
+                                <input
+                                    type="text"
+                                    value={parameter.evaluation}
+                                    onChange={(e) => handleNewParameterChange(index, 'evaluation', e.target.value)}
+                                    name={`newParameters[${index}].evaluation`}
+                                />
+                                {formik.touched.newParameters && formik.touched.newParameters[index] && formik.errors.newParameters?.[index]?.evaluation && (
+                                <Alert variant="danger" className="error-message">
+                                    {formik.errors.newParameters[index].evaluation}
+                                </Alert>
+                                )}
+                            </td>
+                            <td>
+                                <input
+                                    type="text"
+                                    value={parameter.sample_size}
+                                    onChange={(e) => handleNewParameterChange(index, 'sample_size', e.target.value)}
+                                    name={`newParameters[${index}].sample_size`}
+                                />
+                                {formik.touched.newParameters && formik.touched.newParameters[index] && formik.errors.newParameters?.[index]?.sample_size && (
+                                <Alert variant="danger" className="error-message">
+                                    {formik.errors.newParameters[index].sample_size}
                                 </Alert>
                                 )}
                             </td>
