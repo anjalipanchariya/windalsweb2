@@ -1,7 +1,8 @@
 import db from "../Database/connection.js";
 
 async function insertIntoStationMaster(req, res) {
-    var { stationName,
+    var { process_number,
+        stationName,
         productName,
         reportType, //0-for ok/notok, 1-for parameters
         stationParameter,
@@ -28,8 +29,8 @@ async function insertIntoStationMaster(req, res) {
 
         }
         else {
-            const insertQuery = "INSERT INTO station_master (station_name, product_name, report, station_parameters,multiple_machine) VALUES (?,?,?,?,?)"
-            const [insertResult] = await db.promise().query(insertQuery, [stationName, productName, reportType, stationParameter, multipleMachines])
+            const insertQuery = "INSERT INTO station_master (station_name, product_name, report, station_parameters,multiple_machine,process_number) VALUES (?,?,?,?,?,?)"
+            const [insertResult] = await db.promise().query(insertQuery, [stationName, productName, reportType, stationParameter, multipleMachines,process_number])
             const selectQuery = "SELECT station_id FROM station_master WHERE station_name = ? && product_name = ?"
             const [selectResult] = await db.promise().query(selectQuery, [stationName, productName])
             const station_id = selectResult[0].station_id;
@@ -69,6 +70,7 @@ async function deleteFromStationMaster(req, res) {
 
 async function updateStationMaster(req, res) {
     var { stationId,
+        process_number,
         stationName,
         productName,
         reportType,
@@ -88,8 +90,8 @@ async function updateStationMaster(req, res) {
             res.status(409).send({ msg: "The station configuration of this product does not exist." })
         }
         else {
-            const updateStationMasterQuery = "UPDATE station_master SET station_name = ?, product_name = ?, report = ?, station_parameters = ?, multiple_machine = ? WHERE station_id = ?"
-            const [updateStationMasterResult] = await db.promise().query(updateStationMasterQuery, [stationName, productName, reportType, stationParameter, multipleMachines, stationId])
+            const updateStationMasterQuery = "UPDATE station_master SET process_number=?,station_name = ?, product_name = ?, report = ?, station_parameters = ?, multiple_machine = ? WHERE station_id = ?"
+            const [updateStationMasterResult] = await db.promise().query(updateStationMasterQuery, [process_number,stationName, productName, reportType, stationParameter, multipleMachines, stationId])
             const updateMachineMasterQuery = "UPDATE machine_master SET machine_name = ?, cycle_time = ?, product_per_hour = ?, daily_count = ? WHERE machine_id = ? "
             const insertIntoMachineMasterQuery = "INSERT INTO machine_master (station_id,machine_name,cycle_time,daily_count,product_per_hour) VALUES (?,?,?,?,?)";
             for(const machine of machines)
