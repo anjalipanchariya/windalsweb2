@@ -41,7 +41,8 @@
 
 
 .product-table {
- 
+  width: 50%;
+  margin-left: 20vw;
   border-collapse: collapse;
   table-layout: auto;
 }

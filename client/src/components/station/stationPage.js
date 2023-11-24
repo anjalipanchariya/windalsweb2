@@ -249,7 +249,7 @@ useEffect(() => {
   const handleJobIdClick = async (job, event) => {
     formik.setFieldValue("selectedJob", job);
     const rect = event.target.getBoundingClientRect();
-    const middleTop = (window.innerHeight - rect.height) / 2;
+    const middleTop = (window.innerHeight - rect.height) ;
     setDropdownPosition({
       top: middleTop,
       left: rect.left,
@@ -351,7 +351,10 @@ useEffect(() => {
     <div className="firststat">
       <WindalsNav />
       <Toaster position="top-center" reverseOrder={false}></Toaster>
-      <label>Select a Station: </label>
+      
+      <h1>Station {stationName}</h1>
+      <br />
+      <h5>Select a Station </h5>
               <select value={stationName} onChange={(e) => handleStationSelection(e.target)}>
                 <option value="" data-index={-1}>Select a station</option>
                 {stations.map((station, index) => (
@@ -360,7 +363,8 @@ useEffect(() => {
                   </option>
                 ))}
               </select>
-            <label>Select a Machine: </label>
+              <br />
+            <h5>Select a Machine </h5>
               <select onChange={(e) => handleMachineSelection(JSON.parse(e.target.value))}>
                 <option value="">Select a machine</option>
                 {machines.map((machine, index) => (
@@ -370,7 +374,7 @@ useEffect(() => {
                 ))}
               </select>
       {/* <button onClick={() => { logout() }}>Log Out</button> */}
-      <h1>Station {stationName}</h1>
+     
       <hr />
       <div className='fslist'>
         <h4>Station Name : {stationName}</h4>
@@ -430,7 +434,7 @@ useEffect(() => {
       <hr />
 
       <br />
-      <p style={{ fontSize: '1.7rem', fontWeight: "bold" }}>Job At Station</p>
+      <p style={{ fontSize: '1.7rem', fontWeight: "bold" }}>Jobs At Station</p>
       <ul>
         {jobsAtStation.length > 0 ? jobsAtStation.map((job) => (
           <li
@@ -440,7 +444,7 @@ useEffect(() => {
           >
             {job.job_name}
           </li>
-        )) : product_name == "" ? "Product is not selected" : "null"}
+        )) : product_name == "" ? "Product is not selected" : "No Jobs"}
       </ul>
 
       {formik.values.selectedJob != null && (
@@ -480,8 +484,6 @@ useEffect(() => {
                           if(e.target.checked) {
                             setParameterValue(parameter.parameter, 'Y')}
                           else setParameterValue(parameter.parameter, 'N')}}/>}
-
-
                     </div>
                   ))
                 )
@@ -491,24 +493,29 @@ useEffect(() => {
         </div>
       )}
 
+      <div style={{marginLeft:'10vw'}}>
       <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
         contentLabel="Example Modal"
+        className='reasonmodal'
       >
         <h2>Reason</h2>
-        <div>
-          <label htmlFor="reason">Enter a reason:</label>
+          <label htmlFor="reason">Enter a reason</label>
           <input type="text" name="reason" id="reason" value={formik.values.reason} onChange={formik.handleChange} />
+          <br />
           <button onClick={formik.handleSubmit}>Submit</button>
+          <br />
           <button onClick={closeModal}>Close Modal</button>
-        </div>
+          <br />
+        
       </Modal>
+      </div>
       {
         workAtStationInDay.length > 0 ?
           <div className='jobsub'>
             <h2>Jobs Submitted</h2>
-            <table className="product-table">
+            <table className="first_table">
               <thead>
                 <tr>
                   <th>Job Id</th>
