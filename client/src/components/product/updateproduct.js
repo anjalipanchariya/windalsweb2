@@ -229,7 +229,7 @@ function UpdateProduct() {
                     
                 </div>
             
-            <p style={{ textAlign: 'center', fontWeight:'bold' }}>
+            <p style={{ textAlign: 'center', fontWeight:'bold', fontSize:'1.4rem' }}>
                 Existing parameter
             </p>
             <table className='product-table'>
@@ -244,7 +244,7 @@ function UpdateProduct() {
                         <th>Sample Size</th>
                         <th>Compulsory</th> 
                         <th>Parameter Status</th>
-                        <th>Delete row(paramterer)</th>
+                        <th>Delete row</th>
                     </tr>
                 </thead>
 
@@ -355,10 +355,9 @@ function UpdateProduct() {
                     ))}
                 </tbody>
             </table>
+            <br />
 
-
-
-            <p style={{ textAlign: 'center', fontWeight:'bold' }}>
+            <p style={{ textAlign: 'center', fontWeight:'bold', fontSize:'1.4rem' }}>
                 New parameter
             </p>
 

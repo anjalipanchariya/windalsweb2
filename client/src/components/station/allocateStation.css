@@ -43,7 +43,7 @@
   .table {
     width: 100%;
     border-collapse: collapse;
-   
+    /* border: 2px solid black; */
   }
   
  
@@ -60,7 +60,7 @@
 .table thead th {
     position: sticky;
     top: 0;
-    background-color: #f4f4f4; 
+    background-color: #F3F3F3; 
     z-index: 1;
   }
   

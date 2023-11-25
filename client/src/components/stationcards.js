@@ -50,6 +50,7 @@ function StationCard(props) {
               </tr>
             </table>
           </Card.Text>
+          
         </Card.Body>
       </Card>
     </>

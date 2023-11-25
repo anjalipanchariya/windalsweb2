@@ -185,10 +185,13 @@ const FirstStation = () => {
     console.log({"workAtStationInDay":workAtStationInDay});
     return (
         
-        <div className="firststat">
+        <>
             <WindalsNav/>
             <Toaster position="top-center" reverseOrder={false}></Toaster>
             {/* <button onClick={()=>{logout()}}>Log Out</button> */}
+
+            <div className="firststat">
+            <h1>First Station</h1>
             <label>Select a Station: </label>
             <select value={stationName} onChange={(e) => handleStationSelection(e.target)}>
                 <option value="" data-index={-1}>Select a station</option>
@@ -207,7 +210,7 @@ const FirstStation = () => {
                   </option>
                 ))}
               </select>
-            <h1>First Station</h1>
+            
             <hr />
             <div className='fslist'>
             <h4>Station Name : {stationName}</h4>
@@ -224,7 +227,7 @@ const FirstStation = () => {
                     value={formik.values.job_name}
                     name="job_name"
                     onChange={formik.handleChange}
-                    style={{width: '20%'}}
+                    style={{width: '60%'}}
                 />
             </div>
             <br />
@@ -284,6 +287,7 @@ const FirstStation = () => {
             <br />
             <Footer/>
            </div>
+           </>
     );
 };
 
