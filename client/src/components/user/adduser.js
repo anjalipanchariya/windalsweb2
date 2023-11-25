@@ -131,13 +131,11 @@ function WorkerReg(){
             { formik.errors.joiningDate && formik.touched.joiningDate ? (
           <Alert variant="danger" className="error-message">{formik.errors.joiningDate}</Alert>
         ) : null}
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom:'2vh' }}>
-            <button type="submit" onClick={formik.handleSubmit}>Register</button>
-          </div>
           
-        </form>
-        <br />
+          
         
+        <br />
+        </form>
         <div className="checkbox-groups">
         <hr />
           <div className="checkbox-row">
@@ -210,7 +208,7 @@ function WorkerReg(){
           <br />
           <div className="checkbox-row">
           <h5>Shift Access - </h5>
-            {accessOptions.slice(18).map((option, index) => (
+            {accessOptions.slice(18,19).map((option, index) => (
               <div key={option} className="col-md-2">
                 <label className="checkbox-label">
                   <input
@@ -225,6 +223,11 @@ function WorkerReg(){
           </div>
           <br />
         </div>
+        
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom:'2vh' }}>
+            <button type="submit" onClick={formik.handleSubmit}>Register</button>
+          </div>
+          <br />
       </div>
       
       <br />

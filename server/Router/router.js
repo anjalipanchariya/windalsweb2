@@ -3,7 +3,7 @@ import { insertInProductMaster, getInfoFromProductMaster, deleteFromProductMaste
 import {insertIntoStationMaster,deleteFromStationMaster,getInfoFromStationMaster,getOneStationFromStationMaster,getOneStationOneProductFromStationMaster,updateStationMaster,getStationNamesFromStationMaster, getStationNamesForOneProduct,addNextStationInStationMaster,mobileGetOneStationOneProductFromStationMaster,getStationAndMachinesInfo} from "../Controllers/stationMasterController.js";
 import {insertInProductyyyy} from "../Controllers/productyyyyController.js";
 import {insertIntoEmployeeMaster,getAllFromEmployee,getOneFromEmployee,updateEmployeeMaster, deleteFromEmployeeMaster, resetPassword} from "../Controllers/employeeMasterController.js"
-import {insertInStationyyyyFirst, insertInStationyyyyFirstNextStation,updateInStationyyyy,jobsAtStation,countOfWorkAtStation,workAtStationInDay,getJobesSubmitedAtStation,productReport,jobDetailsReport,insertInStationyyyySameStation,jobsAtReworkStation} from "../Controllers/stationyyyyController.js"
+import {insertInStationyyyyFirst, insertInStationyyyyFirstNextStation,updateInStationyyyy,jobsAtStation,countOfWorkAtStation,workAtStationInDay,getJobesSubmitedAtStation,productReport,jobDetailsReport,insertInStationyyyySameStation,jobsAtReworkStation,updateInStationyyyyrework,undoJobs} from "../Controllers/stationyyyyController.js"
 import { login,getNamesFromEmployeeMaster } from "../Controllers/employeeMasterController.js";
 import {getOneWorkerStation, insertIntoStationAllocation,getStationAllocated} from "../Controllers/stationAllocationController.js"
 import {getAllFromShiftConfig,insertIntoShiftConfig,deleteFromShiftConfig,updateShiftConfig,getActiveShiftNames,getCurrentShift} from "../Controllers/shiftConfigController.js";
@@ -32,6 +32,7 @@ router.route("/StationyyyyInsertSameStation").post(insertInStationyyyySameStatio
 router.route("/ShiftConfigInsert").post(auth,insertIntoShiftConfig)
 router.route("/loginLogInsert").post(insertInLoginLog)
 router.route("/MachineMasterGetMachine").post(getMachineDataForStation)
+router.route("/UndoJobsinStation").post(undoJobs)
 
 
 
@@ -89,6 +90,7 @@ router.route('/StationMasterUpdate').put(auth,updateStationMaster)
 router.route('/EmployeeMasterUpdate').put(auth,updateEmployeeMaster)
 router.route('/StationMasterAddNextStation').put(auth,addNextStationInStationMaster)
 router.route('/Stationyyyyupdate').put(updateInStationyyyy)
+router.route('/StationyyyyupdateRework').put(updateInStationyyyyrework)
 router.route("/ShiftConfigUpdate").put(auth,updateShiftConfig)
 router.route('/ResetPassword').put(auth,resetPassword)
 

@@ -41,7 +41,10 @@
 
 
 .product-table {
- 
+  display: block;
+  overflow-x: auto;
+  width: 90%;
+  /* margin-left: 20vw; */
   border-collapse: collapse;
   table-layout: auto;
 }

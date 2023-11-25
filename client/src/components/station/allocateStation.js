@@ -240,13 +240,13 @@ function StationAllocation() {
                         </Button>
                     </Form>
                     <br />
-                    <Button onClick={fetchData}>
+                    {/* <Button onClick={fetchData}>
                         Fetchdata
-                    </Button>
+                    </Button> */}
                 </div>
                 
                 <div>
-                    <table className="table">
+                    <table className="table" style={{border:"1px solid #F3F3F3"}}>
                         <thead>
 
                         </thead>

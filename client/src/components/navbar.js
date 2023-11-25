@@ -100,7 +100,7 @@ function WindalsNav() {
           </Navbar.Collapse>
       </Navbar>
       <br />
-      <br />
+      {/* <br /> */}
       
     </>
   );

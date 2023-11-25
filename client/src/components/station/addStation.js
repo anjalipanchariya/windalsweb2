@@ -41,6 +41,7 @@ function AddStation() {
 
     const addFormFormik = useFormik({
         initialValues: {
+            process_number:'',
             stationName: '',
             productName: '',
             reportType: '',
@@ -51,6 +52,7 @@ function AddStation() {
         },
         // validationSchema: stationValidationSchema,
         onSubmit: async (values) => {
+            console.log(values)
             if(stationId==="")
             {
                 const addStationPromise = addStation(values)
@@ -173,6 +175,7 @@ function AddStation() {
                 }));
 
                 const updatedValues = {
+                    process_number:result.process_number,
                     stationName: result.station_name,
                     productName: result.product_name,
                     reportType: result.report === 1 ? "1" : "0",
@@ -286,6 +289,11 @@ function AddStation() {
                     <Form>
                         <h3>Add Station</h3>
                         <div className="station-name-id">
+                            <Form.Group className="mb-3" controlId="formBasicEmail">
+                                <Form.Control type="number" placeholder="Enter Process Number" value={addFormFormik.values.process_number} name="process_number" onChange={addFormFormik.handleChange} />
+                                {addFormFormik.errors.process_number && addFormFormik.touched.process_number ? (
+                                    <Alert variant="danger" className="error-message">{addFormFormik.errors.process_number}</Alert>) : null}
+                            </Form.Group>
                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                 <Form.Control type="text" placeholder="Enter Station Name" value={addFormFormik.values.stationName} name="stationName" onChange={addFormFormik.handleChange} />
                                 {addFormFormik.errors.stationName && addFormFormik.touched.stationName ? (
