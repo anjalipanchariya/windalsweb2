@@ -318,4 +318,43 @@ async function jobDetailsReport(req,res){
 
 } 
 
-export {insertInStationyyyyFirst, insertInStationyyyyFirstNextStation,updateInStationyyyy, jobsAtStation,countOfWorkAtStation,workAtStationInDay,getJobesSubmitedAtStation,productReport,jobDetailsReport,jobsAtReworkStation,insertInStationyyyySameStation,updateInStationyyyyrework};
+async function undoJobs(req, res) {
+    const { station_id,product_name, job_id, status  } = req.body
+    //dont use req.query.values it create problem in mobile app
+    try {
+        if(status===1){
+            const selectNextStationNameQuery = "SELECT next_station_name FROM station_master WHERE station_id=? AND product_name=?"
+            const [selectNextStationNameResult] = await db.promise().query(selectNextStationNameQuery,[station_id,product_name])
+
+            const nextEntryQuery = "SELECT * FROM station_yyyy WHERE station_id = (select station_id from station_master where product_name=? and station_name=? ) AND product_name=? and job_id=? and employee_id is null and status is null; "
+            const [nextEntryResut] = await db.promise().query(nextEntryQuery,[product_name,selectNextStationNameResult[0].next_station_name,product_name, job_id])
+
+            if(nextEntryResut.length===0){
+                res.status(204).send({ msg: `Undo is not possible` })
+            }
+            else if(nextEntryResut.length===1){
+                const deletenextEntryQuery = "DELETE FROM station_yyyy WHERE station_id = (select station_id from station_master where product_name=? and station_name=? ) AND product_name=? and job_id=? and employee_id is null and status is null;"
+                const [deletenextEntryResult] = await db.promise().query(deletenextEntryQuery,[product_name,selectNextStationNameResult[0].next_station_name,product_name, job_id])
+                
+
+                const updateQuery = "UPDATE station_yyyy SET employee_id = null, status = null, parameters = null ,out_time= null, machine_id=null WHERE (status= 1) and (station_id = ?) and (product_name = ?) and (job_id = ?);";
+                const [updateResult] = await db.promise().query(updateQuery, [station_id,product_name, job_id]);
+
+            }
+        }
+        else if(status===-1){
+            const updateQuery = "UPDATE station_yyyy SET employee_id = null, status = null, parameters = null ,out_time= null, machine_id=null WHERE (status= -1) and (station_id = ?) and (product_name = ?) and (job_id = ?);";
+                const [updateResult] = await db.promise().query(updateQuery, [station_id,product_name, job_id]);
+        }
+        
+
+        
+        res.status(201).send({ msg: `Undo done` })
+
+    } catch (err) {
+        console.error("Database error:", err);
+        res.status(500).send({ msg: `Internal server error: ${err}` });
+    }
+}
+
+export {insertInStationyyyyFirst, insertInStationyyyyFirstNextStation,updateInStationyyyy, jobsAtStation,countOfWorkAtStation,workAtStationInDay,getJobesSubmitedAtStation,productReport,jobDetailsReport,jobsAtReworkStation,insertInStationyyyySameStation,updateInStationyyyyrework,undoJobs};
