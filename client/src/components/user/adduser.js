@@ -208,7 +208,7 @@ function WorkerReg(){
           <br />
           <div className="checkbox-row">
           <h5>Shift Access - </h5>
-            {accessOptions.slice(18).map((option, index) => (
+            {accessOptions.slice(18,19).map((option, index) => (
               <div key={option} className="col-md-2">
                 <label className="checkbox-label">
                   <input
