@@ -46,3 +46,14 @@
     font-weight:600;
 }
 
+.adminbtn{
+    z-index: 1;
+    position: absolute;
+    top: 92%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(230, 230, 230);
+    font-weight:600;
+    
+}
+
