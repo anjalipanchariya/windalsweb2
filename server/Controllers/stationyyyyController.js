@@ -66,7 +66,7 @@ async function updateInStationyyyy(req,res){
         const [selectResultJob] = await db.promise().query(searchQueryJob,[job_name,product_name])
         const job_id=selectResultJob[0]["job_id"];
         // console.log(job_id)
-
+        console.log(status);
 
         // const searchQueryNextStation = "SELECT station_id FROM station_master WHERE station_name=(select next_station_name from station_master where station_id=?) "
         // const [selectResultNextStation] = await db.promise().query(searchQueryNextStation,[station_id])

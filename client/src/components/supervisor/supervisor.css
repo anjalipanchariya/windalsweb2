@@ -1,6 +1,7 @@
 .superv{
     margin-top: 12vh;
-   
+    display: flex;
+    flex-direction: column;
     
 }
 
@@ -13,7 +14,7 @@
 }
 
 .svdash{
-    display: flex;
+   margin:2vw
 }
 
 .leftmenu{

@@ -49,6 +49,8 @@ const StationPage = () => {
   const [selectedStation,setSelectedStation] = useState("")
   const navigate = useNavigate()
 
+
+  
   const formik = useFormik({
     initialValues: {
       selectedJob: null,
@@ -58,7 +60,7 @@ const StationPage = () => {
     },
     // validationSchema: validateYupSchema,
     onSubmit: (values) => {
-      console.log(values)
+      console.log({"this":values})
       const updateJobeAtStationPromise = updateJobesAtStation(values,stationOneProductInfo[0].station_id,employeeId,selectedMachine.machine_id)
       updateJobeAtStationPromise.then((result)=>{
         toast.success(result.msg)
@@ -69,7 +71,7 @@ const StationPage = () => {
             station_id:stationOneProductInfo[0].station_id,
             machine_id:selectedMachine.machine_id
           }
-          console.log({newValues:newValues});
+          // console.log({newValues:newValues});
           const insertInStationyyyyFirstNextStationPromise = insertInStationyyyyFirstNextStation(newValues)
           insertInStationyyyyFirstNextStationPromise.then((result)=>{
             toast.success(result.msg)
@@ -327,7 +329,7 @@ useEffect(() => {
     if(selectedIndex!==-1)
     {
       const selectedStation = stations[selectedIndex];
-      console.log(selectedStation);
+      // console.log(selectedStation);
       if(selectedStation.position===1)
       {
           navigate(`/FirstStation/${employeeData[0].employee_id}/${employeeData[0].user_name}/${selectedStation.station_name}`);
@@ -344,9 +346,9 @@ useEffect(() => {
       setSelectedMachine(selectedMachine);
     };
 
-  console.log({ jobsAtStation: jobsAtStation, stationOneProductInfo: stationOneProductInfo, stationAllInfo: stationAllInfo, formikvalues: formik.values, parameterNames: parameterNames, workAtStationInDay: workAtStationInDay });
-  console.log(parameterNames)
-  console.log(formik.values.parameterValues)
+  // console.log({ jobsAtStation: jobsAtStation, stationOneProductInfo: stationOneProductInfo, stationAllInfo: stationAllInfo, formikvalues: formik.values, parameterNames: parameterNames, workAtStationInDay: workAtStationInDay });
+  // console.log(parameterNames)
+  // console.log(formik.values.parameterValues)
   return (
     <div className="firststat">
       <WindalsNav />
