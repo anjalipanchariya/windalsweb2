@@ -98,16 +98,14 @@ function Admin() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {Array.isArray(workAtStationInDay) && workAtStationInDay.map((job, index) => (
-                                    <tr key={index}>
-                                        <td>{job.job_id}</td>
-                                        <td>{job.job_name}</td>
-                                        <td>{job.product_name}</td>
-                                        <td>{(job.status == 1) ? "OK" : "Not-Ok"}</td>
-                                        <td>{(job.reason != "" || job.reason != null) ? job.reason : "N.A"}</td>
-                                        <td>{(job.parameters != "" || job.parameters != null) ? job.parameters : "N.A"}</td>
-                                    </tr>
-                                ))}
+                                <tr>
+                                    <td>1</td>
+                                    <td>xyz</td>
+                                    <td>axel</td>
+                                    <td>done</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
                             </tbody>
                         </table>
                     </Modal.Body>
