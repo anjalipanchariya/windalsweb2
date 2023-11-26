@@ -36,10 +36,10 @@ function Supervisor() {
                          parameters:updatedRework[index].parameters,
                          machine_id:updatedRework[index].machine_id};
 
-                         const insertValues={product_name:updatedRework[index].product_name, 
-                                       station_id:updatedRework[index].station_id, 
-                                       job_name:updatedRework[index].job_name,
-                                       machine_id:updatedRework[index].machine_id};
+         const insertValues={product_name:updatedRework[index].product_name, 
+                            station_id:updatedRework[index].station_id, 
+                            job_name:updatedRework[index].job_name,
+                            machine_id:updatedRework[index].machine_id};
         console.log({buttonType:buttonType})
         if (buttonType === "ok") {
           newValues.status = 2;
@@ -60,8 +60,7 @@ function Supervisor() {
             toast.error(err.msg)
           })
           
-          
-        
+          setRework(updatedRework.filter((item, i) => i !== index));
         } else if (buttonType === "notOk") {
           newValues.status = -2;
          
@@ -75,6 +74,8 @@ function Supervisor() {
             .catch((error) => {
               toast.error(error.msg);
             });
+
+            setRework(updatedRework.filter((item, i) => i !== index));
         } else if (buttonType === "rework") {
           newValues.status = -3;
 
@@ -87,8 +88,9 @@ function Supervisor() {
             .catch((error) => {
               toast.error(error.msg);
             });
+            setRework(updatedRework.filter((item, i) => i !== index));
         }
-  
+        
       };
     
     return (

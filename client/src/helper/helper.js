@@ -361,19 +361,20 @@ export async function updateJobesAtStation(values,stationId,employeeId,machine_i
 export async function updateJobsfromSupervisorDash(values){
     
     
-    const newValues = {
-        product_name:values.product_name,
-        job_name:values.job_name,
-        status:values.status,
-        parameters:values.parameters,
-        station_id:values.stationId,
-        employee_id:values.employeeId,
-        machine_id:values.machine_id
-    }
-    console.log({"newValues":newValues});
+    // const newValues = {
+    //     product_name:values.product_name,
+    //     job_name:values.job_name,
+    //     status:values.status,
+    //     parameters:values.parameters,
+    //     station_id:values.stationId,
+    //     employee_id:values.employeeId,
+    //     machine_id:values.machine_id
+    // }
+    // console.log({"newValues":newValues});
+    console.log(values);
     try {
        
-        const {data,status} = await axios.put(`${proxy}api/Stationyyyyupdate`,newValues)
+        const {data,status} = await axios.put(`${proxy}api/StationyyyyupdateRework`,values)
         return Promise.resolve(data)
     } catch (error) {
         return Promise.reject(error.response.data)
