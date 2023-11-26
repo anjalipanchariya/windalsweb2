@@ -1,5 +1,5 @@
 .superv{
-    margin-top: 12vh;
+    margin-top: 22vh;
     display: flex;
     flex-direction: column;
     
@@ -14,6 +14,9 @@
 }
 
 .svdash{
+    display: flex;
+    text-align: center;
+    justify-content: center;
    margin:2vw
 }
 

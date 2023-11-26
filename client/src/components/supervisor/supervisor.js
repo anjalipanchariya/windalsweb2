@@ -100,7 +100,7 @@ function Supervisor() {
                 <div className="superv">
                     <h1>Supervisor Dashboard</h1>
                     <div className="svdash">
-                    <Table responsive>
+                    <table className="product-table" style={{width:"50%"}}>
                         <thead>
                             <tr>
                             <th>#</th>
@@ -139,7 +139,7 @@ function Supervisor() {
                                 ))}
                             
                         </tbody>
-                        </Table>
+                        </table>
 
                     </div>
 

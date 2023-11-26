@@ -88,6 +88,10 @@ function WindalsNav() {
               <Nav.Link href={`/${userName}/LoginLog`}>Login</Nav.Link>
               {/* <Nav.Link href={`/${userName}/LoginLog`}>Login Logs</Nav.Link> */}
               </NavDropdown>
+              <NavDropdown title="Supervisor Configuration" id="basic-nav-dropdown" style={{marginRight:12}}>
+              <Nav.Link href={`/${userName}/SupervisorDash`}>Supervisor Dashboard</Nav.Link> 
+              {/* <Nav.Link href={`/${userName}/SupervisorAllocation`}>Supervisor Allocation</Nav.Link> */}
+              </NavDropdown>
             </Nav>
           </div>
           <div class="nav navbar-nav navbar-right" style={{marginRight:20}}>

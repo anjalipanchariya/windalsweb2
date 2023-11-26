@@ -116,7 +116,7 @@ const AddProduct = () => {
         
         {/* <Button className="save-button" onClick={formik.handleSubmit}>Save</Button> */}
       </div>
-       <br />  
+        
 
 
     { formik.values.parameters.length>0 ? 

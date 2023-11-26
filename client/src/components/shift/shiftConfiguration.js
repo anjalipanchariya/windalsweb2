@@ -347,7 +347,7 @@ function ShiftConfiguration() {
             </Button>
           </Form>
         </div>
-        <br />
+        {/* <br /> */}
 
 
 
@@ -409,11 +409,11 @@ function ShiftConfiguration() {
 
         </div>
       </div>
+      {/* <br />
       <br />
       <br />
       <br />
-      <br />
-      <br />
+      <br /> */}
 
       <div>
         <Modal

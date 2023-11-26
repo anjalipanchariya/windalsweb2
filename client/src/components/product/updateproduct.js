@@ -357,7 +357,7 @@ function UpdateProduct() {
             </table>
             <br />
 
-            <p style={{ textAlign: 'center', fontWeight:'bold', fontSize:'1.4rem' }}>
+            <p style={{ textAlign: 'center', fontWeight:'bold', fontSize:'1.4rem',marginTop:'10px' }}>
                 New parameter
             </p>
 

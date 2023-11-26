@@ -12,7 +12,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 10vh;
+  margin-top: 16vh;
 }
   
   .input-box {
@@ -21,12 +21,8 @@
     justify-content: center;
     margin: 10px; 
     padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f4f4f4;
     align-items: center;
-    /* margin-left: 22vw; */
-    margin-top: 15vh;
+   
   }
   
  
