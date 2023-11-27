@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const proxy = "http://103.97.164.116:8080/"
+const proxy = "http://127.0.0.1:8080/"
 
 export async function addProduct(values){
     try {
