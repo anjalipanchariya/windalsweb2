@@ -17,9 +17,9 @@ function WindalsNav() {
   const [workerAccess,setWorkerAccess] = useState("")
   const navigate = useNavigate()
 
-  const accessOptions = [ "0-AddUser", "1-ViewUser", "2-DeleteUser", "3-UpdateUser", "4-AddProduct", "5-VeiwProduct", "6-DeleteProduct", "7-UpdateProduct",
-  "8-AddStation", "9-ViewStation", "10-DeleteStation", "11-UpdateStation", "12-AllocateNextStation", "13-UpdateNextStationAllocated", 
-  "14-DeleteNextStationAllocated", "15-ViewNextStationAllocated", "16-AllocateStationToWorker", "17-ViewStationAllocatedToWorker","18-ShiftConfig"] 
+  const accessOptions = [ "0-ViewUser", "1-AddUser", "2-UpdateUser", "3-DeleteUser", "4-ViewProduct", "5-AddProduct", "6-UpdateProduct", "7-DeleteProduct",
+  "8-ViewStation", "9-AddStation", "10-UpdateStation", "11-DeleteStation", "12-AllocateStationToWorker", "13-AllocateNextStation", 
+  "14-ViewShifs", "15-AddShifts", "16-UpdateShifts", "17-DeleteShifts","18-Supervisor","19-AdminPanel"] 
  
   useEffect(()=>{
     const getWorkerDataPromise = getOneEmployee(userName)
@@ -33,9 +33,7 @@ function WindalsNav() {
   },[])
 
   const redirectToHome = () => {
-    if(userName==="admin"){
-      navigate(`/${userName}/AdminPanel`,{ replace: true })
-    }
+    navigate(`/${userName}/LandingPage`)
   }
 
   // console.log({workerAccess:workerAccess,userName:userName});
@@ -51,8 +49,8 @@ function WindalsNav() {
           <div class="col">
           <Nav className="me-auto">
               <NavDropdown title="User Configuration" id="basic-nav-dropdown" style={{marginRight:12}}>
-              {workerAccess[1] === 1 && <NavDropdown.Item as={Link} to={`/${userName}/ViewUser`}>View</NavDropdown.Item>}
-                {workerAccess[0] === 1 && <NavDropdown.Item as={Link} to={`/${userName}/AddUser`}>Add</NavDropdown.Item>}
+              {workerAccess[0] === 1 && <NavDropdown.Item as={Link} to={`/${userName}/ViewUser`}>View</NavDropdown.Item>}
+                {workerAccess[1] === 1 && <NavDropdown.Item as={Link} to={`/${userName}/AddUser`}>Add</NavDropdown.Item>}
                 {(workerAccess[2] === 1 || workerAccess[3] === 1) && <NavDropdown.Item as={Link} to={`/${userName}/UpdateAndDeleteUser`}>Update</NavDropdown.Item>}
                 {(workerAccess[2] === 1 || workerAccess[3] === 1) && <NavDropdown.Item as={Link} to={`/${userName}/UpdateAndDeleteUser`}>Delete</NavDropdown.Item>}
               </NavDropdown>

@@ -12,9 +12,9 @@ import Footer from '../footer';
 function WorkerReg(){
   const today = new Date();
    
-  const accessOptions = [ "Add User", "View User", "Delete User", "Modify User", "Add Product", "View Product", "Delete Product", "Modify Product",
-   "Add Station", "View Station", "Delete Station", "Modify Station", "Allocate Next Station for Product", "Update Next Station Allocated for Product", 
-  "Delete Next Station Allocated for Product", "View Next Station Allocated for Product", "Allocate Station to Worker", "View Station allocated to worker","Configure Shift"] 
+  const accessOptions = ["View User", "Add User", "Update User", " Delete User", " View Product", "Add Product", "Update Product", "Delete Product",
+  "View Station", "Add Station", "Update Station", "Delete Station", "Allocate Station To Worker", "Allocate Next Station", 
+  "View Shifs", "Add Shifts", "Update Shifts", "Delete Shifts","Supervisor","Admin Panel"] 
   
   const [accessGiven, setAccessGiven] = useState(new Array(accessOptions.length).fill(false));
 
@@ -47,7 +47,7 @@ function WorkerReg(){
       designation:"",
       joiningDate:today.toISOString().substring(0, 10), // Set the initial value to the current date
       mobileNo:"",
-      accessGiven: "000000000000000000"
+      accessGiven: "0000000000000000000"
     },
     validationSchema:userValidationSchema,
     validateOnBlur:false,
@@ -76,6 +76,7 @@ function WorkerReg(){
     setAccessGiven(updatedAccess);
   }
   
+  console.log({accessGiven:accessGiven});
   return(
 
         <div>
@@ -193,7 +194,7 @@ function WorkerReg(){
           <br />
           <div className="checkbox-row">
           <h5>Allocation Access - </h5>
-            {accessOptions.slice(12,18).map((option, index) => (
+            {accessOptions.slice(12,14).map((option, index) => (
               <div key={option} className="col-md-2">
                 <label className="checkbox-label">
                   <input
@@ -210,7 +211,25 @@ function WorkerReg(){
           <br />
           <div className="checkbox-row">
           <h5>Shift Access - </h5>
-            {accessOptions.slice(18).map((option, index) => (
+            {accessOptions.slice(14,18).map((option, index) => (
+              <div key={option} className="col-md-2">
+                <label className="checkbox-label">
+                  <input
+                    type="checkbox"
+                    checked={accessGiven[index + 14]}
+                    onChange={() => handleAccessOptionCheck(index + 14)}
+                  />
+                  {option}
+                </label>
+              </div>
+            ))}
+          </div>
+          <br />
+          <hr />
+          <br />
+          <div className="checkbox-row">
+          <h5>Extra</h5>
+            {accessOptions.slice(18,20).map((option, index) => (
               <div key={option} className="col-md-2">
                 <label className="checkbox-label">
                   <input

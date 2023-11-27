@@ -23,9 +23,9 @@ function DeleteUser() {
     confirmNewPassword: ""
   })
 
-  const accessOptions = [ "Add User", "View User", "Delete User", "Modify User", "Add Product", "Veiw Product", "Delete Product", "Modify Product",
-   "Add Station", "View Station", "Delete Station", "Modify Station", "Allocate Next Station for Product", "Update Next Station Allocated for Product", 
-  "Delete Next Station Allocated for Product", "View Next Station Allocated for Product", "Allocate Station to Worker", "View Station allocated to worker","Configure Shift"] 
+  const accessOptions = ["View User", "Add User", "Update User", " Delete User", " View Product", "Add Product", "Update Product", "Delete Product",
+  "View Station", "Add Station", "Update Station", "Delete Station", "Allocate Station To Worker", "Allocate Next Station", 
+  "View Shifs", "Add Shifts", "Update Shifts", "Delete Shifts","Supervisor","Admin Panel"] 
   
   const [accessGiven, setAccessGiven] = useState(new Array(accessOptions.length).fill(false));
 
@@ -49,7 +49,7 @@ function DeleteUser() {
       designation:"",
       joiningDate:"",
       mobileNo:"",
-      accessGiven:""
+      accessGiven:"0000000000000000000"
     },
     validationSchema:validationSchema,
     onSubmit:(values)=>{

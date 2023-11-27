@@ -44,7 +44,7 @@ const StationPage = () => {
   const [selectedMachine,setSelectedMachine] = useState("")
   const [selectedStation,setSelectedStation] = useState("")
   const navigate = useNavigate()
-
+  // console.log({stationOneProductInfo:stationOneProductInfo,jobsAtStation:jobs});
   const formik = useFormik({
     initialValues:{
       selectedJob:null,
