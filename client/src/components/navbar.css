@@ -5,4 +5,8 @@
   }
   
 
- 
+  @media (min-width: 1400px) {
+    .navbar-expand-lg .navbar-toggler {
+      display: block;
+    }
+  }

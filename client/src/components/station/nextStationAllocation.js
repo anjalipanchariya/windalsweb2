@@ -128,7 +128,7 @@ function NextStationAllocation() {
                     {formik.errors.productName && formik.touched.productName ? (
                         <Alert variant="danger" className="error-message">{formik.errors.productName}</Alert>
                     ) : null}
-                    <br />
+                    {/* <br /> */}
 
                     <div style={{ display: 'flex', flexDirection: 'row' }}>
                         <div className="nextstatselect">
@@ -223,10 +223,10 @@ function NextStationAllocation() {
                         </table>
                     </div>
                 )}
-                <br />
-                <button onClick={formik.handleSubmit}>Save configuration</button>
+                {/* <br /> */}
+                <button onClick={formik.handleSubmit} style={{marginTop:'25px'}}>Save configuration</button>
             </div>
-            <br />
+            {/* <br /> */}
 
             <Footer />
         </>

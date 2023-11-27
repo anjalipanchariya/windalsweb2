@@ -301,9 +301,9 @@ function DeleteUser() {
                       }</td>
                 </tr>
                 <tr>
-                  <th>Edit</th>
+                  <th>Submit updated changes</th>
                   <td><button className="delete-button" onClick={formik.handleSubmit} >
-                        <FontAwesomeIcon icon={faEdit} />
+                        Submit
                       </button></td>
                 </tr>
                 <tr>

@@ -9,11 +9,17 @@ function ViewProduct() { // Changed the function name to start with an uppercase
   const [products, setProducts] = useState([]);
 
   const columns = [
-    { field: 'id', label: 'ID' },
+    
     { field: 'product_name', label: 'Product Name' },
     { field: 'parameter', label: 'Parameter' },
     { field: 'min_parameter', label: 'Min Parameter' },
     { field: 'max_parameter', label: 'Max Parameter' },
+    { field: 'unit', label: 'Unit' },
+    { field: 'evaluation', label: 'Evaluation Technique' },
+    { field: 'sample_size', label: 'Sample Size' },
+    { field: 'compulsory', label: 'Compulsory' },
+    { field: 'value_oknotok', label: 'Paramete Status' }
+
   ];
   
   useEffect(() => {

@@ -290,8 +290,19 @@ export async function insertInStationyyyyFirst(values){
 }
 
 export async function insertInStationyyyyFirstNextStation(values){
+    console.log({"this":values});
     try {
         const {data,status} = await axios.post(`${proxy}api/StationyyyyInsertFirstNextStation`,values)
+        return Promise.resolve(data)
+    } catch (error) {
+        return Promise.reject(error.response.data)
+    }
+}
+
+export async function insertInStationyyyySameStation(values){
+    console.log({"this":values});
+    try {
+        const {data,status} = await axios.post(`${proxy}api/StationyyyyInsertSameStation`,values)
         return Promise.resolve(data)
     } catch (error) {
         return Promise.reject(error.response.data)
@@ -307,9 +318,9 @@ export async function getJobesAtStation(stationId,productName){
     }
 }
 
-export async function updateJobesAtStation(values,stationId,employeeId){
+export async function updateJobesAtStation(values,stationId,employeeId,machine_id){
     let formattedString = '';
-    
+    // console.log(":test");
     if (values.reason!=="") {
         // Append the reason to the string if it exists
          if(values.status == -1){
@@ -344,11 +355,36 @@ export async function updateJobesAtStation(values,stationId,employeeId){
         status:values.status,
         parameters:formattedString,
         station_id:stationId,
-        employee_id:employeeId
+        employee_id:employeeId,
+        machine_id:machine_id
     }
-    console.log({newValues:newValues});
+    console.log({"newValues":newValues});
     try {
+       
         const {data,status} = await axios.put(`${proxy}api/Stationyyyyupdate`,newValues)
+        return Promise.resolve(data)
+    } catch (error) {
+        return Promise.reject(error.response.data)
+    }
+}
+
+export async function updateJobsfromSupervisorDash(values){
+    
+    
+    // const newValues = {
+    //     product_name:values.product_name,
+    //     job_name:values.job_name,
+    //     status:values.status,
+    //     parameters:values.parameters,
+    //     station_id:values.stationId,
+    //     employee_id:values.employeeId,
+    //     machine_id:values.machine_id
+    // }
+    // console.log({"newValues":newValues});
+    console.log(values);
+    try {
+       
+        const {data,status} = await axios.put(`${proxy}api/StationyyyyupdateRework`,values)
         return Promise.resolve(data)
     } catch (error) {
         return Promise.reject(error.response.data)
@@ -543,6 +579,17 @@ export async function getInfoFromStationMasterWithMachine(){
     }
 }
 
+export async function getParameterStatus(parameterName,product_name){
+    try {
+        
+        const {data,status} = await axios.post(`${proxy}api/GetParameterStatus`,{parameterName:parameterName,product_name:product_name})
+        return Promise.resolve(data)
+    } catch (error) {
+        console.log({err:error})
+        return Promise.reject(error.response.data)
+    }
+}
+
 
 export async function getOneWorkerStation(employeeId,shift){
     // const token = localStorage.getItem("token")
@@ -563,6 +610,16 @@ export async function deleteMachine(machineId){
     try {
         const token = localStorage.getItem("token")
         const {data,status} = await axios.delete(`${proxy}api/MachineMasterDelete`,{params:{machineId},headers:{"Authorization":`Bearer ${token}`}})
+        return Promise.resolve(data)
+    } catch (error) {
+        console.log({err:error})
+        return Promise.reject(error.response.data)
+    }
+}
+
+export async function getStationRework(values){
+    try {
+        const {data,status} = await axios.get(`${proxy}api/StationyyyyReworkJob`)
         return Promise.resolve(data)
     } catch (error) {
         console.log({err:error})

@@ -39,7 +39,7 @@ function WindalsNav() {
   // console.log({workerAccess:workerAccess,userName:userName});
   return (
     <>
-      <Navbar expand="lg" className="bg-body-tertiary fixed-top">
+      <Navbar expand="lg" className="bg-body-tertiary fixed-top" style={{width:'100%'}}>
           <div class="col" style={{ marginLeft: 5 }} >
           <button type='button' style={{backgroundColor:'white'}} onClick={redirectToHome}><img src={logo} alt='' style={{ height: 40, width: 50 }} /></button>
           <Navbar.Brand>Windals Precision Ltd.</Navbar.Brand>
@@ -55,14 +55,14 @@ function WindalsNav() {
                 {(workerAccess[2] === 1 || workerAccess[3] === 1) && <NavDropdown.Item as={Link} to={`/${userName}/UpdateAndDeleteUser`}>Delete</NavDropdown.Item>}
               </NavDropdown>
 
-              <NavDropdown title="Product Configuration" id="basic-nav-dropdown" style={{marginRight:12}}>
+              <NavDropdown title="Product Configuration" id="basic-nav-dropdown" style={{marginRight:4}}>
                 {workerAccess[4] === 1 && <NavDropdown.Item as={Link} to={`/${userName}/ViewProduct`}>View</NavDropdown.Item>}
                 {workerAccess[4] === 1 && <NavDropdown.Item as={Link} to={`/${userName}/AddProduct`}>Add</NavDropdown.Item>}
                 {workerAccess[4] === 1 && <NavDropdown.Item as={Link} to={`/${userName}/UpdateProduct`}>Update</NavDropdown.Item>}
                   {(workerAccess[6] === 1 || workerAccess[7] === 1) && <NavDropdown.Item as={Link} to={`/${userName}/UpdateProduct`}>Delete</NavDropdown.Item>}
               </NavDropdown>
 
-              <NavDropdown title="Station Configuration" id="basic-nav-dropdown" style={{marginRight:12}}>
+              <NavDropdown title="Station Configuration" id="basic-nav-dropdown" style={{marginRight:4}}>
               {workerAccess[9] === 1 && <NavDropdown.Item as={Link} to={`/${userName}/ViewStation`}>View</NavDropdown.Item>}
                 
                 {(workerAccess[8] === 1 || workerAccess[10] === 1 || workerAccess[11] === 1) && <NavDropdown.Item as={Link} to={`/${userName}/Add`}>Add</NavDropdown.Item>}
@@ -74,17 +74,21 @@ function WindalsNav() {
                 {workerAccess[12] === 1 && <NavDropdown.Item as={Link} to={`/${userName}/AllocateNextStation`}>Allocate Next Station</NavDropdown.Item>}
               </NavDropdown>
 
-              <NavDropdown title="Shift Configuration" id="basic-nav-dropdown" style={{marginRight:12}}>
+              <NavDropdown title="Shift Configuration" id="basic-nav-dropdown" style={{marginRight:4}}>
               {workerAccess[18] === 1 && <Nav.Link href={`/${userName}/ViewShifts`}>View</Nav.Link>} 
               {workerAccess[18] === 1 && <Nav.Link href={`/${userName}/ShiftConfig`}>Add</Nav.Link>} 
               {workerAccess[18] === 1 && <Nav.Link href={`/${userName}/ShiftConfig`}>Update</Nav.Link>} 
               {workerAccess[18] === 1 && <Nav.Link href={`/${userName}/ShiftConfig`}>Delete</Nav.Link>} 
               </NavDropdown>
-              <NavDropdown title="Reports" id="basic-nav-dropdown" style={{marginRight:12}}>
+              <NavDropdown title="Reports" id="basic-nav-dropdown" style={{marginRight:4}}>
               <Nav.Link href={`/${userName}/ProductReport`}>Product</Nav.Link> 
               <Nav.Link href={`/${userName}/JobReport`}>Job</Nav.Link>
               <Nav.Link href={`/${userName}/LoginLog`}>Login</Nav.Link>
               {/* <Nav.Link href={`/${userName}/LoginLog`}>Login Logs</Nav.Link> */}
+              </NavDropdown>
+              <NavDropdown title="Supervisor Configuration" id="basic-nav-dropdown" style={{marginRight:4}}>
+              <Nav.Link href={`/${userName}/SupervisorDash`}>Supervisor Dashboard</Nav.Link> 
+              {/* <Nav.Link href={`/${userName}/SupervisorAllocation`}>Supervisor Allocation</Nav.Link> */}
               </NavDropdown>
             </Nav>
           </div>
@@ -98,7 +102,7 @@ function WindalsNav() {
           </Navbar.Collapse>
       </Navbar>
       <br />
-      <br />
+      {/* <br /> */}
       
     </>
   );

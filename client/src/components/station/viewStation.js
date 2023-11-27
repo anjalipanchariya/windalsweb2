@@ -9,8 +9,8 @@ import Footer from '../footer';
 function ViewStation() {
   const [stations, setStations] = useState([]);
   const columns = [
-    // { field: 'station_id', label: 'Station ID' },
-    { field: 'station_name', label: 'Station Name' },
+    { field: 'process_number', label: 'Process Number' },
+    { field: 'station_name', label: 'Process Name' },
     { field: 'product_name', label: 'Product Name' },
     { field: 'report', label: 'Report' },
     { field: 'station_parameters', label: 'Station Parameters' },

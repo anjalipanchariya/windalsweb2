@@ -16,10 +16,12 @@
 
 .product-input {
   max-width: 300px;
+  margin-bottom: 15px;
 }
 
 .parameter-buttons {
   margin-top: 10px;
+  margin-bottom: 10px;
   display: flex;
   justify-content: center;
   gap: 10px;
@@ -41,9 +43,13 @@
 
 
 .product-table {
- 
+  display: block;
+  overflow-x: auto;
+  width: 90%;
+  /* margin-left: 20vw; */
   border-collapse: collapse;
   table-layout: auto;
+  margin-bottom: 20px;
 }
 
 .product-table th,

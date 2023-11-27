@@ -1,20 +1,33 @@
 .first_table {
-    width:20%;
+    width:108%;
     text-align: center;
-    margin-left: 600px;
+    
 }
 
+.jobsub{
+    margin-bottom: 11vh;
+}
 .fslist{
     display: flex;
     
 }
+
 
 .fslist h3{
     margin: 30px;
 }
 
 
-
+.reasonmodal{
+    margin-top: 20vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 50%;
+    background-color: rgb(187, 187, 187);
+}
 @media (max-width: 768px) {
     .first_table {
         width:40%;

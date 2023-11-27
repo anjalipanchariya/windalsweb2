@@ -1,5 +1,4 @@
 import db from "../Database/connection.js";
-//1-parameter 0-ok/notok 1-complusory 0-not complusory
 
 async function insertInProductMaster(req,res){
     const { productName, parameters } = req.body;
@@ -15,11 +14,11 @@ async function insertInProductMaster(req,res){
         }       
         else
         {
-            const insertQuery = "INSERT INTO product_master (product_name, parameter, min_parameter, max_parameter, unit,value_oknotok, compulsory) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            const insertQuery = "INSERT INTO product_master (product_name, parameter, min_parameter, max_parameter, unit,evaluation,sample_size,value_oknotok, compulsory) VALUES (?, ?, ?, ?, ?, ?, ?,?,?)";
             for(const parameter of parameters)
             {
-                const {parameterName,minVal,maxVal,unit,unitPresent,parameterStatus} = parameter
-                const [insertResult] = await db.promise().query(insertQuery, [productName, parameterName, minVal, maxVal, unit,parameterStatus,unitPresent]);
+                const {parameterName,minVal,maxVal,unit,evaluation,sample_size,unitPresent,parameterStatus} = parameter
+                const [insertResult] = await db.promise().query(insertQuery, [productName, parameterName, minVal, maxVal, unit,evaluation,sample_size,parameterStatus,unitPresent]);
             }
             res.status(201).send({ msg: "Record inserted successfully"});
         }
@@ -69,22 +68,20 @@ async function insertInProductMaster(req,res){
     }
 }
 
- async function updateProductMaster(req,res){
+async function updateProductMaster(req,res){
     // const { productId, updatedFields } = req.body;
     const {productName,parameters} = req.body
+    console.log(req.body);
     try {
-        const updateQuery = "UPDATE product_master SET max_parameter = ?, min_parameter = ?, unit = ? ,value_oknotok =? , compulsory=? WHERE product_name = ? "
-        const updateData = []
+        const updateQuery = "UPDATE product_master SET parameter=?, min_parameter=?, max_parameter=?, unit=?,evaluation=?,sample_size=?,value_oknotok=?, compulsory=? WHERE id = ? "
+        
         for(const parameter of parameters)
         {
-            const {id,maxVal,minVal,unit,unitPresent,parameterStatus} = parameter
-            const updateResult = await db.promise().query(updateQuery,[maxVal,minVal,unit,parameterStatus,unitPresent,productName])
-            updateData.push(updateResult)
+            const {parameterName,minVal,maxVal,unit,evaluation,sample_size,unitPresent,parameterStatus,id} = parameter
+            const updateResult = await db.promise().query(updateQuery,[parameterName,minVal,maxVal,unit,evaluation,sample_size,unitPresent,parameterStatus,id])
+            
         }
-        if(updateData.length===0){
-            res.status(409).send({msg:"Server Error: Product not found"})
-            return
-        }
+        
         res.status(200).send({ msg: "Data updated successfully" });
     } catch (err) {
         console.error(`Database error: ${err}`);
@@ -133,4 +130,27 @@ async function getProductNames(req,res){
     }
 }
 
-export { insertInProductMaster, getInfoFromProductMaster, deleteFromProductMaster, updateProductMaster, getOneProductAllParametersInfoFromProductMaster, getOneProductOneParameterInfoFromProductMaster, getProductNames };
+async function getParameterStatus(req,res){
+    const {parameterName,product_name}=req.body
+    console.log(parameterName,product_name)
+    console.log(req.body)
+    console.log("hi")
+    try{
+        const response={'result':[]}
+        for(const para of parameterName){
+            var query = "SELECT value_oknotok FROM product_master where parameter=? and product_name=?;"
+            const [result] = await db.promise().query(query,[para,product_name]);
+           
+            const obj1={'parameter':para,'value_oknotok':result[0]['value_oknotok']}
+            response['result'].push(obj1)
+        }
+        
+        res.status(200).send(response)
+        
+    }catch(err){
+        console.error(`Database error: ${err}`);
+        res.status(500).send({msg:`Internal server error: ${err}`})
+    }
+}
+
+export { insertInProductMaster, getInfoFromProductMaster, deleteFromProductMaster, updateProductMaster, getOneProductAllParametersInfoFromProductMaster, getOneProductOneParameterInfoFromProductMaster, getProductNames,getParameterStatus };

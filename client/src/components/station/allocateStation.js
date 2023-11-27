@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button, Form,Alert } from 'react-bootstrap';
+import { Table, Button, Form, Alert } from 'react-bootstrap';
 import Select from 'react-select'
 import { useFormik } from "formik";
 import toast, { Toaster } from 'react-hot-toast';
@@ -65,18 +65,18 @@ function StationAllocation() {
     };
 
 
-    const allocateStationSchema= Yup.object().shape({
+    const allocateStationSchema = Yup.object().shape({
         date: Yup.string()
-        .test(
-          'is-present-or-future',
-          'Date must be in the present or future',
-          function (value) {
-            const currentDate = new Date().toISOString().substring(0, 10); // Get current date as a string in YYYY-MM-DD format
-            return !value || value >= currentDate;
-          }
-        )
-        .required('Date is required'),
-      shift: Yup.object().required('Shift is required'),
+            .test(
+                'is-present-or-future',
+                'Date must be in the present or future',
+                function (value) {
+                    const currentDate = new Date().toISOString().substring(0, 10); // Get current date as a string in YYYY-MM-DD format
+                    return !value || value >= currentDate;
+                }
+            )
+            .required('Date is required'),
+        shift: Yup.object().required('Shift is required'),
     })
 
     function fetchData() {
@@ -200,53 +200,96 @@ function StationAllocation() {
     // console.log({ availableWorkerNames: availableWorkerNames });
     return (
         <>
-        <WindalsNav/>
+            <WindalsNav />
             <Toaster position="top-center" reverseOrder={false}></Toaster>
 
             <div className="allocstat">
                 <div className="input-box">
-                <Form onSubmit={formik.handleSubmit}>
-                    <Form.Group controlId="date">
-                        <Form.Label>Date:</Form.Label>
-                        <Form.Control
-                            type="date"
-                            name="date"
-                            onChange={formik.handleChange}
-                            value={formik.values.date}
-                        />
-                        {formik.touched.date && formik.errors.date && (
-                            <Alert variant="danger" className="error-message">{formik.errors.date}</Alert>
-                        )}
-                    </Form.Group>
+                    <Form onSubmit={formik.handleSubmit}>
+                        <Form.Group controlId="date">
+                            <Form.Label>Date:</Form.Label>
+                            <Form.Control
+                                type="date"
+                                name="date"
+                                onChange={formik.handleChange}
+                                value={formik.values.date}
+                            />
+                            {formik.touched.date && formik.errors.date && (
+                                <Alert variant="danger" className="error-message">{formik.errors.date}</Alert>
+                            )}
+                        </Form.Group>
 
 
-                    <Form.Group controlId="shift">
-                        <Form.Label>Shift:</Form.Label>
-                        <Select
-                            options={activeShiftNames.map((shift) => ({ label: shift.shift_name, value: shift.shift_id }))}
-                            value={formik.values.shift}
-                            name="shift"
-                            onChange={(data) => formik.setFieldValue("shift", data)}
-                            isSearchable={true}
-                        />
-                        {formik.touched.shift && formik.errors.shift && (
-                            <Alert variant="danger" className="error-message">{formik.errors.shift}</Alert>
-                        )}
-                    </Form.Group>
+                        <Form.Group controlId="shift">
+                            <Form.Label>Shift:</Form.Label>
+                            <Select
+                                options={activeShiftNames.map((shift) => ({ label: shift.shift_name, value: shift.shift_id }))}
+                                value={formik.values.shift}
+                                name="shift"
+                                onChange={(data) => formik.setFieldValue("shift", data)}
+                                isSearchable={true}
+                            />
+                            {formik.touched.shift && formik.errors.shift && (
+                                <Alert variant="danger" className="error-message">{formik.errors.shift}</Alert>
+                            )}
+                        </Form.Group>
 
-                        <br />
-                        <Button variant="danger" type="submit">
+                        {/* <h5 style={{marginTop:'5vh'}}>Please submit after allocating workers in the table below</h5> */}
+                        <div >
+                            <table className="table" style={{ border: "1px solid #F3F3F3" }}>
+                                <thead>
+
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Station Id</th>
+                                        <th>Station Name</th>
+                                        <th>Machine Id</th>
+                                        <th>Machine Name</th>
+                                        <th>Worker</th>
+                                    </tr>
+                                    {formik.values.stationAllocations.map((allocation, index) => (
+                                        <tr key={index}>
+                                            <td>{index + 1}</td>
+                                            <td>{allocation.station_id}</td>
+                                            <td>{allocation.station_name}</td>
+                                            <td>{allocation.machine_id}</td>
+                                            <td>{allocation.machine_name}</td>
+                                            <td>
+                                                <Multiselect
+                                                    isObject={false}
+                                                    options={availableWorkerNames.map(
+                                                        (worker) => `${worker.first_name} ${worker.last_name} ${worker.user_name}`
+                                                    )}
+                                                    onSelect={(selectedList, selectedItem) =>
+                                                        handleSelect(selectedList, selectedItem, index)
+                                                    }
+                                                    onRemove={(selectedList, removedItem) =>
+                                                        handleRemove(selectedList, removedItem, index)
+                                                    }
+                                                    selectedValues={allocation.workers}
+                                                    showCheckbox
+                                                />
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <Button variant="danger" type="submit" >
                             Submit
                         </Button>
                     </Form>
-                    <br />
-                    <Button onClick={fetchData}>
+                    
+                    {/* <Button onClick={fetchData}>
                         Fetchdata
-                    </Button>
+                    </Button> */}
                 </div>
-                
-                <div>
-                    <table className="table">
+
+                {/* <div >
+                    <table className="table" style={{ border: "1px solid #F3F3F3" }}>
                         <thead>
 
                         </thead>
@@ -286,10 +329,10 @@ function StationAllocation() {
                             ))}
                         </tbody>
                     </table>
-                </div>
+                </div> */}
             </div>
- 
-            <Table striped responsive hover className='table'>
+
+            <Table striped responsive hover className='table' style={{ marginBottom: '15vh' }}>
                 <thead>
 
                 </thead>
@@ -335,12 +378,9 @@ function StationAllocation() {
 
                 </tbody>
             </Table>
-            <br />
-        
-        <br />
-        <br />
-        <Footer />
-    </>
+
+            <Footer />
+        </>
     );
 }
 
