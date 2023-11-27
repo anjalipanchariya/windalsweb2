@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const proxy = "http://127.0.0.1:8080/"
+const proxy = "http://103.97.164.116:8080/"
 
 export async function addProduct(values){
     try {
@@ -293,6 +293,16 @@ export async function insertInStationyyyyFirstNextStation(values){
     console.log({"this":values});
     try {
         const {data,status} = await axios.post(`${proxy}api/StationyyyyInsertFirstNextStation`,values)
+        return Promise.resolve(data)
+    } catch (error) {
+        return Promise.reject(error.response.data)
+    }
+}
+
+export async function insertInStationyyyySameStation(values){
+    console.log({"this":values});
+    try {
+        const {data,status} = await axios.post(`${proxy}api/StationyyyyInsertSameStation`,values)
         return Promise.resolve(data)
     } catch (error) {
         return Promise.reject(error.response.data)
