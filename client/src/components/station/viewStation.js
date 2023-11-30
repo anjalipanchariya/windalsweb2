@@ -64,6 +64,7 @@ function ViewStation() {
     <WindalsNav/>
       <Toaster position="top-center" reverseOrder={false}></Toaster>
       <div style={{marginTop:'15vh'}}>
+        <h1 className='heading'>Station Details</h1>
       <Table columns={columns} data={stations} />
       </div>
       <br />

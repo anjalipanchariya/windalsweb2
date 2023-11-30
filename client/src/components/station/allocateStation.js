@@ -204,11 +204,13 @@ function StationAllocation() {
             <Toaster position="top-center" reverseOrder={false}></Toaster>
 
             <div className="allocstat">
+                <h1 className="heading">Allocate Station to Worker</h1>
                 <div className="input-box">
                     <Form onSubmit={formik.handleSubmit}>
-                        <Form.Group controlId="date">
+                        <Form.Group controlId="date" style={{display:'flex'}}>
                             <Form.Label>Date:</Form.Label>
                             <Form.Control
+                            style={{width:'20%'}}
                                 type="date"
                                 name="date"
                                 onChange={formik.handleChange}

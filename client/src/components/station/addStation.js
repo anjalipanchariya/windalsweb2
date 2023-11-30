@@ -289,20 +289,23 @@ function AddStation() {
                     <Form>
                         <h3>Add Station</h3>
                         <div className="station-name-id">
+                            
+                            <label htmlFor="" style={{fontWeight:600, margin:0}} className="inplab">Process Number</label>
                             <Form.Group className="mb-3" controlId="formBasicEmail">
-                                <Form.Control type="number" placeholder="Enter Process Number" value={addFormFormik.values.process_number} name="process_number" onChange={addFormFormik.handleChange} />
+                                <Form.Control type="number" placeholder="" value={addFormFormik.values.process_number} name="process_number" onChange={addFormFormik.handleChange} />
                                 {addFormFormik.errors.process_number && addFormFormik.touched.process_number ? (
                                     <Alert variant="danger" className="error-message">{addFormFormik.errors.process_number}</Alert>) : null}
                             </Form.Group>
+                            <label htmlFor="" style={{fontWeight:600, margin:0}} className="inplab">Station Name</label>
                             <Form.Group className="mb-3" controlId="formBasicEmail">
-                                <Form.Control type="text" placeholder="Enter Station Name" value={addFormFormik.values.stationName} name="stationName" onChange={addFormFormik.handleChange} />
+                                <Form.Control type="text" placeholder="" value={addFormFormik.values.stationName} name="stationName" onChange={addFormFormik.handleChange} />
                                 {addFormFormik.errors.stationName && addFormFormik.touched.stationName ? (
                                     <Alert variant="danger" className="error-message">{addFormFormik.errors.stationName}</Alert>) : null}
                             </Form.Group>
-
+                            <label htmlFor="" style={{fontWeight:600, margin:0}} className="inplab">--Select Product--</label>
                             <Form.Group>
                                 <Form.Select className="mb-3 select-param" aria-label="Default select example" value={addFormFormik.values.productName} name="productName" onChange={addFormFormik.handleChange}>
-                                    <option values="">--Select Product--</option>
+                                    <option values="">Select Product</option>
                                     {
                                         Array.isArray(productNames) && productNames.map((product, index) => (
                                             <option key={index} value={product}>{product}</option>
@@ -313,6 +316,7 @@ function AddStation() {
                                     <Alert variant="danger" className="error-message">{addFormFormik.errors.productName}</Alert>) : null}
                             </Form.Group>
                             
+                            <label htmlFor="" style={{fontWeight:600, margin:0}} className="inplab">Select Report Type</label>
                             <Form.Select className="mb-3 select-param" aria-label="Default select example" value={addFormFormik.values.reportType} name="reportType" onChange={addFormFormik.handleChange}>
                                 <option value=''>--Select Report Type--</option>
                                 <option value="0">Okay/Not okay</option>
@@ -323,7 +327,7 @@ function AddStation() {
                             {
                                 addFormFormik.values.reportType === "1" &&
                                 <Form>
-                                    <h3>Select Parameters:</h3>
+                                    <h3>Select Parameters</h3>
                                     {productParameters.map((parameter, index) => (
                                         <div key={index}>
                                             <label>
@@ -342,7 +346,9 @@ function AddStation() {
                             }
 
                             <Form.Group className="mb-3" controlId="formBasicCheckbox" style={{ width: '12vw' }}>
-                                <Form.Check type="checkbox" label="Multiple Machines" checked={addFormFormik.values.multipleMachines} name="multipleMachines" onChange={addFormFormik.handleChange} />
+                            <input name="multipleMachines" type="checkbox" id="formBasicCheckbox" class="form-check-input" style={{margin:3, border:'1px solid black'}}/>
+                            <label title="" for="formBasicCheckbox" class="form-check-label">Multiple Machines</label>
+                                {/* <Form.Check type="checkbox" label="Multiple Machines" checked={addFormFormik.values.multipleMachines} name="multipleMachines" onChange={addFormFormik.handleChange} /> */}
                             </Form.Group>
 
                             <Button variant="danger" type="button" className="add-button-stn" onClick={addRow}>Add Machines</Button>

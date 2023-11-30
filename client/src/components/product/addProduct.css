@@ -27,7 +27,10 @@
   gap: 10px;
 }
 
-
+.buttoncss{
+  border: 0px solid transparent;
+  border-radius: 10px;
+}
 .product-table-container {
   max-width: 100%;
   

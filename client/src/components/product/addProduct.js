@@ -94,16 +94,19 @@ const AddProduct = () => {
       <Toaster position="top-center" reverseOrder={false}></Toaster>
 
       <div className="product-name-container">
-        <h3 className="product-name">Product name</h3>
-
+        <h1>Add Product</h1>
+        <div className='inplab' style={{alignItems:'center'}}>
+        <label htmlFor="">Product Name</label>
         <input
           className="product-input"
           type="text"
           value={formik.values.productName}
-          placeholder="Enter Product Name"
+          placeholder=""
           onChange={formik.handleChange}
           name="productName"
         />
+        </div>
+        
         {formik.touched.productName && formik.errors.productName && (
           <Alert variant="danger" className="paramererName-error-message">
             {formik.errors.productName}
@@ -112,13 +115,10 @@ const AddProduct = () => {
       
 
       <div className="parameter-buttons">
-        <Button className="add-parameter-button" onClick={addRow}>Add parameter</Button>
-        
+        <button className='buttoncss' onClick={addRow}>Add parameter</button>
         {/* <Button className="save-button" onClick={formik.handleSubmit}>Save</Button> */}
       </div>
         
-
-
     { formik.values.parameters.length>0 ? 
       <table className="product-table">
         <thead>
@@ -269,8 +269,8 @@ const AddProduct = () => {
       
        : null
       }
-      <br />
-      <Button className="save-button" onClick={formik.handleSubmit}>Save</Button>
+     
+      <button className="buttoncss" onClick={formik.handleSubmit}>Save</button>
       </div>
       <br />
       <br />

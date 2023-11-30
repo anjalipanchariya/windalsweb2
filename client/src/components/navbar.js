@@ -44,7 +44,6 @@ function WindalsNav() {
       <Navbar expand="lg" className="bg-body-tertiary fixed-top">
           <div class="col" style={{ marginLeft: 5 }} >
           <button type='button' style={{backgroundColor:'white'}} onClick={redirectToHome}><img src={logo} alt='' style={{ height: 40, width: 50 }} /></button>
-          <Navbar.Brand>Windals Precision Ltd.</Navbar.Brand>
           </div>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
@@ -95,7 +94,7 @@ function WindalsNav() {
             </Nav>
           </div>
           <div class="nav navbar-nav navbar-right" style={{marginRight:20}}>
-            <Nav.Link href="#" style={{ marginTop: 6, marginRight:6}}>My Profile</Nav.Link>
+            
             <img src={logoutimg} style={{ width: 30, height: 28, marginTop: 12, marginLeft: 5,  cursor:'pointer'}} alt="" onClick={() => {
                   logout()
                 }}/>
@@ -103,7 +102,7 @@ function WindalsNav() {
           </div>
           </Navbar.Collapse>
       </Navbar>
-      <br />
+      
       {/* <br /> */}
       
     </>
