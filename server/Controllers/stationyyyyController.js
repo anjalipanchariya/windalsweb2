@@ -46,8 +46,8 @@ async function insertInStationyyyyFirstNextStation(req,res){
         const next_station_id=selectResultNextStation[0]["station_id"];
         console.log(next_station_id)
 
-        const insertQuery = "INSERT INTO station_yyyy (product_name, station_id, job_id,intime,machine_id) VALUES (?, ?, ?,NOW(),?)";
-        const [insertResult] = await db.promise().query(insertQuery, [product_name, next_station_id, job_id,machine_id]);
+        const insertQuery = "INSERT INTO station_yyyy (product_name, station_id, job_id,intime) VALUES (?, ?, ?,NOW())";
+        const [insertResult] = await db.promise().query(insertQuery, [product_name, next_station_id, job_id]);
             
         res.status(201).send({ msg: "Record inserted successfully"});
         

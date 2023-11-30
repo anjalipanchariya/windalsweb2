@@ -248,12 +248,11 @@ const FirstStation = () => {
                 </select>
                 <br />
                 <br />
-                <button className="btn btn-danger" style={{width:200}} onClick={formik.handleSubmit}>
+                <button className="btn btn-danger" style={{width:200, marginBottom:'10vh'}} onClick={formik.handleSubmit}>
                 Add Product
             </button>
             </div>
-            <br />
-            <br />
+            
           
             { workAtStationInDay.length>0 ? 
                 <div className='jobsub'>

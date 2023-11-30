@@ -3,7 +3,7 @@ import WindalsNav from "../navbar";
 import './supervisor.css'
 import Footer from "../footer";
 import Table from 'react-bootstrap/Table';
-import { getStationRework,insertInStationyyyyFirstNextStation,updateJobsfromSupervisorDash } from "../../helper/helper";
+import { getStationRework,insertInStationyyyyFirstNextStation,updateJobsfromSupervisorDash , insertInStationyyyySameStation} from "../../helper/helper";
 import { Button } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -39,7 +39,7 @@ function Supervisor() {
          const insertValues={product_name:updatedRework[index].product_name, 
                             station_id:updatedRework[index].station_id, 
                             job_name:updatedRework[index].job_name,
-                            machine_id:updatedRework[index].machine_id};
+                            };
         console.log({buttonType:buttonType})
         if (buttonType === "ok") {
           newValues.status = 2;
@@ -80,15 +80,30 @@ function Supervisor() {
           newValues.status = -3;
 
           // console.log(newValues);
+          const  updateJobsfromSupervisorDashPromise = updateJobsfromSupervisorDash(newValues)
+          updateJobsfromSupervisorDashPromise.then((result)=>{
+            const insertInStationyyyySameStationPromise = insertInStationyyyySameStation(insertValues)
+            toast.promise(insertInStationyyyySameStationPromise,{
+              loading: "Inserting data",
+              error: (err) => err.msg,
+              success: (result)=> {
+                  return result.msg
+              }
+            }) 
+          }).catch((err)=>{
+            toast.error(err.msg)
+          })
+          
+          setRework(updatedRework.filter((item, i) => i !== index));
           // Call updateJobesAtStation here
-          updateJobsfromSupervisorDash(newValues)
-            .then(() => {
-              toast.success("Job updated at the station for rework");
-            })
-            .catch((error) => {
-              toast.error(error.msg);
-            });
-            setRework(updatedRework.filter((item, i) => i !== index));
+          // updateJobsfromSupervisorDash(newValues)
+          //   .then(() => {
+          //     toast.success("Job updated at the station for rework");
+          //   })
+          //   .catch((error) => {
+          //     toast.error(error.msg);
+          //   });
+          //   setRework(updatedRework.filter((item, i) => i !== index));
         }
         
       };

@@ -299,6 +299,16 @@ export async function insertInStationyyyyFirstNextStation(values){
     }
 }
 
+export async function insertInStationyyyySameStation(values){
+    console.log({"this":values});
+    try {
+        const {data,status} = await axios.post(`${proxy}api/StationyyyyInsertSameStation`,values)
+        return Promise.resolve(data)
+    } catch (error) {
+        return Promise.reject(error.response.data)
+    }
+}
+
 export async function getJobesAtStation(stationId,productName){
     try {
         const {data,status} = await axios.post(`${proxy}api/StationyyyyShowJob`,{station_id:stationId,product_name:productName})

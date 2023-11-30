@@ -2,13 +2,11 @@
     text-align: center;
 }
 
-
-
 .form-group select{
     width: 15vw;
 }
 .firststat{
-    margin-top: 16vh;
+    margin-top: 20vh;
     display: flex;
     flex-direction: column;
     text-align: center;
@@ -37,6 +35,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-bottom: 6vh;
 }
 
 .firststat select{
