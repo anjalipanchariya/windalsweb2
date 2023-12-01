@@ -1,3 +1,8 @@
+
+*{
+  font-family: 'Poppins', sans-serif;
+}
+
 .workerreg {
     margin-top: 1vh;   
     text-align: center;
@@ -33,7 +38,6 @@
  } */
  
  .workerreg input{
-     margin: 20px 44px;
      width: 20%;
  }
  
@@ -70,9 +74,29 @@
     margin-right: 10px;
     
  } 
- 
- 
 
+ .inplab{
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+ }
+
+ .inplab label{
+  font-weight:600;
+ }
+ 
+ .inplab input{
+  width: 80%;
+  background-color: rgb(185, 185, 185);
+  border: 1px solid transparent;
+  border-radius: 5px;
+  
+ }
+
+ .inplab input:focus{
+  outline: none;
+ }
 @media (max-width: 768px) {
     .workerreg input {
       width: 40%; 

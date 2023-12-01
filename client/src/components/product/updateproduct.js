@@ -193,16 +193,11 @@ function UpdateProduct() {
         
             <WindalsNav />
             <Toaster position="top-center" reverseOrder={false}></Toaster>
-            <div>
+            <div >
+                
             <div className="updateprod">
-                <h3>Product name:</h3>
-                {/* <input
-                    type="text"
-                    value={formik.values.productName}
-                    placeholder="Enter Product Name"
-                    onChange={formik.handleChange}
-                    name='productName'
-                /> */}
+            <h1 className='heading' style={{marginBottom:'35px'}}>Update/Delete Product Details</h1>
+                <h4 style={{fontWeight:'600'}}>Product name</h4>
 
                 <Select
                     className='selectopts'
@@ -224,8 +219,8 @@ function UpdateProduct() {
                 )}
 
                 <div className='buttons'>
-                    <Button onClick={handleSearch} style={{ margin: 6 }}>Search</Button>
-                    <Button onClick={addRow} style={{ margin: 10 }}>Add parameter</Button>
+                    <button onClick={handleSearch} style={{ margin: 6 }} className='buttoncss'>Search</button>
+                    <button onClick={addRow} style={{ margin: 10 }} className='buttoncss'>Add parameter</button>
                     
                 </div>
             
@@ -498,7 +493,7 @@ function UpdateProduct() {
             </table>
             <br />
             
-            <Button onClick={formik.handleSubmit}>Save</Button>
+            <button onClick={formik.handleSubmit} className='buttoncss'>Save</button>
             </div>
             
             </div>

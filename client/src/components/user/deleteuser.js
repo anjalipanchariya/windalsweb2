@@ -169,7 +169,7 @@ function DeleteUser() {
       <WindalsNav/>
       <Form style={{ margin: '15vh' , alignItems:'center',textAlign:'center'}}>
       <div className='username-not-table'  >
-        <h3 style={{ width: 500, textAlign: 'center' }}>Enter Username of the User to Delete</h3>
+        <h3 style={{ width: 500, textAlign: 'center' }}>Enter Username of the User to Update/Delete</h3>
 
         <div className='form' style={{margin: "10px"}}>
           <Form.Group className="mb-3" controlId="exampleForm.ControlInput1" style={{ width: 300 }}>

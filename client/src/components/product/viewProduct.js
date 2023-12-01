@@ -42,6 +42,7 @@ function ViewProduct() { // Changed the function name to start with an uppercase
       <Toaster position="top-center" reverseOrder={false}></Toaster>
       <WindalsNav />
       <div style={{marginTop:'20vh'}}>
+        <h1 className='heading'>Product Details</h1>
       <Table columns={columns} data={products} />
       </div>
       <br />
