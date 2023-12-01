@@ -36,6 +36,7 @@ function ViewShifts() { // Changed the function name to start with an uppercase 
     <WindalsNav/>
       <Toaster position="top-center" reverseOrder={false}></Toaster>
       <div style={{marginTop:'20vh'}}>
+      <h1 className='heading'>Shift Details</h1>
       <Table columns={columns} data={shifts} />
       </div>
       <br />

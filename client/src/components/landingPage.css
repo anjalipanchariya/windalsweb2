@@ -1,28 +1,45 @@
 .landingpage{
+    height: 100vh;
+  /* width: 100vw; */
     display: flex;
     flex-direction: column;
     text-align: center;
     align-items: center;
     justify-content: center;
+    background-image: url("https://res.cloudinary.com/dugjheitb/image/upload/v1701353130/WINDALS/5153860_jlf3yg.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    /* background-position: -15vw; */
+    /* background-size: 80%; */
 }
 
-.landingpage img{
+/* .landingpage img{
     width: 100%;
     height: 90vh;
     opacity: 0.9;
-    /* z-index: -1; */
+    z-index: -1;
+} */
+
+.lplogo{
+    position: absolute;
+    top: 12%;
+    width: 10%;
+    height: 20%;
 }
 
 .info{
+
     position: absolute;
   top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: rgb(230, 230, 230);
-  opacity: 0.85;
+  opacity: 0.8;
   padding: 20px;
   font-weight:600;
   border-radius: 20px;
+  --shadow: rgba(0, 0, 0, 0.45) 0px 40px 30px;
+  box-shadow: var(--shadow);
 }
 
 .info h2{

@@ -30,6 +30,7 @@
 .buttoncss{
   border: 0px solid transparent;
   border-radius: 10px;
+  margin: 20px;
 }
 .product-table-container {
   max-width: 100%;

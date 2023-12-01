@@ -5,16 +5,23 @@
 
 
 .login{
-  margin-left: 35vw;
-  position: absolute;
-  top: 50%;
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
+  height: 100vh;
+  width: 100vw;
+  padding-left: 65vw;
+  /*padding-top: 10%; */
+  /* position: absolute; */
+  /* top: 50%; */
+  /* -ms-transform: translateY(-50%); */
+  /* transform: translateY(-50%); */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
+  /* background-image : url("https://res.cloudinary.com/dugjheitb/image/upload/v1701343759/WINDALS/ajit-singh-_6lUTo2UfMY-unsplash_b2vpo7.jpg"); */
+  background-image: url("https://res.cloudinary.com/dugjheitb/image/upload/v1701353130/WINDALS/5153860_jlf3yg.jpg");
+  background-repeat: no-repeat;
+  background-position: -15vw;
+  background-size: 80%;
   /* padding: 0; */
   
 }

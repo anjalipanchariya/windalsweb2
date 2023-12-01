@@ -83,15 +83,20 @@ const LoginPage = () => {
   return (
     <div className='login'>
       <Toaster position="top-center" reverseOrder={false}></Toaster>
-      <div>
-      <div className="col-md-10 bg-light-grey d-flex flex-wrap align-items-center">
+      <div style={{width:400}}>
+      <div className=" d-flex flex-wrap align-items-center" style={{backgroundColor : '#FfFfFf' , padding : 30 , borderRadius : 20 }}>
         <form className="row g-3 " onSubmit={formik.handleSubmit}>
-          <div className="col-12">
-            <label htmlFor="inputEmail4" className="form-label">
+          <div className="col-12 align-items-center">
+            <label style={{fontSize:35, fontWeight : 700 , color : '#E63946'}}>Login</label>
+            <br></br>
+            Welcome back !! Login to your account.
+            <br></br>
+            <label htmlFor="inputEmail4" style={{paddingTop : 15 , fontWeight:600}}>
               Username
             </label>
             
             <input
+            style={{borderColor : 'black' , backgroundColor : '#ffffff' ,  width : 300}}
               type="text"
               className="form-control"
               id="inputEmail4"
@@ -103,10 +108,11 @@ const LoginPage = () => {
           </div>
           
           <div className="col-12">
-            <label htmlFor="inputPassword4" className="form-label">
+            <label htmlFor="inputPassword4" style={{fontWeight:600}}>
               Password
             </label>
             <input
+            style={{borderColor : 'black' ,  backgroundColor : '#ffffff' , width : 300}}
               type="password"
               className="form-control"
               id="inputPassword4"
@@ -117,8 +123,8 @@ const LoginPage = () => {
           {formik.touched.password && formik.errors.password?(<Alert variant="danger" className="error-message">{formik.errors.password}</Alert>):null}
           </div>
 
-          <div className="col-12 d-flex flex-column align-items-center">
-           <button type="button" className="btn btn-danger" onClick={formik.handleSubmit}>
+          <div className="d-flex flex-column">
+           <button type="button" onClick={formik.handleSubmit} style={{width:300 , backgroundColor:'#E63946' , borderRadius : 10}}>
            Login
            </button>
           </div>

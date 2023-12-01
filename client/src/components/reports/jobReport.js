@@ -73,19 +73,25 @@ function JobReport() {
             <WindalsNav/>
             <Toaster position="top-center" reverseOrder={false}></Toaster>
             <div className="jobreport">
-            <input
+                <h1 className="heading" style={{marginBottom:'3vh'}}>Job Report</h1>
+                
+                    <label htmlFor="" style={{fontWeight:600}}>Job name</label>
+                    <input
                 className=""
                 type="text"
                 value={formik.values.jobName}
-                placeholder="Enter Job Name"
+                placeholder=""
                 onChange={formik.handleChange}
                 name="jobName"
+                style={{borderRadius:'12px'}}
             />
+              
+            
             { formik.errors.jobName && formik.touched.jobName ? (
                                 <Alert variant="danger" className="error-message">{formik.errors.jobName}</Alert>) : null}
 
             <br />
-            <button type="button" onClick={formik.handleSubmit}>Submit</button>
+            <button type="button" onClick={formik.handleSubmit} className="buttoncss">Submit</button>
             <p>{productName!=="" && productName}</p>
             {jobReports.length>0 && <Table columns={columns} data={jobReports}/>}
             </div>

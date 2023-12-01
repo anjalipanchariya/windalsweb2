@@ -66,19 +66,25 @@ function LoginLog() {
     return (
         <div>
             <WindalsNav />
+            <Toaster position="top-center" reverseOrder={false}></Toaster>
             <div className="jobreport">
-                <Toaster position="top-center" reverseOrder={false}></Toaster>
-                <input
+                <h1 className="heading" style={{marginBottom:'3vh'}}>Login Log</h1>
+                
+                    <label htmlFor="" style={{fontWeight:600}}>Username</label>
+                    <input
                     type="text"
                     value={formik.values.userName}
-                    placeholder="Enter username"
+                    placeholder=""
                     onChange={formik.handleChange}
                     name="userName"
+                    style={{borderRadius:'12px'}}
                 />
+                
+                
                 {formik.errors.userName && formik.touched.userName ? (
                     <Alert variant="danger" className="error-message">{formik.errors.userName}</Alert>) : null}
                     <br />
-                <button type="button" onClick={formik.handleSubmit}>Submit</button>
+                <button type="button" onClick={formik.handleSubmit} className="buttoncss">Submit</button>
                 <p>{formik.userName}</p>
 
                 {loginLogInfo.length > 0 && <Table columns={columns} data={loginLogInfo} />}

@@ -55,15 +55,20 @@ function ProductReport() {
         <div>
             <WindalsNav/>
             <div className="jobreport">
-            <input
+                <h1 className="heading" style={{marginBottom:'3vh'}}>Product Report</h1>
+                
+                    <label htmlFor="" style={{fontWeight:600}}>Product Name</label>
+                    <input
                 className=""
                 type="text"
                 value={formik.values.jobName}
-                placeholder="Enter Product Name"
+                placeholder=""
                 name="Product Name"
+                style={{borderRadius:'12px'}}
             />
-            <br />
-            <button>Submit</button>
+                
+            
+            <button className="buttoncss">Submit</button>
             <br />
             <p>{productName}</p>
             <Table columns={columns} data={table}/>
