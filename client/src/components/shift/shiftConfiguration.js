@@ -216,22 +216,25 @@ function ShiftConfiguration() {
       <WindalsNav/>
       <Toaster position="top-center" reverseOrder={false}></Toaster>
       <div className='shiftconf'>
+      <h1 className='heading' style={{marginBottom:'2vh'}}>Shift Configuration</h1>
         <div className="form-container">
-          <h1>Shift Configuration</h1>
-          <p>Add a new shift</p>
 
           <Form>
-            <Form.Group className="mb-3" controlId="formBasicName">
-              <label>Shift Name</label>
+            <Form.Group className="" controlId="formBasicName" style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
+              <div className="inplab"style={{alignItems:'center'}}>
+              <label style={{fontWeight:600}}>Shift Name</label>
               <Form.Control
                 type="text"
-                placeholder="Enter Shift Name"
+                placeholder=""
                 value={addFormFormik.values.shiftName}
                 name="shiftName"
                 onChange={addFormFormik.handleChange}
+                style={{width:'70%', marginLeft:'6px'}}
               />
               {addFormFormik.touched.shiftName && addFormFormik.errors.shiftName ? (
                 <Alert variant="danger" className="error-message">{addFormFormik.errors.shiftName}</Alert>) : null}
+              </div>
+              
             </Form.Group>
 
             {/* <Form.Group className="mb-3" controlId="formBasicTime">
@@ -249,7 +252,8 @@ function ShiftConfiguration() {
                   name="startAmPm"
                   value={addFormFormik.values.startAmPm}
                   onChange={addFormFormik.handleChange}
-                  style={{margin:10}}
+                  style={{margin:10, border:'1px solid black'}}
+                 
                 >
                   <option value="AM">AM</option>
                   <option value="PM">PM</option>
@@ -263,7 +267,7 @@ function ShiftConfiguration() {
                   name="startHour"
                   value={addFormFormik.values.startHour}
                   onChange={addFormFormik.handleChange}
-                  style={{margin:10}}
+                  style={{margin:10, border:'1px solid black'}}
                 />
                 {addFormFormik.touched.startHour && addFormFormik.errors.startHour ? (
                   <Alert variant="danger" className="error-message">{addFormFormik.errors.startHour}</Alert>) : null}
@@ -275,7 +279,7 @@ function ShiftConfiguration() {
                   name="startMinute"
                   value={addFormFormik.values.startMinute}
                   onChange={addFormFormik.handleChange}
-                  style={{margin:10}}
+                  style={{margin:10, border:'1px solid black'}}
                 />
                 {addFormFormik.touched.startMinute && addFormFormik.errors.startMinute ? (
                   <Alert variant="danger" className="error-message">{addFormFormik.errors.startMinute}</Alert>) : null}
@@ -291,7 +295,7 @@ function ShiftConfiguration() {
                   name="endAmPm"
                   value={addFormFormik.values.endAmPm}
                   onChange={addFormFormik.handleChange}
-                  style={{margin:10}}
+                  style={{margin:10, border:'1px solid black'}}
                 >
                   <option value="AM">AM</option>
                   <option value="PM">PM</option>
@@ -305,7 +309,7 @@ function ShiftConfiguration() {
                   name="endHour"
                   value={addFormFormik.values.endHour}
                   onChange={addFormFormik.handleChange}
-                  style={{margin:10}}
+                  style={{margin:10, border:'1px solid black'}}
                 />
                 {addFormFormik.touched.endHour && addFormFormik.errors.endHour ? (
                   <Alert variant="danger" className="error-message">{addFormFormik.errors.endHour}</Alert>) : null}
@@ -317,7 +321,7 @@ function ShiftConfiguration() {
                   name="endMinute"
                   value={addFormFormik.values.endMinute}
                   onChange={addFormFormik.handleChange}
-                  style={{margin:10}}
+                  style={{margin:10, border:'1px solid black'}}
                 />
                 {addFormFormik.touched.endMinute && addFormFormik.errors.endMinute ? (
                   <Alert variant="danger" className="error-message">{addFormFormik.errors.endMinute}</Alert>) : null}

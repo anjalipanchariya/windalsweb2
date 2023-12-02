@@ -8,6 +8,7 @@ import { getOneEmployee, getCurrentShift, getOneWorkerStation } from '../helper/
 import './landingPage.css'
 import landingimg from '../images/landingpage.jpg'
 import logo from '../images/appicon-01.png'
+import Sidebar from './sidebar';
 
 function LandingPage() {
   const { userName } = useParams();
@@ -87,20 +88,16 @@ function LandingPage() {
     <div>
       <Toaster position="top-center" reverseOrder={false}></Toaster>
       <WindalsNav />
+      {/* <Sidebar/> */}
       <div className='landingpage'>
-        <br/>
-        <br/>
-        <br/>
-        <img src={landingimg} alt="" />
-        
+      <img src={logo} className='lplogo' alt=""/>
         <div className='info'>
-        <img src={logo} alt=""/>
         <h2>Windals Precision Pvt. Ltd.</h2>
         <p >Established in 1978, India Windals Precision Pvt. Ltd. has gained immense expertise in supplying & trading of Axle components, steering knuckles, steering arms etc. The supplier company is located in Chakan, Maharashtra and is one of the leading sellers of listed products. Buy Axle components, steering knuckles, steering arms in bulk from us for the best quality products and service.</p>
         </div>
         {userName === "admin" ? 
         <div className='adminbtn'>
-        <button onClick={redirectToHome}>Admin Dashboard</button>
+        {/* <button onClick={redirectToHome}>Admin Dashboard</button> */}
         </div>
         : 
         employeeData.length>0 && employeeData[0].access_given[18] === "1" ? 

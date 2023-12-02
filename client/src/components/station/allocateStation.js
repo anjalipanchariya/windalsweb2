@@ -204,7 +204,7 @@ function StationAllocation() {
                 <h1 className="heading">Allocate Station to Worker</h1>
                 <div className="input-box">
                     <Form onSubmit={formik.handleSubmit}>
-                        <Form.Group controlId="date" style={{display:'flex'}}>
+                        <Form.Group controlId="date" style={{display:'flex', margin:'20px', justifyContent:'center'}}>
                             <Form.Label>Date:</Form.Label>
                             <Form.Control
                             style={{width:'20%'}}
@@ -219,9 +219,10 @@ function StationAllocation() {
                         </Form.Group>
 
 
-                        <Form.Group controlId="shift">
+                        <Form.Group controlId="shift" style={{display:'flex', margin:'20px',justifyContent:'center'}}>
                             <Form.Label>Shift:</Form.Label>
                             <Select
+                            style={{width:'20%'}}
                                 options={activeShiftNames.map((shift) => ({ label: shift.shift_name, value: shift.shift_id }))}
                                 value={formik.values.shift}
                                 name="shift"
