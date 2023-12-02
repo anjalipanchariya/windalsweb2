@@ -80,7 +80,7 @@ async function getAllFromEmployee(req,res){
 async function getOneFromEmployee(req,res){
     const {userName} = req.query
     try{
-        const selectQuery="SELECT * FROM employee_master WHERE user_name = ?"
+        const selectQuery="SELECT employee_id, first_name, last_name, user_name, nick_name, designation, joining_date, leaving_date, mobile_no, access_given FROM employee_master WHERE user_name = ?"
         const [selectResult]= await db.promise().query(selectQuery,[userName]);
         if(selectResult.length>0)
         {

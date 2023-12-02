@@ -42,4 +42,22 @@ async function getInfoFromStationMasterWithMachine(req, res) {
     }
 }
 
-export {getMachineDataForStation,deleteMachineFromMachineMaster, getInfoFromStationMasterWithMachine}
+async function getOneStationMachinesData(req, res) {
+    const {stationId} = req.query
+    console.log(stationId);
+    try {
+        var query = "SELECT machine_id, machine_name, cycle_time, daily_count, product_per_hour FROM machine_master WHERE station_id = ? "
+        const [result] = await db.promise().query(query,stationId)
+        if (result.length === 0) {
+            res.status(409).send({ msg: "No infomation about stations exist in database." })
+        }
+        else {
+            res.status(201).send(result)
+        }
+    } catch (err) {
+        console.error("Database error:", err);
+        res.status(500).send({ msg: `Internal server error: ${err}`})
+    }
+}
+
+export {getMachineDataForStation,deleteMachineFromMachineMaster, getInfoFromStationMasterWithMachine,getOneStationMachinesData}

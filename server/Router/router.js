@@ -8,7 +8,7 @@ import { login,getNamesFromEmployeeMaster } from "../Controllers/employeeMasterC
 import {getOneWorkerStation, insertIntoStationAllocation,getStationAllocated} from "../Controllers/stationAllocationController.js"
 import {getAllFromShiftConfig,insertIntoShiftConfig,deleteFromShiftConfig,updateShiftConfig,getActiveShiftNames,getCurrentShift} from "../Controllers/shiftConfigController.js";
 import { insertInLoginLog,getFromLoginLog } from "../Controllers/loginlogController.js";
-import { deleteMachineFromMachineMaster, getMachineDataForStation, getInfoFromStationMasterWithMachine } from "../Controllers/machineMasterController.js";
+import { deleteMachineFromMachineMaster, getMachineDataForStation, getInfoFromStationMasterWithMachine,getOneStationMachinesData } from "../Controllers/machineMasterController.js";
 import { auth } from "../Middleware/auth.js";
 
 const router = Router()
@@ -36,6 +36,7 @@ router.route("/UndoJobsinStation").post(undoJobs)
 
 
 
+
 /**GET MEATHODS */
 router.route('/ProductMasterGet').get(getInfoFromProductMaster)
 router.route('/ProductMasterGetOneProductAllParameters').get(getOneProductAllParametersInfoFromProductMaster)
@@ -60,6 +61,7 @@ router.route("/ShiftConfigGetActiveShiftNames").get(getActiveShiftNames)
 router.route("/ShiftConfigGetCurrentShift").get(getCurrentShift)
 router.route('/WorkerAllocation').get(getStationAllocated)
 router.route('/GetStationAndMachinesInfo').get(getStationAndMachinesInfo)
+router.route("/MachineMasterGetOneStationMachinesData").get(getOneStationMachinesData)
 router.route("/loginLogGet").get(getFromLoginLog)
 router.route("/StationMasterInfoWithMachine").get(getInfoFromStationMasterWithMachine)
 router.route('/verifyLogin').get(auth,(req,res)=>{

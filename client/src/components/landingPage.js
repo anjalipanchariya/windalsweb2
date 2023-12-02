@@ -14,7 +14,6 @@ function LandingPage() {
   const [employeeData, setEmployeeData] = useState("");
   const [activeShift, setActiveShift] = useState("");
   const [stations, setStations] = useState([]);
-  const [machines, setMachines] = useState([]);
   const [noStationAllocatedError, setNoStationAllocatedError] = useState("");
   const navigate = useNavigate()
 
@@ -44,10 +43,7 @@ function LandingPage() {
       toast.promise(getOneWorkerStationPromise, {
         loading: "Getting stations allocated to employee",
         success: (result) => {
-          const extractedStations = result.map(item => ({station_name:item.station_name, position:item.position}));
-          const extractedMachines = result.map(item => ({ machine_id: item.machine_id, machine_name: item.machine_name }));
-          setStations(extractedStations);
-          setMachines(extractedMachines);
+          setStations(result);
           setNoStationAllocatedError("");
           return "data fetched";
         },
@@ -85,7 +81,7 @@ function LandingPage() {
     }
   }
 
-  // console.log({ stations: stations, machines: machines });
+  console.log({ stations: stations,employeeData:employeeData});
 
   return (
     <div>
@@ -106,7 +102,17 @@ function LandingPage() {
         <div className='adminbtn'>
         <button onClick={redirectToHome}>Admin Dashboard</button>
         </div>
-        :
+        : 
+        employeeData.length>0 && employeeData[0].access_given[18] === "1" ? 
+          <div>
+            <h5>Supervisor</h5>
+            <button type='button' onClick={()=>{
+              navigate(`/${userName}/SupervisorDash`)
+            }}>
+              Go to supervisor Dashboard
+            </button>
+          </div>
+        : 
           <div className='statselect'>
             {noStationAllocatedError !== "" && noStationAllocatedError}
             <div>
@@ -121,7 +127,6 @@ function LandingPage() {
               </select>
             </div>
           </div>
-          
         }
         
       </div>

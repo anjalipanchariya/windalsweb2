@@ -4,7 +4,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './firstStation.css';
 import '../product/addProduct.css'
 import Footer from '../footer';
-import { getOneStation,createJobId,insertInStationyyyyFirst,insertInStationyyyyFirstNextStation,getWorkAtStationInDay,logout,getOneWorkerStation,getOneEmployee,getCurrentShift } from '../../helper/helper';
+import { getOneStation,createJobId,insertInStationyyyyFirst,insertInStationyyyyFirstNextStation,getWorkAtStationInDay,logout,getOneWorkerStation,getOneEmployee,getCurrentShift,getOneStationOneProductMachinesData } from '../../helper/helper';
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useFormik } from "formik";
@@ -99,21 +99,33 @@ const FirstStation = () => {
           toast.promise(getOneWorkerStationPromise, {
             loading: "Getting stations allocated to employee",
             success: (result) => {
-              const extractedStations = result.map(item => ({station_name:item.station_name, position:item.position}));
-              const extractedMachines = result.map(item => ({ machine_id: item.machine_id, machine_name: item.machine_name }));
-              setStations(extractedStations);
-              setMachines(extractedMachines);
+              setStations(result);
               return "data fetched";
             },
             error: (err) => {
               return err.msg;
             },
           });
+          
         }
       }, [employeeData, activeShift]);
 
     useEffect(()=>{
-        getSubmitedJobs()
+        if(stationOneProductInfo!="")
+        {
+            getSubmitedJobs()
+            const getOneStationMachineDataPromise = getOneStationOneProductMachinesData(stationOneProductInfo[0].station_id)
+            toast.promise(getOneStationMachineDataPromise, {
+                loading: "Getting machines data of this station",
+                success: (result) => {
+                setMachines(result);
+                return "data fetched";
+                },
+                error: (err) => {
+                return err.msg;
+                },
+            });
+        }
     },[stationOneProductInfo])
    
     useEffect(() => {
@@ -163,7 +175,6 @@ const FirstStation = () => {
         if(selectedIndex!==-1)
         {
           const selectedStation = stations[selectedIndex];
-          console.log(selectedStation);
           if(selectedStation.position===1)
           {
               navigate(`/FirstStation/${employeeData[0].employee_id}/${employeeData[0].user_name}/${selectedStation.station_name}`);
@@ -181,8 +192,8 @@ const FirstStation = () => {
     };
 
 
-    console.log({"stationOneProductInfo":stationOneProductInfo,"stationAllinfo":stationAllInfo});
-    console.log({"workAtStationInDay":workAtStationInDay});
+    // console.log({"stationOneProductInfo":stationOneProductInfo,"stationAllinfo":stationAllInfo});
+    console.log({"workAtStationInDay":workAtStationInDay,selectedMachine:selectedMachine});
     return (
         
         <>
@@ -201,15 +212,7 @@ const FirstStation = () => {
                   </option>
                 ))}
               </select>
-            <label>Select a Machine: </label>
-              <select onChange={(e) => handleMachineSelection(JSON.parse(e.target.value))}>
-                <option value="">Select a machine</option>
-                {machines.map((machine, index) => (
-                  <option key={index} value={JSON.stringify(machine)}>
-                    {machine.machine_name}
-                  </option>
-                ))}
-              </select>
+            
             
             <hr />
             <div className='fslist'>
@@ -244,6 +247,15 @@ const FirstStation = () => {
                         <option key={index} value={product}>
                             {product}
                         </option>
+                    ))}
+                </select>
+                <label>Select a Machine: </label>
+                <select onChange={(e) => handleMachineSelection(JSON.parse(e.target.value))}>
+                    <option value="">Select a machine</option>
+                    {machines.map((machine, index) => (
+                    <option key={index} value={JSON.stringify(machine)}>
+                        {machine.machine_name}
+                    </option>
                     ))}
                 </select>
                 <br />

@@ -626,3 +626,13 @@ export async function getStationRework(values){
         return Promise.reject(error.response.data)
     }
 }
+
+export async function getOneStationOneProductMachinesData(stationId){
+    try {
+        const {data,status} = await axios.get(`${proxy}api/MachineMasterGetOneStationMachinesData`,{params:{stationId}})
+        return Promise.resolve(data)
+    } catch (error) {
+        console.log({err:error})
+        return Promise.reject(error.response.data)
+    }
+}

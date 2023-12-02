@@ -16,7 +16,8 @@ import {
   getCurrentShift,
   getOneWorkerStation,
   getOneProductAllParameters,
-  getParameterStatus
+  getParameterStatus,
+  getOneStationOneProductMachinesData
 } from '../../helper/helper';
 import { useNavigate, useParams } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
@@ -134,10 +135,7 @@ useEffect(() => {
     toast.promise(getOneWorkerStationPromise, {
       loading: "Getting stations allocated to employee",
       success: (result) => {
-        const extractedStations = result.map(item => ({station_name:item.station_name, position:item.position}));
-        const extractedMachines = result.map(item => ({ machine_id: item.machine_id, machine_name: item.machine_name }));
-        setStations(extractedStations);
-        setMachines(extractedMachines);
+        setStations(result);
         return "data fetched";
       },
       error: (err) => {
@@ -154,7 +152,7 @@ useEffect(() => {
     }).catch((err) => {
       toast.error(err.msg);
     });
-  }, []);
+  }, [selectedStation]);
 
   useEffect(() => {
     if (stationAllInfo.length > 0) {
@@ -191,11 +189,7 @@ useEffect(() => {
       }).catch((err) => {
         toast.error(err.msg);
       });
-      
-
-
     }
-
   }, [parameterNames,product_name]);
   // console.log(OneProductStationParameters)
   // useEffect(() => {
@@ -213,9 +207,6 @@ useEffect(() => {
 
   // }, [])
 
-
-
-
   useEffect(() => {
     if (stationOneProductInfo.length > 0) {
       setJobesAtStationFunction()
@@ -223,7 +214,21 @@ useEffect(() => {
   }, [stationOneProductInfo]);
 
   useEffect(() => {
-    getSubmitedJobs()
+    if(stationOneProductInfo!="")
+        {
+            getSubmitedJobs()
+            const getOneStationMachineDataPromise = getOneStationOneProductMachinesData(stationOneProductInfo[0].station_id)
+            toast.promise(getOneStationMachineDataPromise, {
+                loading: "Getting machines data of this station",
+                success: (result) => {
+                setMachines(result);
+                return "data fetched";
+                },
+                error: (err) => {
+                return err.msg;
+                },
+            });
+        }
   }, [stationOneProductInfo])
 
   const setJobesAtStationFunction = () => {
@@ -324,7 +329,17 @@ useEffect(() => {
 
   const handleStationSelection = (target) => {
     // Use the selectedStation value to construct the path or page you want to navigate to
-  const selectedIndex = parseInt(target.options[target.selectedIndex].getAttribute("data-index"), 10);
+    setSelectedMachine([])
+    setMachines([])
+    setWorkAtStationInDay([])
+    setOneProductStationParameters([])
+    setJobsAtStation([])
+    setProductName("")
+    setAvailableProducts([])
+    setStationOneProductInfo("")
+    setStationAllInfo("")
+
+    const selectedIndex = parseInt(target.options[target.selectedIndex].getAttribute("data-index"), 10);
   
     if(selectedIndex!==-1)
     {
@@ -366,15 +381,7 @@ useEffect(() => {
                 ))}
               </select>
               <br />
-            <h5>Select a Machine </h5>
-              <select onChange={(e) => handleMachineSelection(JSON.parse(e.target.value))}>
-                <option value="">Select a machine</option>
-                {machines.map((machine, index) => (
-                  <option key={index} value={JSON.stringify(machine)}>
-                    {machine.machine_name}
-                  </option>
-                ))}
-              </select>
+            
       {/* <button onClick={() => { logout() }}>Log Out</button> */}
      
       <hr />
@@ -403,6 +410,15 @@ useEffect(() => {
             </option>
           ))}
         </select>
+        <h5>Select a Machine </h5>
+              <select onChange={(e) => handleMachineSelection(JSON.parse(e.target.value))}>
+                <option value="">Select a machine</option>
+                {machines.map((machine, index) => (
+                  <option key={index} value={JSON.stringify(machine)}>
+                    {machine.machine_name}
+                  </option>
+                ))}
+              </select>
       </div>
       <br />
       {stationOneProductInfo[0] && product_name !== "" &&
@@ -411,15 +427,15 @@ useEffect(() => {
             <tbody>
               <tr>
                 <td>Daily Count:</td>
-                <td>{stationOneProductInfo[0].daily_count}</td>
+                <td>{selectedMachine.daily_count?selectedMachine.daily_count:"alert:Select machine first"}</td>
               </tr>
               <tr>
                 <td>Cycle Time: </td>
-                <td>{stationOneProductInfo[0].cycle_time}</td>
+                <td>{selectedMachine.cycle_time?selectedMachine.cycle_time:"alert:Select machine first"}</td>
               </tr>
               <tr>
                 <td>Product per hour:</td>
-                <td>{stationOneProductInfo[0].product_per_hour}</td>
+                <td>{selectedMachine.product_per_hour?selectedMachine.product_per_hour:"alert:Select machine first"}</td>
               </tr>
               <tr>
                 <td>Parameters to be checked:</td>

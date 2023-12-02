@@ -10,12 +10,12 @@ async function insertIntoStationAllocation(req,res){
             res.status(501).send({msg:`Workers already allocated to stations for this shift_id and this date:${date}`})
         }
         else{
-            const insertQuery = "INSERT INTO station_allocation (date,shift_id,station_name,machine_id,employee_id) VALUES (?, ?, ?, ?, ?)"
+            const insertQuery = "INSERT INTO station_allocation (date,shift_id,station_name,employee_id) VALUES (?, ?, ?, ?)"
             for(const stationAllocation of stationAllocations)
             {
-                const {station_name,machine_id,workers} = stationAllocation
+                const {station,workers} = stationAllocation
                 for(const workerID of workers){
-                    const [insertResult] = await db.promise().query(insertQuery,[date,shift,station_name,machine_id,workerID])
+                    const [insertResult] = await db.promise().query(insertQuery,[date,shift,station,workerID])
                 }
             }
             res.status(201).send({msg:"Stations allocated to workers successfully."})
@@ -30,9 +30,9 @@ async function getOneWorkerStation(req,res){
     const {employeeId,date,shift} = req.query
     // console.log(req.query);
     try {
-        const selectQuery = "select t2.station_name,t2.machine_id, t2.machine_name, station_master.position from (select machine_master.station_id,t1.station_name,t1.machine_id, machine_master.machine_name from (select station_name, machine_id from station_allocation where date=? and employee_id=? and shift_id=?) as t1 inner join machine_master on t1.machine_id=machine_master.machine_id) as t2 inner join station_master on t2.station_id=station_master.station_id;"
+        const selectQuery = "SELECT DISTINCT sa.station_name, sm.position FROM station_allocation AS sa INNER JOIN station_master AS sm ON sa.station_name = sm.station_name WHERE employee_id=? AND date=? AND shift_id=?"
 
-        const [selectResult] = await db.promise().query(selectQuery,[date,employeeId,shift])
+        const [selectResult] = await db.promise().query(selectQuery,[employeeId,date,shift])
         console.log({query:req.query,result:selectResult});
 
         if(selectResult.length<=0)
@@ -41,6 +41,7 @@ async function getOneWorkerStation(req,res){
         }
         else
         {
+            console.log(selectResult);
             res.status(201).send(selectResult)
         }
     } catch (error) {
