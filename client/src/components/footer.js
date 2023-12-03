@@ -6,7 +6,7 @@ const Footer = () => {
     return (
      <>
       <footer className = "footer">
-            <h5> <a style={{textDecoration: 'none', color: '#FFF'}} href="http://viit.ac.in" target="_blank" rel="noopener noreferrer" >Developed By : Vishwakarma Institute of Information Technology, Pune</a></h5>
+            <p> <a style={{textDecoration: 'none', color: '#FFF'}} href="http://viit.ac.in" target="_blank" rel="noopener noreferrer" >Developed By : Vishwakarma Institute of Information Technology, Pune</a></p>
         </footer>
      </>
     );

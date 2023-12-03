@@ -75,7 +75,7 @@ function JobReport() {
             <div className="jobreport">
                 <h1 className="heading" style={{marginBottom:'3vh'}}>Job Report</h1>
                 
-                    <label htmlFor="" style={{fontWeight:600}}>Job name</label>
+                    <label htmlFor="" style={{fontWeight:600, fontSize:'1.4rem'}}>Job name</label>
                     <input
                 className=""
                 type="text"
@@ -83,7 +83,7 @@ function JobReport() {
                 placeholder=""
                 onChange={formik.handleChange}
                 name="jobName"
-                style={{borderRadius:'12px'}}
+                style={{borderRadius:'12px', height:'5vh'}}
             />
               
             

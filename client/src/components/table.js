@@ -3,7 +3,10 @@ import './table.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSolid, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import exportimg from '../images/export.png'; 
-
+import {Dropdown, DropdownButton} from 'react-bootstrap'
+import jsPDF from 'jspdf';
+import 'jspdf-autotable'
+import * as XLSX from 'xlsx'
 
 function Table({ columns, data }) {
   const [sortedColumn, setSortedColumn] = useState(null);
@@ -82,6 +85,44 @@ function Table({ columns, data }) {
     document.body.removeChild(a);
   };
   console.log(columns);
+
+  const exportToPDF = () => {
+    const doc = new jsPDF();
+    doc.text("Table Data", 10, 10);
+
+    const tableData = [];
+    tableData.push(columns.map((col) => col.label));
+    filteredData.forEach((row) => {
+      tableData.push(columns.map((col) => row[col.field]));
+    });
+
+    doc.autoTable({
+      head: tableData.slice(0,1),
+      body: tableData.slice(1),
+    });
+
+    doc.save("table_data.pdf")
+  }
+
+  const exportToXLSX = () => {
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'table_data.xlsx';
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+  };
+
   return (
     <div className="table-container">
       
@@ -105,7 +146,23 @@ function Table({ columns, data }) {
           </select>
         </div>
         <div className='export'>
-            <img src={exportimg} alt="" onClick={exportToCSV}/>
+            {/* <img src={exportimg} alt="" onClick={exportToCSV}/> */}.
+            <Dropdown >
+              <Dropdown.Toggle variant='light' style={{backgroundColor:'#d1cbcb', height:'4.6vh', marginLeft:6, borderRadius:0}}>
+                Export
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+              <button style = {{backgroundColor:'white', color:'black'}} onClick={exportToCSV}>
+                  Export to CSV 
+                </button>
+                <button style = {{backgroundColor:'white', color:'black' }} onClick={exportToPDF}>
+                  Export to PDF
+                </button>
+                <button style = {{backgroundColor:'white', color:'black'}} onClick={exportToXLSX}>
+                  Export to XLSX
+                </button>
+              </Dropdown.Menu>
+            </Dropdown>
 
         </div>
       </div>

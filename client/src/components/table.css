@@ -36,13 +36,13 @@
 
 /* Alternating row background */
 .table-container tr:nth-child(even) {
-  background-color: #ddd;
+  background-color: #f2f2f2;
 }
 
 /* Table cell styles */
 .table-container td {
   padding: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid #bbbaba;
   text-align: left;
   font-family: Arial, sans-serif; /* Use your preferred font here */
 }
@@ -72,7 +72,7 @@
 }
 
 .box select {
-  background-color: #ebe5e5;
+  background-color: #d1cbcb;
   color: rgb(0, 0, 0);
   padding: 4px;
   width: 98%;
@@ -144,7 +144,7 @@ color: black;
 position: relative;
 display: inline-block;
 /* margin: 4px 16px; */
-margin-right: 16px;
+margin-right: 9px;
 height: 30px;
 /* align-items: center; */
 width: 40px;
@@ -213,7 +213,7 @@ padding: 0 0 0 16px;
 
 
 .export img{
-height: 30px;
+height: 20px;
 width: 30px;
 margin: 4px 16px;
 cursor: pointer;

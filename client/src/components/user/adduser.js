@@ -287,7 +287,7 @@ function WorkerReg() {
         </div>
 
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2vh' }}>
-          <button type="submit" onClick={formik.handleSubmit}>Register</button>
+          <button type="submit" className="buttoncss" onClick={formik.handleSubmit}>Register</button>
         </div>
         <br />
       </div>

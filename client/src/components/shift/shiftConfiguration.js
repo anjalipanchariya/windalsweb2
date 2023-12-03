@@ -329,10 +329,6 @@ function ShiftConfiguration() {
 
             </Form.Group>
 
-
-
-
-
             <Form.Group className="mb-3" controlId="formBasicCheckbox">
               <div>
                 <label>Active</label>
@@ -391,6 +387,7 @@ function ShiftConfiguration() {
                     <td>
                       <button
                         className="edit-button"
+                        style={{backgroundColor:'white', color:'black'}}
                         onClick={() => handleEdit(shiftdata)}
                       >
                         <FontAwesomeIcon icon={faEdit} />
@@ -399,6 +396,7 @@ function ShiftConfiguration() {
                     <td>
                       <button
                         className="edit-button"
+                        style={{backgroundColor:'white', color:'black'}}
                         onClick={() => handleDelete(shiftdata.shift_id)}
                       >
                         <FontAwesomeIcon icon={faTrash} />

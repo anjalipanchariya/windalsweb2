@@ -1,8 +1,9 @@
 .footer {
     text-align: center;
-    background-color: rgb(109, 109, 109);
+    background-color: rgb(34, 33, 33);
     color: white;
-    height: 30px;
+    height: 26px;
+    font-size: 18px;
     width: 100%;
     position: fixed;
     bottom: 0;

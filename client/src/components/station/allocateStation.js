@@ -236,7 +236,7 @@ function StationAllocation() {
 
                         {/* <h5 style={{marginTop:'5vh'}}>Please submit after allocating workers in the table below</h5> */}
                         <div >
-                            <table className="table" style={{ border: "1px solid #F3F3F3" }}>
+                            <table className="table">
                                 <thead>
 
                                 </thead>
@@ -277,7 +277,7 @@ function StationAllocation() {
                         </Button>
                     </Form>
                     
-                    <Button onClick={fetchData}>
+                    <Button variant="danger" onClick={fetchData} style={{marginTop:'2vh'}}>
                         Fetchdata
                     </Button>
                 </div>

@@ -4,9 +4,18 @@
     color: rgb(241, 236, 236);
   }
   
+  .stroke{
+
+  }
 
   @media (min-width: 1400px) {
     .navbar-expand-lg .navbar-toggler {
       display: block;
     }
   }
+
+  .stroke a{
+  position: relative;
+}
+
+ 

@@ -220,7 +220,7 @@ function UpdateProduct() {
 
                 <div className='buttons'>
                     <button onClick={handleSearch} style={{ margin: 6 }} className='buttoncss'>Search</button>
-                    <button onClick={addRow} style={{ margin: 10 }} className='buttoncss'>Add parameter</button>
+                    
                     
                 </div>
             
@@ -350,7 +350,9 @@ function UpdateProduct() {
                     ))}
                 </tbody>
             </table>
-            <br />
+            
+
+            <button onClick={addRow} style={{ margin: 10 }} className='buttoncss'>Add parameter</button>
 
             <p style={{ textAlign: 'center', fontWeight:'bold', fontSize:'1.4rem',marginTop:'10px' }}>
                 New parameter
@@ -491,7 +493,7 @@ function UpdateProduct() {
                     ))}
                 </tbody>
             </table>
-            <br />
+            
             
             <button onClick={formik.handleSubmit} className='buttoncss'>Save</button>
             </div>

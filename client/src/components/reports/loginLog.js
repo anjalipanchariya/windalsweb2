@@ -70,14 +70,14 @@ function LoginLog() {
             <div className="jobreport">
                 <h1 className="heading" style={{marginBottom:'3vh'}}>Login Log</h1>
                 
-                    <label htmlFor="" style={{fontWeight:600}}>Username</label>
+                    <label htmlFor="" style={{fontWeight:600, fontSize:'1.4rem'}}>Username</label>
                     <input
                     type="text"
                     value={formik.values.userName}
                     placeholder=""
                     onChange={formik.handleChange}
                     name="userName"
-                    style={{borderRadius:'12px'}}
+                    style={{borderRadius:'12px', height:'5vh'}}
                 />
                 
                 

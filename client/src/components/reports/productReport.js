@@ -57,14 +57,14 @@ function ProductReport() {
             <div className="jobreport">
                 <h1 className="heading" style={{marginBottom:'3vh'}}>Product Report</h1>
                 
-                    <label htmlFor="" style={{fontWeight:600}}>Product Name</label>
+                    <label htmlFor="" style={{fontWeight:600, fontSize:'1.4rem'}}>Product Name</label>
                     <input
                 className=""
                 type="text"
                 value={formik.values.jobName}
                 placeholder=""
                 name="Product Name"
-                style={{borderRadius:'12px'}}
+                style={{borderRadius:'12px', height:'5vh'}}
             />
                 
             

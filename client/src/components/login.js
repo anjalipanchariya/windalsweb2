@@ -34,6 +34,7 @@ const LoginPage = () => {
         {
           loading: "Checking creds",
           success: result =>{
+            console.log(result);
             console.log(result.userName);
             navigate(`/${result.userName}/LandingPage`);
             // const loginLogInsertPromise = insertInLoginLog({userName:result.userName,stationName:result.stationName})
@@ -83,7 +84,7 @@ const LoginPage = () => {
   return (
     <div className='login'>
       <Toaster position="top-center" reverseOrder={false}></Toaster>
-      <div style={{width:400}}>
+      <div style={{width:400,}}>
       <div className=" d-flex flex-wrap align-items-center" style={{backgroundColor : '#FfFfFf' , padding : 30 , borderRadius : 20 }}>
         <form className="row g-3 " onSubmit={formik.handleSubmit}>
           <div className="col-12 align-items-center">

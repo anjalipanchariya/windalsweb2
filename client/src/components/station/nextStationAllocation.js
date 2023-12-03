@@ -224,9 +224,9 @@ function NextStationAllocation() {
                     </div>
                 )}
                 {/* <br /> */}
-                <button onClick={formik.handleSubmit} style={{marginTop:'25px'}}>Save configuration</button>
+                <button onClick={formik.handleSubmit} className="buttoncss" style={{marginTop:'25px'}}>Save configuration</button>
             </div>
-            {/* <br /> */}
+            
 
             <Footer />
         </>

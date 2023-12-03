@@ -96,7 +96,7 @@ const AddProduct = () => {
       <div className="product-name-container">
         <h1>Add Product</h1>
         <div className='inplab' style={{alignItems:'center'}}>
-        <label htmlFor="">Product Name</label>
+        <label htmlFor="" style={{fontSize: '1.5rem'}}>Product Name</label>
         <input
           className="product-input"
           type="text"

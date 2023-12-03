@@ -304,10 +304,10 @@ function AddStation() {
                                 {addFormFormik.errors.stationName && addFormFormik.touched.stationName ? (
                                     <Alert variant="danger" className="error-message">{addFormFormik.errors.stationName}</Alert>) : null}
                             </Form.Group>
-                            <label htmlFor="" style={{fontWeight:600, margin:0}} className="inplab">--Select Product--</label>
+                            <label htmlFor="" style={{fontWeight:600, margin:0}} className="inplab">Select Product</label>
                             <Form.Group>
                                 <Form.Select className="mb-3 select-param" aria-label="Default select example" value={addFormFormik.values.productName} name="productName" onChange={addFormFormik.handleChange}>
-                                    <option values="">Select Product</option>
+                                    <option values="">--Select Product--</option>
                                     {
                                         Array.isArray(productNames) && productNames.map((product, index) => (
                                             <option key={index} value={product}>{product}</option>
