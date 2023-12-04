@@ -28,12 +28,9 @@
     width: 20vw;
     /* margin-left: 5vw;
     margin-right: 5vw; */
-    
     /* border-bottom: 1px solid black;
     border-top: 1px solid black; */
 }
-
-
 
 
 .jobsub{
@@ -48,9 +45,9 @@
 }
 
 .sbox{
-    padding: 10px;
-    background-color: rgb(197, 197, 197);
-    
+    padding: 20px;
+    background-color: rgb(83, 83, 83);
+    color: white;
 }
 
 .divide{

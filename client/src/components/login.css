@@ -18,11 +18,12 @@
   justify-content: center;
   align-items: center;
   /* background-image : url("https://res.cloudinary.com/dugjheitb/image/upload/v1701343759/WINDALS/ajit-singh-_6lUTo2UfMY-unsplash_b2vpo7.jpg"); */
-  background-image: url("https://res.cloudinary.com/dd8vjmci3/image/upload/v1701519191/windals/tgyptkdm2gb06ldmxdc2.avif");
+  background-color: white;
+  background-image: url("https://res.cloudinary.com/dd8vjmci3/image/upload/v1701692568/windals/mvivspzs1lufnbawmfvo.png");
   background-repeat: no-repeat;
   /* background-position: cover; */
   background-size: cover;
-  background-size: 100%;
+  background-size: 100vw 100vh;
   /* padding: 0; */
   
 }
@@ -92,4 +93,9 @@
     margin-right: auto;
     width: 90%; 
   }
+}
+
+.loginform{
+  /* border: 2px solid black; */
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
 }

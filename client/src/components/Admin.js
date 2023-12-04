@@ -68,7 +68,7 @@ function Admin() {
                     {
                         stationNames.length > 0 ?
                             stationNames.map((station, index) => (
-                                <div onClick={openModal}>
+                                <div>
                                     <StationCard name={station.station_name} number={index + 1} worker="abc" shift="2"
                                     />
                                 </div>

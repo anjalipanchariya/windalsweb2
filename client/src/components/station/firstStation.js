@@ -197,11 +197,11 @@ const FirstStation = () => {
                 <h1>First Station</h1>
 
                 <div className='divide'>
-                    <div className='fslist'>
+                    <div className='fslist sbox'>
                         {/* <h3>Worker Details</h3> */}
-                        <h5 className='sbox'>Station Name : {stationName}</h5>
-                        <h5 className='sbox'>Employee ID : {employeeId}</h5>
-                        <h5 className='sbox'>Username : {userName}</h5>
+                        <h5 >Station Name : {stationName}</h5>
+                        <h5 >Employee ID : {employeeId}</h5>
+                        <h5 >Username : {userName}</h5>
                     </div>
 
                     <div className='workerform'>

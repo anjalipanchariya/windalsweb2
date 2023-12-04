@@ -84,8 +84,8 @@ const LoginPage = () => {
   return (
     <div className='login'>
       <Toaster position="top-center" reverseOrder={false}></Toaster>
-      <div style={{width:400,}}>
-      <div className=" d-flex flex-wrap align-items-center" style={{backgroundColor : '#FfFfFf' , padding : 30 , borderRadius : 20 }}>
+      <div style={{width:400}}>
+      <div className=" d-flex flex-wrap align-items-center loginform" style={{backgroundColor : '#FfFfFf' , padding : 30 , borderRadius : 20 }}>
         <form className="row g-3 " onSubmit={formik.handleSubmit}>
           <div className="col-12 align-items-center">
             <label style={{fontSize:35, fontWeight : 700 , color : '#E63946'}}>Login</label>
