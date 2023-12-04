@@ -17,18 +17,23 @@
 
 .jobnameinp{
     width: 40%;
+    height: 6vh;
+    border: 1px solid black;
 }
 
 .fslist{
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    border-bottom: 1px solid black;
-    border-top: 1px solid black;
+    width: 20vw;
+    /* margin-left: 5vw;
+    margin-right: 5vw; */
+    
+    /* border-bottom: 1px solid black;
+    border-top: 1px solid black; */
 }
 
-.fslist h4{
-    margin: 30px;
-}
+
 
 
 .jobsub{
@@ -40,4 +45,28 @@
 
 .firststat select{
     width: 40%;
+}
+
+.sbox{
+    padding: 10px;
+    background-color: rgb(197, 197, 197);
+    
+}
+
+.divide{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.workerform{
+    padding: 20px;
+    margin-top: 4vh;
+    /* background-color: rgb(179, 179, 179); */
+    width: 50vw;
+    border: 1px solid black;
+    border-radius: 20px;
+    margin-bottom: 20vh;
 }

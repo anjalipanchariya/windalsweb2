@@ -46,12 +46,12 @@ const StationPage = () => {
   const [activeShift, setActiveShift] = useState("");
   const [stations, setStations] = useState([]);
   const [machines, setMachines] = useState([]);
-  const [selectedMachine,setSelectedMachine] = useState("")
-  const [selectedStation,setSelectedStation] = useState("")
+  const [selectedMachine, setSelectedMachine] = useState("")
+  const [selectedStation, setSelectedStation] = useState("")
   const navigate = useNavigate()
 
 
-  
+
   const formik = useFormik({
     initialValues: {
       selectedJob: null,
@@ -61,20 +61,20 @@ const StationPage = () => {
     },
     // validationSchema: validateYupSchema,
     onSubmit: (values) => {
-      console.log({"this":values})
-      const updateJobeAtStationPromise = updateJobesAtStation(values,stationOneProductInfo[0].station_id,employeeId,selectedMachine.machine_id)
-      updateJobeAtStationPromise.then((result)=>{
+      console.log({ "this": values })
+      const updateJobeAtStationPromise = updateJobesAtStation(values, stationOneProductInfo[0].station_id, employeeId, selectedMachine.machine_id)
+      updateJobeAtStationPromise.then((result) => {
         toast.success(result.msg)
-        if(values["status"]=='1'){
+        if (values["status"] == '1') {
           const newValues = {
-            job_name:values.selectedJob.job_name,
-            product_name:product_name,
-            station_id:stationOneProductInfo[0].station_id,
-            machine_id:selectedMachine.machine_id
+            job_name: values.selectedJob.job_name,
+            product_name: product_name,
+            station_id: stationOneProductInfo[0].station_id,
+            machine_id: selectedMachine.machine_id
           }
           // console.log({newValues:newValues});
           const insertInStationyyyyFirstNextStationPromise = insertInStationyyyyFirstNextStation(newValues)
-          insertInStationyyyyFirstNextStationPromise.then((result)=>{
+          insertInStationyyyyFirstNextStationPromise.then((result) => {
             toast.success(result.msg)
             getSubmitedJobs()
             formik.resetForm()
@@ -82,68 +82,67 @@ const StationPage = () => {
             setDropdownPosition(null)
             closeModal()
             setJobesAtStationFunction()
-          }).catch((err)=>{
+          }).catch((err) => {
             toast.error(err.msg)
             console.log(err);
           })
         }
-        else{
+        else {
           getSubmitedJobs()
           formik.resetForm()
           setDropdownOptions([])
           setDropdownPosition(null)
           closeModal()
           setJobesAtStationFunction()
-        }        
-      }).catch((err)=>{
+        }
+      }).catch((err) => {
         toast.error(err.msg)
         console.log(err);
-      }) 
+      })
     }
   })
 
-  useEffect(()=>{
-    if(stationName!=="")
-    {
-        setSelectedStation(stationName)
+  useEffect(() => {
+    if (stationName !== "") {
+      setSelectedStation(stationName)
     }
-},[stationName])
+  }, [stationName])
 
-useEffect(() => {
-  const getOneEmployeeDataPromise = getOneEmployee(userName);
-  toast.promise(getOneEmployeeDataPromise, {
-    loading: "Getting employee data",
-    success: (result) => {
-      setEmployeeData(result);
-      return "data fetched";
-    },
-    error: (err) => {
-      return err.msg;
-    },
-  });
-  const getCurrentShiftPromise = getCurrentShift();
-  getCurrentShiftPromise.then((result) => {
-    setActiveShift(result.shift_id);
-  }).catch((err) => {
-    toast.error(err.msg);
-  });
-}, []);
-
-useEffect(() => {
-  if (userName !== 'admin' && employeeData !== "" && activeShift !== "") {
-    const getOneWorkerStationPromise = getOneWorkerStation(employeeData[0].employee_id, activeShift);
-    toast.promise(getOneWorkerStationPromise, {
-      loading: "Getting stations allocated to employee",
+  useEffect(() => {
+    const getOneEmployeeDataPromise = getOneEmployee(userName);
+    toast.promise(getOneEmployeeDataPromise, {
+      loading: "Getting employee data",
       success: (result) => {
-        setStations(result);
+        setEmployeeData(result);
         return "data fetched";
       },
       error: (err) => {
         return err.msg;
       },
     });
-  }
-}, [employeeData, activeShift]);
+    const getCurrentShiftPromise = getCurrentShift();
+    getCurrentShiftPromise.then((result) => {
+      setActiveShift(result.shift_id);
+    }).catch((err) => {
+      toast.error(err.msg);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (userName !== 'admin' && employeeData !== "" && activeShift !== "") {
+      const getOneWorkerStationPromise = getOneWorkerStation(employeeData[0].employee_id, activeShift);
+      toast.promise(getOneWorkerStationPromise, {
+        loading: "Getting stations allocated to employee",
+        success: (result) => {
+          setStations(result);
+          return "data fetched";
+        },
+        error: (err) => {
+          return err.msg;
+        },
+      });
+    }
+  }, [employeeData, activeShift]);
 
   useEffect(() => {
     const getStationAllInfoPromise = getOneStation(stationName);
@@ -181,8 +180,8 @@ useEffect(() => {
   }, [product_name]);
 
   useEffect(() => {
-    if (product_name !== "" && parameterNames.length !==0) {
-      const getParameterStatusPromise = getParameterStatus(parameterNames,product_name);
+    if (product_name !== "" && parameterNames.length !== 0) {
+      const getParameterStatusPromise = getParameterStatus(parameterNames, product_name);
       getParameterStatusPromise.then((result) => {
         setOneProductStationParameters(result.result);
         // console.log(result.result);
@@ -190,7 +189,7 @@ useEffect(() => {
         toast.error(err.msg);
       });
     }
-  }, [parameterNames,product_name]);
+  }, [parameterNames, product_name]);
   // console.log(OneProductStationParameters)
   // useEffect(() => {
   //   setOneProductStationParameters([
@@ -214,21 +213,20 @@ useEffect(() => {
   }, [stationOneProductInfo]);
 
   useEffect(() => {
-    if(stationOneProductInfo!="")
-        {
-            getSubmitedJobs()
-            const getOneStationMachineDataPromise = getOneStationOneProductMachinesData(stationOneProductInfo[0].station_id)
-            toast.promise(getOneStationMachineDataPromise, {
-                loading: "Getting machines data of this station",
-                success: (result) => {
-                setMachines(result);
-                return "data fetched";
-                },
-                error: (err) => {
-                return err.msg;
-                },
-            });
-        }
+    if (stationOneProductInfo != "") {
+      getSubmitedJobs()
+      const getOneStationMachineDataPromise = getOneStationOneProductMachinesData(stationOneProductInfo[0].station_id)
+      toast.promise(getOneStationMachineDataPromise, {
+        loading: "Getting machines data of this station",
+        success: (result) => {
+          setMachines(result);
+          return "data fetched";
+        },
+        error: (err) => {
+          return err.msg;
+        },
+      });
+    }
   }, [stationOneProductInfo])
 
   const setJobesAtStationFunction = () => {
@@ -256,10 +254,11 @@ useEffect(() => {
   const handleJobIdClick = async (job, event) => {
     formik.setFieldValue("selectedJob", job);
     const rect = event.target.getBoundingClientRect();
-    const middleTop = (window.innerHeight - rect.height) ;
+    console.log(rect)
+    const middleTop = (window.innerHeight - rect.height);
     setDropdownPosition({
       top: middleTop,
-      left: rect.left,
+      left: rect.left*2,
     });
 
     // Access the station_parameters from stationOneProductInfo
@@ -272,8 +271,8 @@ useEffect(() => {
       }, {})
       : null;
 
-      
-      formik.setFieldValue("parameterValues", parametersObject)
+
+    formik.setFieldValue("parameterValues", parametersObject)
 
     const options = stationOneProductInfo.length > 0 && stationOneProductInfo[0].report === 1
       ? ['✅ Ok', '❌ Not Okay', 'Parameters']
@@ -292,20 +291,20 @@ useEffect(() => {
   const handleDropdownOptionClick = (option) => {
     if (option === '✅ Ok') {
       formik.setFieldValue("status", 1)
-      const parametersObject =formik.values.parameterValues;
-      for(const it of OneProductStationParameters){
-        if(it['value_oknotok']===0 && parametersObject[it['parameter']]===''){
-          parametersObject[it['parameter']]='O';
+      const parametersObject = formik.values.parameterValues;
+      for (const it of OneProductStationParameters) {
+        if (it['value_oknotok'] === 0 && parametersObject[it['parameter']] === '') {
+          parametersObject[it['parameter']] = 'O';
         }
       }
       formik.setFieldValue("parameterValues", parametersObject)
       formik.handleSubmit()
     } else if (option === '❌ Not Okay') {
       formik.setFieldValue("status", -1)
-      const parametersObject =formik.values.parameterValues;
-      for(const it of OneProductStationParameters){
-        if(it['value_oknotok']===0 && parametersObject[it['parameter']]===''){
-          parametersObject[it['parameter']]='N';
+      const parametersObject = formik.values.parameterValues;
+      for (const it of OneProductStationParameters) {
+        if (it['value_oknotok'] === 0 && parametersObject[it['parameter']] === '') {
+          parametersObject[it['parameter']] = 'N';
         }
       }
       formik.setFieldValue("parameterValues", parametersObject)
@@ -340,26 +339,23 @@ useEffect(() => {
     setStationAllInfo("")
 
     const selectedIndex = parseInt(target.options[target.selectedIndex].getAttribute("data-index"), 10);
-  
-    if(selectedIndex!==-1)
-    {
+
+    if (selectedIndex !== -1) {
       const selectedStation = stations[selectedIndex];
       // console.log(selectedStation);
-      if(selectedStation.position===1)
-      {
-          navigate(`/FirstStation/${employeeData[0].employee_id}/${employeeData[0].user_name}/${selectedStation.station_name}`);
+      if (selectedStation.position === 1) {
+        navigate(`/FirstStation/${employeeData[0].employee_id}/${employeeData[0].user_name}/${selectedStation.station_name}`);
       }
-      else
-      {
-          navigate(`/Station/${employeeData[0].employee_id}/${employeeData[0].user_name}/${selectedStation.station_name}`);
+      else {
+        navigate(`/Station/${employeeData[0].employee_id}/${employeeData[0].user_name}/${selectedStation.station_name}`);
       }
     }
-    
+
   };
 
-    const handleMachineSelection = (selectedMachine) => {
-      setSelectedMachine(selectedMachine);
-    };
+  const handleMachineSelection = (selectedMachine) => {
+    setSelectedMachine(selectedMachine);
+  };
 
   // console.log({ jobsAtStation: jobsAtStation, stationOneProductInfo: stationOneProductInfo, stationAllInfo: stationAllInfo, formikvalues: formik.values, parameterNames: parameterNames, workAtStationInDay: workAtStationInDay });
   // console.log(parameterNames)
@@ -368,166 +364,168 @@ useEffect(() => {
     <div className="firststat">
       <WindalsNav />
       <Toaster position="top-center" reverseOrder={false}></Toaster>
-      
+
       <h1>Station {stationName}</h1>
-      <br />
-      <h5>Select a Station </h5>
-              <select value={stationName} onChange={(e) => handleStationSelection(e.target)}>
-                <option value="" data-index={-1}>Select a station</option>
-                {stations.map((station, index) => (
-                  <option key={index} value={station.station_name} data-index={index}>
-                    {station.station_name}
-                  </option>
-                ))}
-              </select>
-              <br />
-            
-      {/* <button onClick={() => { logout() }}>Log Out</button> */}
-     
-      <hr />
-      <div className='fslist'>
-        <h4>Station Name : {stationName}</h4>
-        <h4>Employee Id : {employeeId}</h4>
-        <h4>User Name : {userName}</h4>
-      </div>
-      <hr />
-      <div className="form-group">
-        <label style={{ fontSize: '1.7rem' }} htmlFor="productSelect">Select a Product:</label>
-        <select
-          id="productSelect"
-          value={product_name}
-          name="product_name"
-          onChange={(e) => {
-            setProductName(e.target.value)
-            closeModal()
-            formik.resetForm()
-          }}
-        >
-          <option value="">--Select Product--</option>
-          {availableProducts.map((product, index) => (
-            <option key={index} value={product}>
-              {product}
-            </option>
-          ))}
-        </select>
-        <h5>Select a Machine </h5>
-              <select onChange={(e) => handleMachineSelection(JSON.parse(e.target.value))}>
-                <option value="">Select a machine</option>
-                {machines.map((machine, index) => (
-                  <option key={index} value={JSON.stringify(machine)}>
-                    {machine.machine_name}
-                  </option>
-                ))}
-              </select>
-      </div>
-      <br />
-      {stationOneProductInfo[0] && product_name !== "" &&
-        <div className='params'>
-          <table className='first_table'>
-            <tbody>
-              <tr>
-                <td>Daily Count:</td>
-                <td>{selectedMachine.daily_count?selectedMachine.daily_count:"alert:Select machine first"}</td>
-              </tr>
-              <tr>
-                <td>Cycle Time: </td>
-                <td>{selectedMachine.cycle_time?selectedMachine.cycle_time:"alert:Select machine first"}</td>
-              </tr>
-              <tr>
-                <td>Product per hour:</td>
-                <td>{selectedMachine.product_per_hour?selectedMachine.product_per_hour:"alert:Select machine first"}</td>
-              </tr>
-              <tr>
-                <td>Parameters to be checked:</td>
-                <td>{stationOneProductInfo[0].report === 1 ? stationOneProductInfo[0].station_parameters : "NONE"}</td>
-              </tr>
-            </tbody>
-          </table>
-          {/* <h5>Daily Count: {stationOneProductInfo[0].daily_count}</h5>
+
+      <div className="divide">
+        <div className='fslist'>
+          <h5 className='sbox'>Station Name : {stationName}</h5>
+          <h5 className='sbox'>Employee Id : {employeeId}</h5>
+          <h5 className='sbox'>User Name : {userName}</h5>
+        </div>
+
+        <div className="workerform">
+          <div style={{ fontSize: '1.2rem' }}>
+            <label style={{ margin: 6, fontWeight: 500 }}>Select a Station: </label>
+            <select value={stationName} onChange={(e) => handleStationSelection(e.target)}>
+              <option value="" data-index={-1}>Select a station</option>
+              {stations.map((station, index) => (
+                <option key={index} value={station.station_name} data-index={index}>
+                  {station.station_name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="form-group" style={{marginBottom:'2vh'}}>
+            <label style={{ fontSize: '1.5rem', marginTop:'4vh' }}  htmlFor="productSelect">Select a Product:</label>
+            <select
+              id="productSelect"
+              value={product_name}
+              name="product_name"
+              onChange={(e) => {
+                setProductName(e.target.value)
+                closeModal()
+                formik.resetForm()
+              }}
+            >
+              <option value="">--Select Product--</option>
+              {availableProducts.map((product, index) => (
+                <option key={index} value={product}>
+                  {product}
+                </option>
+              ))}
+            </select>
+            <label style={{ fontSize: '1.5rem', marginTop:'4vh' }}>Select a Machine: </label>
+            <select onChange={(e) => handleMachineSelection(JSON.parse(e.target.value))}>
+              <option value="">Select a machine</option>
+              {machines.map((machine, index) => (
+                <option key={index} value={JSON.stringify(machine)}>
+                  {machine.machine_name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {stationOneProductInfo[0] && product_name !== "" &&
+            <div className='params'>
+              <table className='first_table'>
+                <tbody>
+                  <tr>
+                    <td>Daily Count:</td>
+                    <td>{selectedMachine.daily_count ? selectedMachine.daily_count : "alert:Select machine first"}</td>
+                  </tr>
+                  <tr>
+                    <td>Cycle Time: </td>
+                    <td>{selectedMachine.cycle_time ? selectedMachine.cycle_time : "alert:Select machine first"}</td>
+                  </tr>
+                  <tr>
+                    <td>Product per hour:</td>
+                    <td>{selectedMachine.product_per_hour ? selectedMachine.product_per_hour : "alert:Select machine first"}</td>
+                  </tr>
+                  <tr>
+                    <td>Parameters to be checked:</td>
+                    <td>{stationOneProductInfo[0].report === 1 ? stationOneProductInfo[0].station_parameters : "NONE"}</td>
+                  </tr>
+                </tbody>
+              </table>
+              {/* <h5>Daily Count: {stationOneProductInfo[0].daily_count}</h5>
           <h5>Cycle Time: {stationOneProductInfo[0].cycle_time}</h5>
           <h5>Product per hour: {stationOneProductInfo[0].product_per_hour}</h5>
           <h5>Parameters to be checked: {stationOneProductInfo[0].report === 1 ? stationOneProductInfo[0].station_parameters : "NONE"}</h5> */}
-        </div>
-      }
-      <hr />
+            </div>
+          }
 
-      <br />
-      <p style={{ fontSize: '1.7rem', fontWeight: "bold" }}>Jobs At Station</p>
-      <ul>
-        {jobsAtStation.length > 0 ? jobsAtStation.map((job) => (
-          <li
-            key={job.job_id}
-            onClick={(e) => handleJobIdClick(job, e)}
-            style={{ cursor: 'pointer' }}
-          >
-            {job.job_name}
-          </li>
-        )) : product_name == "" ? "Product is not selected" : "No Jobs"}
-      </ul>
-
-      {formik.values.selectedJob != null && (
-        <div
-          style={{
-            position: 'absolute',
-            top: dropdownPosition ? dropdownPosition.top : '0',
-            left: dropdownPosition ? dropdownPosition.left : '0',
-            border: '1px solid #ccc',
-            background: '#fff',
-            padding: '8px',
-          }}
-        >
-          <h2> {formik.values.selectedJob.job_name}</h2>
-
+          <p style={{ fontSize: '1.5rem', fontWeight: "bold", marginTop:'4vh' }}>Jobs At Station</p>
           <ul>
-            {dropdownOptions.map((option) => {
-              if (option != "Parameters") {
-                return (<li
-                  key={option}
-                  onClick={() => handleDropdownOptionClick(option)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  {option}
-                </li>)
-              }
-              else {
-                return (
-                  OneProductStationParameters.map((parameter) => (
-                    <div key={parameter.parameter}>
-                      <label>{parameter.parameter}</label>
-                      {parameter.value_oknotok === 1 ?
-                        <input type="number"
-                          placeholder="Enter the value"
-                          onChange={(e) => setParameterValue(parameter.parameter, e.target.value)} /> :
-                        <input type='checkbox'  value='O' onChange={(e) => {
-                          if(e.target.checked) {
-                            setParameterValue(parameter.parameter, 'Y')}
-                          else setParameterValue(parameter.parameter, 'N')}}/>}
-                    </div>
-                  ))
-                )
-              }
-            })}
+            {jobsAtStation.length > 0 ? jobsAtStation.map((job) => (
+              <li
+                key={job.job_id}
+                onClick={(e) => handleJobIdClick(job, e)}
+                style={{ cursor: 'pointer', }}
+              >
+                {job.job_name}
+              </li>
+            )) : product_name == "" ? "Product is not selected" : "No Jobs"}
           </ul>
-        </div>
-      )}
 
-      <div style={{marginLeft:'10vw'}}>
-      <Modal
-        isOpen={isModalOpen}
-        onRequestClose={closeModal}
-        contentLabel="Example Modal"
-        className='reasonmodal'
-      >
-        <h2>Reason</h2>
+          {formik.values.selectedJob != null && (
+            <div
+              style={{
+                position: 'absolute',
+                top: dropdownPosition ? dropdownPosition.top : '0',
+                left: dropdownPosition ? dropdownPosition.left : '0',
+                border: '1px solid #ccc',
+                background: '#fff',
+                padding: '8px',
+              }}
+            >
+              <h2> {formik.values.selectedJob.job_name}</h2>
+
+              <ul>
+                {dropdownOptions.map((option) => {
+                  if (option != "Parameters") {
+                    return (<li
+                      key={option}
+                      onClick={() => handleDropdownOptionClick(option)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      {option}
+                    </li>)
+                  }
+                  else {
+                    return (
+                      OneProductStationParameters.map((parameter) => (
+                        <div key={parameter.parameter}>
+                          <label>{parameter.parameter}</label>
+                          {parameter.value_oknotok === 1 ?
+                            <input type="number"
+                              placeholder="Enter the value"
+                              onChange={(e) => setParameterValue(parameter.parameter, e.target.value)} /> :
+                            <input type='checkbox' value='O' onChange={(e) => {
+                              if (e.target.checked) {
+                                setParameterValue(parameter.parameter, 'Y')
+                              }
+                              else setParameterValue(parameter.parameter, 'N')
+                            }} />}
+                        </div>
+                      ))
+                    )
+                  }
+                })}
+              </ul>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div style={{ marginLeft: '10vw' }}>
+        <Modal
+          isOpen={isModalOpen}
+          onRequestClose={closeModal}
+          contentLabel="Example Modal"
+          className='reasonmodal'
+        >
+          <h2>Reason</h2>
           <label htmlFor="reason">Enter a reason</label>
           <input type="text" name="reason" id="reason" value={formik.values.reason} onChange={formik.handleChange} />
-          <br />
-          <button onClick={formik.handleSubmit}>Submit</button>
-          <br />
-          <button onClick={closeModal}>Close Modal</button>
-          <br />
-        
-      </Modal>
+          
+          <button className="buttoncss" onClick={formik.handleSubmit}>Submit</button>
+          
+          <button className="buttoncss" onClick={closeModal}>Close Modal</button>
+          
+
+        </Modal>
       </div>
       {
         workAtStationInDay.length > 0 ?
@@ -560,9 +558,7 @@ useEffect(() => {
           </div>
           : null
       }
-      <br />
-      <br />
-      <br />
+     
 
       <Footer />
     </div>
